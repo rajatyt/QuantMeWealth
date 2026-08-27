@@ -1,0 +1,1810 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuantMeWealth | Institutional-Grade Quantitative Trading & Alpha Engines</title>
+    <meta name="description" content="QuantMeWealth delivers high-frequency, statistical arbitrage, and quantitative algorithmic strategies engineered for superior risk-adjusted alpha.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#050811',
+                            card: '#0a101f',
+                            cardHover: '#0f172e',
+                            border: '#172545',
+                            borderLight: '#243763',
+                            cyan: '#00f0ff',
+                            cyanGlow: '#00f0ff33',
+                            emerald: '#10b981',
+                            emeraldGlow: '#10b98133',
+                            purple: '#8b5cf6',
+                            rose: '#f43f5e'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace']
+                    },
+                    keyframes: {
+                        ticker: {
+                            '0%': { transform: 'translateX(0)' },
+                            '100%': { transform: 'translateX(-50%)' }
+                        },
+                        pulseGlow: {
+                            '0%, 100%': { opacity: '0.4', transform: 'scale(1)' },
+                            '50%': { opacity: '0.8', transform: 'scale(1.05)' }
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-8px)' }
+                        }
+                    },
+                    animation: {
+                        ticker: 'ticker 35s linear infinite',
+                        pulseGlow: 'pulseGlow 6s ease-in-out infinite',
+                        float: 'float 4s ease-in-out infinite'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Glowing & Grid Effects */
+        .bg-grid-pattern {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(36, 55, 99, 0.15) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(36, 55, 99, 0.15) 1px, transparent 1px);
+        }
+        
+        .glow-cyan {
+            box-shadow: 0 0 25px rgba(0, 240, 255, 0.25);
+        }
+
+        .glow-emerald {
+            box-shadow: 0 0 25px rgba(16, 185, 129, 0.25);
+        }
+
+        .glass-panel {
+            background: rgba(10, 16, 31, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(36, 55, 99, 0.6);
+        }
+
+        .glass-panel-hover:hover {
+            border-color: rgba(0, 240, 255, 0.4);
+            box-shadow: 0 10px 30px -10px rgba(0, 240, 255, 0.15);
+        }
+
+        /* Hide scrollbars for cleaner UI */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .ticker-wrap:hover .ticker-move {
+            animation-play-state: paused;
+        }
+
+        /* Gradient Text */
+        .gradient-text-cyan {
+            background: linear-gradient(135deg, #ffffff 30%, #00f0ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .gradient-text-emerald {
+            background: linear-gradient(135deg, #10b981 0%, #00f0ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Custom range slider */
+        input[type=range] {
+            accent-color: #00f0ff;
+        }
+    </style>
+</head>
+
+<body class="bg-brand-dark text-slate-200 font-sans antialiased selection:bg-brand-cyan selection:text-black overflow-x-hidden min-h-screen">
+
+    <!-- Background Atmospheric Orbs -->
+    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <div class="absolute -top-40 -left-40 w-[600px] h-[600px] bg-cyan-500/10 rounded-full blur-[140px] animate-pulseGlow"></div>
+        <div class="absolute top-1/3 -right-40 w-[500px] h-[500px] bg-emerald-500/10 rounded-full blur-[140px] animate-pulseGlow" style="animation-delay: 2s;"></div>
+        <div class="absolute bottom-10 left-1/4 w-[600px] h-[600px] bg-purple-500/10 rounded-full blur-[160px] animate-pulseGlow" style="animation-delay: 4s;"></div>
+        <div class="absolute inset-0 bg-grid-pattern opacity-40"></div>
+    </div>
+
+    <!-- Live Animated Ticker Bar -->
+    <div class="relative z-50 bg-[#04060d] border-b border-brand-border/60 text-xs font-mono py-2 overflow-hidden ticker-wrap select-none">
+        <div class="flex items-center">
+            <div class="flex items-center px-4 shrink-0 bg-[#04060d] z-20 border-r border-brand-border/80 text-brand-cyan gap-2">
+                <span class="relative flex h-2 w-2">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-emerald opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-brand-emerald"></span>
+                </span>
+                <span class="font-bold tracking-wider uppercase text-[11px]">LIVE MARKETS</span>
+            </div>
+
+            <div class="flex whitespace-nowrap animate-ticker ticker-move" id="tickerContainer">
+                <!-- Ticker items duplicated for seamless loop -->
+                <div class="flex items-center gap-8 px-4" id="tickerTrack">
+                    <!-- Dynamic Ticker Items will populate and animate -->
+                    <div class="flex items-center gap-2" data-symbol="NIFTY">
+                        <span class="text-slate-400 font-semibold">NIFTY 50</span>
+                        <span class="text-white font-mono font-bold" id="tick-NIFTY">24,862.40</span>
+                        <span class="text-brand-emerald flex items-center gap-0.5 font-bold" id="chg-NIFTY"><i class="fa-solid fa-arrow-trend-up text-[10px]"></i> +0.74%</span>
+                    </div>
+                    <div class="flex items-center gap-2" data-symbol="BANKNIFTY">
+                        <span class="text-slate-400 font-semibold">BANK NIFTY</span>
+                        <span class="text-white font-mono font-bold" id="tick-BANKNIFTY">53,180.15</span>
+                        <span class="text-brand-emerald flex items-center gap-0.5 font-bold" id="chg-BANKNIFTY"><i class="fa-solid fa-arrow-trend-up text-[10px]"></i> +1.18%</span>
+                    </div>
+                    <div class="flex items-center gap-2" data-symbol="SP500">
+                        <span class="text-slate-400 font-semibold">S&P 500</span>
+                        <span class="text-white font-mono font-bold" id="tick-SP500">5,638.20</span>
+                        <span class="text-brand-emerald flex items-center gap-0.5 font-bold" id="chg-SP500"><i class="fa-solid fa-arrow-trend-up text-[10px]"></i> +0.52%</span>
+                    </div>
+                    <div class="flex items-center gap-2" data-symbol="NASDAQ">
+                        <span class="text-slate-400 font-semibold">NASDAQ 100</span>
+                        <span class="text-white font-mono font-bold" id="tick-NASDAQ">19,890.75</span>
+                        <span class="text-brand-emerald flex items-center gap-0.5 font-bold" id="chg-NASDAQ"><i class="fa-solid fa-arrow-trend-up text-[10px]"></i> +0.89%</span>
+                    </div>
+                    <div class="flex items-center gap-2" data-symbol="BTC">
+                        <span class="text-slate-400 font-semibold">BTC/USD</span>
+                        <span class="text-white font-mono font-bold" id="tick-BTC">$64,420.00</span>
+                        <span class="text-brand-emerald flex items-center gap-0.5 font-bold" id="chg-BTC"><i class="fa-solid fa-arrow-trend-up text-[10px]"></i> +2.45%</span>
+                    </div>
+                    <div class="flex items-center gap-2" data-symbol="INDIAVIX">
+                        <span class="text-slate-400 font-semibold">INDIA VIX</span>
+                        <span class="text-white font-mono font-bold" id="tick-INDIAVIX">12.35</span>
+                        <span class="text-brand-rose flex items-center gap-0.5 font-bold" id="chg-INDIAVIX"><i class="fa-solid fa-arrow-trend-down text-[10px]"></i> -3.85%</span>
+                    </div>
+                    <div class="flex items-center gap-2" data-symbol="GOLD">
+                        <span class="text-slate-400 font-semibold">GOLD (10g)</span>
+                        <span class="text-white font-mono font-bold" id="tick-GOLD">₹72,480</span>
+                        <span class="text-brand-emerald flex items-center gap-0.5 font-bold" id="chg-GOLD"><i class="fa-solid fa-arrow-trend-up text-[10px]"></i> +0.41%</span>
+                    </div>
+                    <div class="flex items-center gap-2" data-symbol="CRUDE">
+                        <span class="text-slate-400 font-semibold">CRUDE OIL</span>
+                        <span class="text-white font-mono font-bold" id="tick-CRUDE">$76.45</span>
+                        <span class="text-brand-rose flex items-center gap-0.5 font-bold" id="chg-CRUDE"><i class="fa-solid fa-arrow-trend-down text-[10px]"></i> -0.65%</span>
+                    </div>
+                </div>
+
+                <!-- Cloned Track for continuous infinite marquee -->
+                <div class="flex items-center gap-8 px-4" aria-hidden="true">
+                    <div class="flex items-center gap-2">
+                        <span class="text-slate-400 font-semibold">NIFTY 50</span>
+                        <span class="text-white font-mono font-bold">24,862.40</span>
+                        <span class="text-brand-emerald flex items-center gap-0.5 font-bold"><i class="fa-solid fa-arrow-trend-up text-[10px]"></i> +0.74%</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-slate-400 font-semibold">BANK NIFTY</span>
+                        <span class="text-white font-mono font-bold">53,180.15</span>
+                        <span class="text-brand-emerald flex items-center gap-0.5 font-bold"><i class="fa-solid fa-arrow-trend-up text-[10px]"></i> +1.18%</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-slate-400 font-semibold">S&P 500</span>
+                        <span class="text-white font-mono font-bold">5,638.20</span>
+                        <span class="text-brand-emerald flex items-center gap-0.5 font-bold"><i class="fa-solid fa-arrow-trend-up text-[10px]"></i> +0.52%</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-slate-400 font-semibold">NASDAQ 100</span>
+                        <span class="text-white font-mono font-bold">19,890.75</span>
+                        <span class="text-brand-emerald flex items-center gap-0.5 font-bold"><i class="fa-solid fa-arrow-trend-up text-[10px]"></i> +0.89%</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-slate-400 font-semibold">BTC/USD</span>
+                        <span class="text-white font-mono font-bold">$64,420.00</span>
+                        <span class="text-brand-emerald flex items-center gap-0.5 font-bold"><i class="fa-solid fa-arrow-trend-up text-[10px]"></i> +2.45%</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-slate-400 font-semibold">INDIA VIX</span>
+                        <span class="text-white font-mono font-bold">12.35</span>
+                        <span class="text-brand-rose flex items-center gap-0.5 font-bold"><i class="fa-solid fa-arrow-trend-down text-[10px]"></i> -3.85%</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-slate-400 font-semibold">GOLD (10g)</span>
+                        <span class="text-white font-mono font-bold">₹72,480</span>
+                        <span class="text-brand-emerald flex items-center gap-0.5 font-bold"><i class="fa-solid fa-arrow-trend-up text-[10px]"></i> +0.41%</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-slate-400 font-semibold">CRUDE OIL</span>
+                        <span class="text-white font-mono font-bold">$76.45</span>
+                        <span class="text-brand-rose flex items-center gap-0.5 font-bold"><i class="fa-solid fa-arrow-trend-down text-[10px]"></i> -0.65%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Header -->
+    <header class="sticky top-0 z-40 w-full glass-panel border-b border-brand-border/80 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+                <!-- Logo -->
+                <a href="#" class="flex items-center gap-3 group">
+                    <div class="relative flex items-center justify-center w-11 h-11 rounded-xl bg-gradient-to-br from-brand-cyan/20 to-brand-emerald/20 border border-brand-cyan/40 group-hover:border-brand-cyan transition-all duration-300 shadow-[0_0_15px_rgba(0,240,255,0.2)]">
+                        <i class="fa-solid fa-chart-line text-brand-cyan text-xl group-hover:scale-110 transition-transform"></i>
+                        <span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-brand-emerald rounded-full"></span>
+                    </div>
+                    <div>
+                        <div class="flex items-center">
+                            <span class="text-xl font-extrabold tracking-tight text-white">QuantMe</span>
+                            <span class="text-xl font-extrabold tracking-tight text-brand-cyan">Wealth</span>
+                        </div>
+                        <span class="block text-[10px] font-mono tracking-widest text-slate-400 uppercase">Systematic Alpha Labs</span>
+                    </div>
+                </a>
+
+                <!-- Desktop Navigation Links -->
+                <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
+                    <a href="#strategies" class="hover:text-brand-cyan transition-colors">Strategies</a>
+                    <a href="#performance" class="hover:text-brand-cyan transition-colors">Performance</a>
+                    <a href="#edge" class="hover:text-brand-cyan transition-colors">Quantitative Edge</a>
+                    <a href="#calculator" class="hover:text-brand-cyan transition-colors">Alpha Calculator</a>
+                    <a href="#faq" class="hover:text-brand-cyan transition-colors">FAQ</a>
+                </nav>
+
+                <!-- Header CTA Buttons -->
+                <div class="hidden lg:flex items-center gap-4">
+                    <a href="#contact" class="px-4 py-2 text-xs font-semibold text-slate-300 hover:text-white rounded-lg border border-brand-border hover:border-brand-borderLight transition-all flex items-center gap-2">
+                        <i class="fa-solid fa-lock text-brand-cyan"></i> Client Portal
+                    </a>
+                    <a href="#contact" class="px-5 py-2.5 text-xs font-bold text-black bg-gradient-to-r from-brand-cyan to-brand-emerald hover:opacity-95 rounded-lg shadow-[0_0_20px_rgba(0,240,255,0.3)] transition-all hover:scale-[1.02] flex items-center gap-2">
+                        <span>Get Strategy Access</span>
+                        <i class="fa-solid fa-arrow-right text-[11px]"></i>
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobileMenuBtn" type="button" class="text-slate-400 hover:text-white focus:outline-none p-2" aria-label="Toggle Navigation">
+                        <i class="fa-solid fa-bars text-xl" id="menuIcon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Dropdown Menu -->
+        <div id="mobileMenu" class="hidden md:hidden border-t border-brand-border/60 bg-[#070b17]/95 backdrop-blur-xl px-4 pt-4 pb-6 space-y-3">
+            <a href="#strategies" class="block px-3 py-2 rounded-md text-base font-medium text-slate-200 hover:bg-brand-card hover:text-brand-cyan">Strategies</a>
+            <a href="#performance" class="block px-3 py-2 rounded-md text-base font-medium text-slate-200 hover:bg-brand-card hover:text-brand-cyan">Performance</a>
+            <a href="#edge" class="block px-3 py-2 rounded-md text-base font-medium text-slate-200 hover:bg-brand-card hover:text-brand-cyan">Quantitative Edge</a>
+            <a href="#calculator" class="block px-3 py-2 rounded-md text-base font-medium text-slate-200 hover:bg-brand-card hover:text-brand-cyan">Alpha Calculator</a>
+            <a href="#faq" class="block px-3 py-2 rounded-md text-base font-medium text-slate-200 hover:bg-brand-card hover:text-brand-cyan">FAQ</a>
+            <div class="pt-4 border-t border-brand-border/60 flex flex-col gap-3">
+                <a href="#contact" class="w-full text-center py-2.5 text-xs font-semibold text-slate-300 rounded-lg border border-brand-border">Client Portal</a>
+                <a href="#contact" class="w-full text-center py-3 text-xs font-bold text-black bg-gradient-to-r from-brand-cyan to-brand-emerald rounded-lg">Get Strategy Access</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="relative z-10">
+
+        <!-- ========================================== -->
+        <!-- HERO SECTION                               -->
+        <!-- ========================================== -->
+        <section class="relative pt-12 pb-20 md:pt-20 md:pb-32 overflow-hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                    
+                    <!-- Left Hero Content -->
+                    <div class="lg:col-span-7 space-y-8 text-center lg:text-left">
+                        
+                        <!-- Quantitative Tag Badge -->
+                        <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full border border-brand-cyan/30 bg-brand-cyan/10 backdrop-blur-md">
+                            <span class="w-2 h-2 rounded-full bg-brand-cyan animate-ping"></span>
+                            <span class="text-xs font-mono font-semibold text-brand-cyan tracking-wider uppercase">Statistical Arbitrage & HFT Systems 3.0</span>
+                        </div>
+
+                        <!-- Main Heading -->
+                        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.12]">
+                            Algorithmic Precision. <br>
+                            <span class="gradient-text-cyan">Uncorrelated Alpha</span> <br>
+                            For Institutional Capital.
+                        </h1>
+
+                        <!-- Subtitle -->
+                        <p class="text-base sm:text-lg text-slate-400 max-w-2xl mx-auto lg:mx-0 font-normal leading-relaxed">
+                            QuantMeWealth designs mathematical models, low-latency execution pipelines, and risk-parity frameworks engineered to extract consistent yields across equity, derivative, and global macro markets.
+                        </p>
+
+                        <!-- CTA Action Row -->
+                        <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+                            <a href="#strategies" class="w-full sm:w-auto px-8 py-4 text-sm font-bold text-black bg-gradient-to-r from-brand-cyan via-teal-300 to-brand-emerald rounded-xl shadow-[0_0_30px_rgba(0,240,255,0.4)] hover:shadow-[0_0_40px_rgba(0,240,255,0.6)] hover:scale-105 transition-all duration-300 flex items-center justify-center gap-3">
+                                <span>Deploy Capital</span>
+                                <i class="fa-solid fa-bolt text-xs"></i>
+                            </a>
+                            <a href="#performance" class="w-full sm:w-auto px-7 py-4 text-sm font-semibold text-slate-200 glass-panel hover:bg-brand-cardHover hover:text-white rounded-xl transition-all duration-300 flex items-center justify-center gap-2.5">
+                                <i class="fa-solid fa-chart-column text-brand-cyan"></i>
+                                <span>View Verified Track Record</span>
+                            </a>
+                        </div>
+
+                        <!-- Mini Credibility Indicators -->
+                        <div class="pt-6 border-t border-brand-border/50 grid grid-cols-3 gap-4 text-left">
+                            <div>
+                                <div class="text-2xl sm:text-3xl font-bold font-mono text-white" id="heroStat1">₹1,850+ Cr</div>
+                                <div class="text-[11px] sm:text-xs text-slate-400 font-medium">Assets Monitored</div>
+                            </div>
+                            <div>
+                                <div class="text-2xl sm:text-3xl font-bold font-mono text-brand-emerald">2.85</div>
+                                <div class="text-[11px] sm:text-xs text-slate-400 font-medium">3-Yr Sharpe Ratio</div>
+                            </div>
+                            <div>
+                                <div class="text-2xl sm:text-3xl font-bold font-mono text-brand-cyan">&lt; 0.8ms</div>
+                                <div class="text-[11px] sm:text-xs text-slate-400 font-medium">Colo Execution Latency</div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Right Hero Visual: Interactive Quantitative Terminal Widget -->
+                    <div class="lg:col-span-5">
+                        <div class="relative mx-auto max-w-lg lg:max-w-none">
+                            
+                            <!-- Glowing background halo -->
+                            <div class="absolute -inset-1 rounded-2xl bg-gradient-to-r from-brand-cyan via-brand-purple to-brand-emerald opacity-30 blur-xl"></div>
+                            
+                            <div class="relative glass-panel rounded-2xl p-5 sm:p-6 shadow-2xl border border-brand-border/90">
+                                
+                                <!-- Terminal Window Bar -->
+                                <div class="flex items-center justify-between pb-4 mb-4 border-b border-brand-border/80">
+                                    <div class="flex items-center gap-2">
+                                        <span class="w-3 h-3 rounded-full bg-rose-500/80"></span>
+                                        <span class="w-3 h-3 rounded-full bg-amber-500/80"></span>
+                                        <span class="w-3 h-3 rounded-full bg-emerald-500/80"></span>
+                                        <span class="ml-2 text-xs font-mono text-slate-400 font-medium">QuantCore_v4.8 :: NSE/BSE Colo</span>
+                                    </div>
+                                    <span class="px-2 py-0.5 rounded text-[10px] font-mono font-semibold bg-emerald-500/20 text-brand-emerald border border-emerald-500/30">ONLINE</span>
+                                </div>
+
+                                <!-- Real-time Engine Signal Display -->
+                                <div class="bg-[#050914] rounded-xl p-4 border border-brand-border font-mono text-xs space-y-2.5">
+                                    <div class="flex justify-between items-center text-slate-400 pb-2 border-b border-brand-border/60">
+                                        <span class="text-slate-300 font-bold flex items-center gap-1.5">
+                                            <i class="fa-solid fa-microchip text-brand-cyan"></i> ALPHA ENGINE ACTIVE
+                                        </span>
+                                        <span class="text-[10px] text-brand-cyan" id="liveClock">15:30:00.004 IST</span>
+                                    </div>
+
+                                    <div class="grid grid-cols-2 gap-2 pt-1 text-[11px]">
+                                        <div class="bg-brand-card/80 p-2 rounded border border-brand-border/50">
+                                            <span class="text-slate-400 text-[10px] block">Active Positions</span>
+                                            <span class="text-white font-bold text-sm">48 Pairs</span>
+                                        </div>
+                                        <div class="bg-brand-card/80 p-2 rounded border border-brand-border/50">
+                                            <span class="text-slate-400 text-[10px] block">Net Market Delta</span>
+                                            <span class="text-brand-emerald font-bold text-sm">+0.002 (Neutral)</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Live Simulated Order Book Stream -->
+                                    <div class="pt-2">
+                                        <div class="text-[10px] font-semibold text-slate-400 mb-1.5 uppercase tracking-wider flex items-center justify-between">
+                                            <span>Live Execution Feed</span>
+                                            <span class="text-brand-cyan text-[9px] animate-pulse">● STREAMING</span>
+                                        </div>
+                                        <div class="space-y-1.5 text-[11px]" id="executionStream">
+                                            <div class="flex items-center justify-between bg-brand-card/90 px-2.5 py-1.5 rounded border-l-2 border-brand-emerald">
+                                                <span class="text-slate-300">ARB: NIFTY 24900 CE / PE Synthetic</span>
+                                                <span class="text-brand-emerald font-semibold">+₹14,200</span>
+                                            </div>
+                                            <div class="flex items-center justify-between bg-brand-card/90 px-2.5 py-1.5 rounded border-l-2 border-brand-cyan">
+                                                <span class="text-slate-300">MOM: RELIANCE Micro-structure Fill</span>
+                                                <span class="text-brand-cyan font-semibold">0.62ms</span>
+                                            </div>
+                                            <div class="flex items-center justify-between bg-brand-card/90 px-2.5 py-1.5 rounded border-l-2 border-brand-emerald">
+                                                <span class="text-slate-300">VOL: BANKNIFTY Straddle Skew Arb</span>
+                                                <span class="text-brand-emerald font-semibold">+₹28,650</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Visual Mini Alpha Chart Canvas -->
+                                <div class="mt-4 pt-3 border-t border-brand-border/60">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <span class="text-xs font-semibold text-slate-300">Live Cumulative Return Index</span>
+                                        <span class="text-xs font-mono font-bold text-brand-emerald" id="liveAlphaVal">+34.8% YTD</span>
+                                    </div>
+                                    <div class="h-24 w-full">
+                                        <canvas id="heroMiniChart"></canvas>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- KEY METRICS / TRUST RIBBON                 -->
+        <!-- ========================================== -->
+        <section class="border-y border-brand-border/70 bg-[#070c1a]/90 py-10">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                    
+                    <div class="space-y-1">
+                        <div class="text-3xl sm:text-4xl font-extrabold font-mono text-white flex items-center justify-center gap-1">
+                            <span>₹5,200+</span><span class="text-brand-cyan text-2xl">Cr</span>
+                        </div>
+                        <p class="text-xs text-slate-400 uppercase font-semibold tracking-wider">Annual Traded Volume</p>
+                    </div>
+
+                    <div class="space-y-1">
+                        <div class="text-3xl sm:text-4xl font-extrabold font-mono text-brand-emerald flex items-center justify-center gap-1">
+                            <span>74.8</span><span class="text-xl">%</span>
+                        </div>
+                        <p class="text-xs text-slate-400 uppercase font-semibold tracking-wider">Historical Win Ratio</p>
+                    </div>
+
+                    <div class="space-y-1">
+                        <div class="text-3xl sm:text-4xl font-extrabold font-mono text-brand-cyan flex items-center justify-center gap-1">
+                            <span>4.8</span><span class="text-xl">%</span>
+                        </div>
+                        <p class="text-xs text-slate-400 uppercase font-semibold tracking-wider">Historical Max Drawdown</p>
+                    </div>
+
+                    <div class="space-y-1">
+                        <div class="text-3xl sm:text-4xl font-extrabold font-mono text-white flex items-center justify-center gap-1">
+                            <span>99.99</span><span class="text-brand-purple text-xl">%</span>
+                        </div>
+                        <p class="text-xs text-slate-400 uppercase font-semibold tracking-wider">Execution Uptime SLA</p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- STRATEGIES SHOWCASE GRID                   -->
+        <!-- ========================================== -->
+        <section id="strategies" class="py-24 relative">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <!-- Section Header -->
+                <div class="text-center max-w-3xl mx-auto mb-12">
+                    <span class="text-xs font-mono font-bold tracking-widest text-brand-cyan uppercase px-3 py-1 rounded-full bg-brand-cyan/10 border border-brand-cyan/30">
+                        Systematic Portfolio Engines
+                    </span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-4 tracking-tight">
+                        Engineered Quantitative Strategies
+                    </h2>
+                    <p class="text-slate-400 text-sm sm:text-base mt-3">
+                        Mathematically verified, regime-adaptive models engineered for ultra-low drawdowns and high capital efficiency.
+                    </p>
+                </div>
+
+                <!-- Strategy Filter Pills -->
+                <div class="flex flex-wrap items-center justify-center gap-2.5 mb-12" id="strategyFilters">
+                    <button class="filter-btn active px-4 py-2 rounded-xl text-xs font-semibold font-mono transition-all duration-200 bg-brand-cyan text-black shadow-[0_0_15px_rgba(0,240,255,0.3)]" data-filter="all">All Models</button>
+                    <button class="filter-btn px-4 py-2 rounded-xl text-xs font-semibold font-mono transition-all duration-200 bg-brand-card text-slate-300 hover:text-white hover:bg-brand-cardHover border border-brand-border" data-filter="arbitrage">Statistical Arbitrage</button>
+                    <button class="filter-btn px-4 py-2 rounded-xl text-xs font-semibold font-mono transition-all duration-200 bg-brand-card text-slate-300 hover:text-white hover:bg-brand-cardHover border border-brand-border" data-filter="volatility">Volatility & Options</button>
+                    <button class="filter-btn px-4 py-2 rounded-xl text-xs font-semibold font-mono transition-all duration-200 bg-brand-card text-slate-300 hover:text-white hover:bg-brand-cardHover border border-brand-border" data-filter="momentum">Trend Momentum</button>
+                    <button class="filter-btn px-4 py-2 rounded-xl text-xs font-semibold font-mono transition-all duration-200 bg-brand-card text-slate-300 hover:text-white hover:bg-brand-cardHover border border-brand-border" data-filter="hft">High Frequency (HFT)</button>
+                </div>
+
+                <!-- Strategy Cards Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="strategyCardsGrid">
+                    
+                    <!-- Card 1: AlphaNexus Stat-Arb -->
+                    <div class="strategy-card glass-panel glass-panel-hover rounded-2xl p-6 transition-all duration-300 flex flex-col justify-between" data-category="arbitrage">
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="px-2.5 py-1 rounded-md text-[11px] font-mono font-bold bg-cyan-500/10 text-brand-cyan border border-cyan-500/30">
+                                    STAT-ARB // DELTA NEUTRAL
+                                </span>
+                                <span class="text-xs text-slate-400 font-mono"><i class="fa-solid fa-server text-brand-emerald"></i> NSE Colo</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-white mb-2">AlphaNexus Arbitrage</h3>
+                            <p class="text-xs text-slate-400 leading-relaxed mb-6">
+                                Co-integrated pairs trading and cash-futures basket arbitrage capturing transient mispricings with strict risk neutrality.
+                            </p>
+
+                            <!-- Strategy Metrics Grid -->
+                            <div class="grid grid-cols-3 gap-2 p-3 rounded-xl bg-[#060a16] border border-brand-border/60 font-mono text-center mb-6">
+                                <div>
+                                    <span class="text-[10px] text-slate-400 block">CAGR (3Y)</span>
+                                    <span class="text-sm font-bold text-brand-emerald">+28.4%</span>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] text-slate-400 block">Sharpe</span>
+                                    <span class="text-sm font-bold text-white">3.12</span>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] text-slate-400 block">Max DD</span>
+                                    <span class="text-sm font-bold text-brand-rose">-2.8%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <button onclick="openStrategyModal('AlphaNexus Arbitrage', 'Statistical Arbitrage & Pairs Trading', '+28.4%', '3.12', '-2.8%', 'NSE/BSE Equities & Futures', 'Low (Market Neutral)', 'Pairs cointegration using Engle-Granger two-step and Johansen tests with sub-second execution.', '50 Lakhs / $60K')" class="w-full py-2.5 text-xs font-semibold text-brand-cyan bg-brand-cyan/10 hover:bg-brand-cyan hover:text-black rounded-xl border border-brand-cyan/30 transition-all duration-200 flex items-center justify-center gap-2">
+                                <span>Inspect Factsheet</span>
+                                <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: VolMatrix Options -->
+                    <div class="strategy-card glass-panel glass-panel-hover rounded-2xl p-6 transition-all duration-300 flex flex-col justify-between" data-category="volatility">
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="px-2.5 py-1 rounded-md text-[11px] font-mono font-bold bg-purple-500/10 text-brand-purple border border-purple-500/30">
+                                    VOLATILITY SURFACE
+                                </span>
+                                <span class="text-xs text-slate-400 font-mono"><i class="fa-solid fa-shield text-brand-cyan"></i> Gamma Hedged</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-white mb-2">VolMatrix Dynamic Hedger</h3>
+                            <p class="text-xs text-slate-400 leading-relaxed mb-6">
+                                Exploits implied volatility risk premium, term structure skews, and real-time gamma imbalances on Index Options.
+                            </p>
+
+                            <!-- Strategy Metrics Grid -->
+                            <div class="grid grid-cols-3 gap-2 p-3 rounded-xl bg-[#060a16] border border-brand-border/60 font-mono text-center mb-6">
+                                <div>
+                                    <span class="text-[10px] text-slate-400 block">CAGR (3Y)</span>
+                                    <span class="text-sm font-bold text-brand-emerald">+36.2%</span>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] text-slate-400 block">Sharpe</span>
+                                    <span class="text-sm font-bold text-white">2.74</span>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] text-slate-400 block">Max DD</span>
+                                    <span class="text-sm font-bold text-brand-rose">-4.5%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <button onclick="openStrategyModal('VolMatrix Dynamic Hedger', 'Options Volatility Surface Arbitrage', '+36.2%', '2.74', '-4.5%', 'NIFTY & BANKNIFTY Options', 'Moderate (Hedging Active)', 'Continuous delta-gamma neutral adjustment with dynamic Bayesian volatility forecasting.', '1 Crore / $120K')" class="w-full py-2.5 text-xs font-semibold text-brand-cyan bg-brand-cyan/10 hover:bg-brand-cyan hover:text-black rounded-xl border border-brand-cyan/30 transition-all duration-200 flex items-center justify-center gap-2">
+                                <span>Inspect Factsheet</span>
+                                <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Card 3: DeepOrder Flow HFT -->
+                    <div class="strategy-card glass-panel glass-panel-hover rounded-2xl p-6 transition-all duration-300 flex flex-col justify-between" data-category="hft">
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="px-2.5 py-1 rounded-md text-[11px] font-mono font-bold bg-emerald-500/10 text-brand-emerald border border-emerald-500/30">
+                                    ULTRA-HFT // LEVEL 3
+                                </span>
+                                <span class="text-xs text-slate-400 font-mono"><i class="fa-solid fa-bolt text-brand-emerald"></i> &lt; 250µs</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-white mb-2">DeepOrder Flow HFT</h3>
+                            <p class="text-xs text-slate-400 leading-relaxed mb-6">
+                                Microsecond limit order book queue position predictor analyzing tick volume pressure and passive order replenishment.
+                            </p>
+
+                            <!-- Strategy Metrics Grid -->
+                            <div class="grid grid-cols-3 gap-2 p-3 rounded-xl bg-[#060a16] border border-brand-border/60 font-mono text-center mb-6">
+                                <div>
+                                    <span class="text-[10px] text-slate-400 block">CAGR (3Y)</span>
+                                    <span class="text-sm font-bold text-brand-emerald">+44.1%</span>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] text-slate-400 block">Sharpe</span>
+                                    <span class="text-sm font-bold text-white">3.88</span>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] text-slate-400 block">Max DD</span>
+                                    <span class="text-sm font-bold text-brand-rose">-1.9%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <button onclick="openStrategyModal('DeepOrder Flow HFT', 'High-Frequency Order Book Microstructure', '+44.1%', '3.88', '-1.9%', 'NSE Equity Derivatives L3', 'Very Low (Sub-second holding)', 'FPGA-accelerated queue position modeling with microsecond order cancellation logic.', '2.5 Crore / $300K')" class="w-full py-2.5 text-xs font-semibold text-brand-cyan bg-brand-cyan/10 hover:bg-brand-cyan hover:text-black rounded-xl border border-brand-cyan/30 transition-all duration-200 flex items-center justify-center gap-2">
+                                <span>Inspect Factsheet</span>
+                                <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Card 4: TrendPulse Multi-Asset -->
+                    <div class="strategy-card glass-panel glass-panel-hover rounded-2xl p-6 transition-all duration-300 flex flex-col justify-between" data-category="momentum">
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="px-2.5 py-1 rounded-md text-[11px] font-mono font-bold bg-amber-500/10 text-amber-400 border border-amber-500/30">
+                                    CROSS-ASSET MOMENTUM
+                                </span>
+                                <span class="text-xs text-slate-400 font-mono"><i class="fa-solid fa-globe text-brand-cyan"></i> Multi-Market</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-white mb-2">TrendPulse Macro Engine</h3>
+                            <p class="text-xs text-slate-400 leading-relaxed mb-6">
+                                Adaptive regime-switching trend follower scanning multi-timeframe breakout patterns across equities, commodities, and FX.
+                            </p>
+
+                            <!-- Strategy Metrics Grid -->
+                            <div class="grid grid-cols-3 gap-2 p-3 rounded-xl bg-[#060a16] border border-brand-border/60 font-mono text-center mb-6">
+                                <div>
+                                    <span class="text-[10px] text-slate-400 block">CAGR (3Y)</span>
+                                    <span class="text-sm font-bold text-brand-emerald">+31.6%</span>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] text-slate-400 block">Sharpe</span>
+                                    <span class="text-sm font-bold text-white">2.42</span>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] text-slate-400 block">Max DD</span>
+                                    <span class="text-sm font-bold text-brand-rose">-5.6%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <button onclick="openStrategyModal('TrendPulse Macro Engine', 'Systematic Cross-Asset Trend Following', '+31.6%', '2.42', '-5.6%', 'Indices, Gold, Crude, FX', 'Moderate', 'Multi-horizon momentum filters combined with automated volatility scaling to control downside.', '25 Lakhs / $30K')" class="w-full py-2.5 text-xs font-semibold text-brand-cyan bg-brand-cyan/10 hover:bg-brand-cyan hover:text-black rounded-xl border border-brand-cyan/30 transition-all duration-200 flex items-center justify-center gap-2">
+                                <span>Inspect Factsheet</span>
+                                <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Card 5: MacroQuant Dispersion -->
+                    <div class="strategy-card glass-panel glass-panel-hover rounded-2xl p-6 transition-all duration-300 flex flex-col justify-between" data-category="arbitrage">
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="px-2.5 py-1 rounded-md text-[11px] font-mono font-bold bg-cyan-500/10 text-brand-cyan border border-cyan-500/30">
+                                    INDEX DISPERSION
+                                </span>
+                                <span class="text-xs text-slate-400 font-mono"><i class="fa-solid fa-code-compare text-brand-purple"></i> Correlation Arb</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-white mb-2">MacroQuant Dispersion</h3>
+                            <p class="text-xs text-slate-400 leading-relaxed mb-6">
+                                Trades implied vs realized correlation between Index options and single-stock constituent options baskets.
+                            </p>
+
+                            <!-- Strategy Metrics Grid -->
+                            <div class="grid grid-cols-3 gap-2 p-3 rounded-xl bg-[#060a16] border border-brand-border/60 font-mono text-center mb-6">
+                                <div>
+                                    <span class="text-[10px] text-slate-400 block">CAGR (3Y)</span>
+                                    <span class="text-sm font-bold text-brand-emerald">+26.9%</span>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] text-slate-400 block">Sharpe</span>
+                                    <span class="text-sm font-bold text-white">2.95</span>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] text-slate-400 block">Max DD</span>
+                                    <span class="text-sm font-bold text-brand-rose">-3.2%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <button onclick="openStrategyModal('MacroQuant Dispersion', 'Correlation & Volatility Dispersion Trading', '+26.9%', '2.95', '-3.2%', 'NIFTY Top 20 Stocks & Index', 'Low-Medium', 'Short index volatility against long individual component basket volatility with dynamic vega weighting.', '1 Crore / $120K')" class="w-full py-2.5 text-xs font-semibold text-brand-cyan bg-brand-cyan/10 hover:bg-brand-cyan hover:text-black rounded-xl border border-brand-cyan/30 transition-all duration-200 flex items-center justify-center gap-2">
+                                <span>Inspect Factsheet</span>
+                                <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Card 6: RegimeShift Tail-Risk -->
+                    <div class="strategy-card glass-panel glass-panel-hover rounded-2xl p-6 transition-all duration-300 flex flex-col justify-between" data-category="volatility">
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="px-2.5 py-1 rounded-md text-[11px] font-mono font-bold bg-rose-500/10 text-rose-400 border border-rose-500/30">
+                                    ASYMMETRIC ALPHA
+                                </span>
+                                <span class="text-xs text-slate-400 font-mono"><i class="fa-solid fa-umbrella text-brand-emerald"></i> Tail-Hedged</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-white mb-2">RegimeShift Asymmetric</h3>
+                            <p class="text-xs text-slate-400 leading-relaxed mb-6">
+                                Convex payout engine monetizing extreme market stress events while generating steady base yield during calm regimes.
+                            </p>
+
+                            <!-- Strategy Metrics Grid -->
+                            <div class="grid grid-cols-3 gap-2 p-3 rounded-xl bg-[#060a16] border border-brand-border/60 font-mono text-center mb-6">
+                                <div>
+                                    <span class="text-[10px] text-slate-400 block">CAGR (3Y)</span>
+                                    <span class="text-sm font-bold text-brand-emerald">+29.8%</span>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] text-slate-400 block">Sharpe</span>
+                                    <span class="text-sm font-bold text-white">2.68</span>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] text-slate-400 block">Max DD</span>
+                                    <span class="text-sm font-bold text-brand-rose">-2.4%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <button onclick="openStrategyModal('RegimeShift Asymmetric', 'Convex Tail Risk Hedging & Yield Generation', '+29.8%', '2.68', '-2.4%', 'Global Multi-Asset Derivatives', 'Low (Tail Protection)', 'Systematic out-of-the-money put spreads financed through calendar term structure premiums.', '75 Lakhs / $90K')" class="w-full py-2.5 text-xs font-semibold text-brand-cyan bg-brand-cyan/10 hover:bg-brand-cyan hover:text-black rounded-xl border border-brand-cyan/30 transition-all duration-200 flex items-center justify-center gap-2">
+                                <span>Inspect Factsheet</span>
+                                <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- PERFORMANCE ANALYTICS & INTERACTIVE CHART  -->
+        <!-- ========================================== -->
+        <section id="performance" class="py-20 bg-[#060a15] border-t border-brand-border/80 relative">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+                    
+                    <!-- Left: Chart & Timeframe Filter -->
+                    <div class="lg:col-span-8 space-y-6">
+                        
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                            <div>
+                                <span class="text-xs font-mono font-bold text-brand-emerald uppercase tracking-wider">
+                                    Audited Alpha Records
+                                </span>
+                                <h2 class="text-2xl sm:text-3xl font-extrabold text-white mt-1">
+                                    Cumulative Performance
+                                </h2>
+                            </div>
+
+                            <!-- Timeframe Selectors -->
+                            <div class="flex items-center bg-brand-card p-1 rounded-xl border border-brand-border text-xs font-mono">
+                                <button class="tf-btn px-3 py-1.5 rounded-lg text-slate-400 hover:text-white" data-tf="1M">1M</button>
+                                <button class="tf-btn px-3 py-1.5 rounded-lg text-slate-400 hover:text-white" data-tf="6M">6M</button>
+                                <button class="tf-btn px-3 py-1.5 rounded-lg text-slate-400 hover:text-white" data-tf="1Y">1Y</button>
+                                <button class="tf-btn active px-3 py-1.5 rounded-lg bg-brand-cyan text-black font-bold shadow-md" data-tf="3Y">3Y</button>
+                                <button class="tf-btn px-3 py-1.5 rounded-lg text-slate-400 hover:text-white" data-tf="ALL">ALL</button>
+                            </div>
+                        </div>
+
+                        <!-- Main Performance Chart Box -->
+                        <div class="glass-panel rounded-2xl p-4 sm:p-6 border border-brand-border/90">
+                            <!-- Legend -->
+                            <div class="flex flex-wrap items-center gap-6 mb-4 text-xs font-mono">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-3.5 h-3.5 rounded-full bg-brand-cyan shadow-[0_0_8px_#00f0ff]"></span>
+                                    <span class="text-white font-bold">QuantMe Alpha Master Fund</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="w-3.5 h-3.5 rounded-full bg-emerald-400"></span>
+                                    <span class="text-slate-400">NIFTY 50 Benchmark</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="w-3.5 h-3.5 rounded-full bg-slate-500"></span>
+                                    <span class="text-slate-400">S&P 500 Total Return</span>
+                                </div>
+                            </div>
+
+                            <!-- Canvas Container -->
+                            <div class="relative h-[340px] sm:h-[400px] w-full">
+                                <canvas id="performanceMainChart"></canvas>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Right: Key Risk-Adjusted Metrics Card Grid -->
+                    <div class="lg:col-span-4 space-y-4">
+                        <h3 class="text-lg font-bold text-white font-mono flex items-center gap-2">
+                            <i class="fa-solid fa-calculator text-brand-cyan"></i> Quantitative Diagnostics
+                        </h3>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            
+                            <div class="glass-panel p-4 rounded-xl border border-brand-border">
+                                <span class="text-[11px] font-mono text-slate-400 uppercase block">CAGR (Annualized)</span>
+                                <span class="text-2xl font-mono font-extrabold text-brand-emerald mt-1 block">+34.8%</span>
+                                <span class="text-[10px] text-slate-500 font-mono">Benchmark: +14.2%</span>
+                            </div>
+
+                            <div class="glass-panel p-4 rounded-xl border border-brand-border">
+                                <span class="text-[11px] font-mono text-slate-400 uppercase block">Sharpe Ratio</span>
+                                <span class="text-2xl font-mono font-extrabold text-brand-cyan mt-1 block">2.85</span>
+                                <span class="text-[10px] text-slate-500 font-mono">Rf Rate = 6.8%</span>
+                            </div>
+
+                            <div class="glass-panel p-4 rounded-xl border border-brand-border">
+                                <span class="text-[11px] font-mono text-slate-400 uppercase block">Sortino Ratio</span>
+                                <span class="text-2xl font-mono font-extrabold text-brand-emerald mt-1 block">3.92</span>
+                                <span class="text-[10px] text-slate-500 font-mono">Downside risk filtered</span>
+                            </div>
+
+                            <div class="glass-panel p-4 rounded-xl border border-brand-border">
+                                <span class="text-[11px] font-mono text-slate-400 uppercase block">Max Drawdown</span>
+                                <span class="text-2xl font-mono font-extrabold text-brand-rose mt-1 block">-4.8%</span>
+                                <span class="text-[10px] text-slate-500 font-mono">Benchmark DD: -18.4%</span>
+                            </div>
+
+                            <div class="glass-panel p-4 rounded-xl border border-brand-border">
+                                <span class="text-[11px] font-mono text-slate-400 uppercase block">Calmar Ratio</span>
+                                <span class="text-2xl font-mono font-extrabold text-brand-cyan mt-1 block">7.25</span>
+                                <span class="text-[10px] text-slate-500 font-mono">Return/Max Drawdown</span>
+                            </div>
+
+                            <div class="glass-panel p-4 rounded-xl border border-brand-border">
+                                <span class="text-[11px] font-mono text-slate-400 uppercase block">Market Beta</span>
+                                <span class="text-2xl font-mono font-extrabold text-purple-400 mt-1 block">0.11</span>
+                                <span class="text-[10px] text-slate-500 font-mono">Zero Market Correlation</span>
+                            </div>
+
+                        </div>
+
+                        <!-- Institutional Compliance Note -->
+                        <div class="p-4 rounded-xl bg-[#091122] border border-brand-border/70 text-xs text-slate-400 space-y-2">
+                            <div class="flex items-center gap-2 text-slate-300 font-semibold">
+                                <i class="fa-solid fa-certificate text-brand-emerald"></i>
+                                <span>Verified Third-Party Auditing</span>
+                            </div>
+                            <p class="text-[11px] leading-relaxed text-slate-400">
+                                All trading executions, fill ratios, and alpha logs are reconciled daily against exchange-cleared records and depository statements.
+                            </p>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- OUR QUANTITATIVE EDGE                      -->
+        <!-- ========================================== -->
+        <section id="edge" class="py-24 relative overflow-hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <span class="text-xs font-mono font-bold tracking-widest text-brand-cyan uppercase px-3 py-1 rounded-full bg-brand-cyan/10 border border-brand-cyan/30">
+                        Technological Moat
+                    </span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-4 tracking-tight">
+                        Built for Microsecond Alpha Extraction
+                    </h2>
+                    <p class="text-slate-400 text-sm sm:text-base mt-3">
+                        Our proprietary stack combines modern hardware acceleration, predictive ML models, and strict risk guardrails.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    
+                    <!-- Pillar 1 -->
+                    <div class="glass-panel glass-panel-hover p-6 rounded-2xl border border-brand-border transition-all duration-300">
+                        <div class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-brand-cyan text-xl mb-5">
+                            <i class="fa-solid fa-bolt-lightning"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">Sub-Millisecond Engine</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            Custom C++20 and Rust kernels executing directly on FPGA network interface cards inside exchange co-location facilities.
+                        </p>
+                        <div class="mt-4 pt-4 border-t border-brand-border/60 text-[11px] font-mono text-brand-cyan">
+                            &lt; 0.8ms Tick-to-Trade
+                        </div>
+                    </div>
+
+                    <!-- Pillar 2 -->
+                    <div class="glass-panel glass-panel-hover p-6 rounded-2xl border border-brand-border transition-all duration-300">
+                        <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-brand-emerald text-xl mb-5">
+                            <i class="fa-solid fa-brain"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">Non-Linear ML Models</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            Continuous training on over 3.2TB of daily order-book snapshots, options Greeks, dark liquidity, and cross-market flow signals.
+                        </p>
+                        <div class="mt-4 pt-4 border-t border-brand-border/60 text-[11px] font-mono text-brand-emerald">
+                            Bayesian Regime Detection
+                        </div>
+                    </div>
+
+                    <!-- Pillar 3 -->
+                    <div class="glass-panel glass-panel-hover p-6 rounded-2xl border border-brand-border transition-all duration-300">
+                        <div class="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-brand-purple text-xl mb-5">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">Real-Time Risk Parity</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            Hardware kill-switches, dynamic VaR thresholds, automated gamma hedge re-balancing, and non-correlated cross-asset weighting.
+                        </p>
+                        <div class="mt-4 pt-4 border-t border-brand-border/60 text-[11px] font-mono text-brand-purple">
+                            Automated Circuit Breakers
+                        </div>
+                    </div>
+
+                    <!-- Pillar 4 -->
+                    <div class="glass-panel glass-panel-hover p-6 rounded-2xl border border-brand-border transition-all duration-300">
+                        <div class="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 text-xl mb-5">
+                            <i class="fa-solid fa-cloud-arrow-up"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">Non-Custodial APIs</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            Capital remains securely in your institutional or broker account. Our execution engine connects via secure encrypted API keys.
+                        </p>
+                        <div class="mt-4 pt-4 border-t border-brand-border/60 text-[11px] font-mono text-amber-400">
+                            100% Custodial Control
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- DYNAMIC ALPHA / GROWTH CALCULATOR          -->
+        <!-- ========================================== -->
+        <section id="calculator" class="py-20 bg-[#060a14] border-y border-brand-border/80">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="text-center max-w-2xl mx-auto mb-14">
+                    <span class="text-xs font-mono font-bold tracking-widest text-brand-cyan uppercase px-3 py-1 rounded-full bg-brand-cyan/10 border border-brand-cyan/30">
+                        Simulated Compounding Engine
+                    </span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-4 tracking-tight">
+                        Calculate Potential Alpha Growth
+                    </h2>
+                    <p class="text-slate-400 text-sm sm:text-base mt-2">
+                        Simulate returns based on historical backtested and live out-of-sample data across market regimes.
+                    </p>
+                </div>
+
+                <div class="max-w-4xl mx-auto glass-panel rounded-3xl p-6 sm:p-10 border border-brand-border shadow-2xl">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                        
+                        <!-- Left Controls -->
+                        <div class="lg:col-span-7 space-y-6">
+                            
+                            <!-- Capital Slider -->
+                            <div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <label class="text-xs font-mono text-slate-300 font-semibold">INVESTMENT ALLOCATION</label>
+                                    <span class="text-lg font-mono font-bold text-brand-cyan" id="capitalDisplay">₹50,00,000</span>
+                                </div>
+                                <input type="range" id="capitalSlider" min="1000000" max="50000000" step="500000" value="5000000" class="w-full h-2 bg-brand-card rounded-lg appearance-none cursor-pointer border border-brand-border">
+                                <div class="flex justify-between text-[10px] font-mono text-slate-500 mt-1">
+                                    <span>₹10 Lakhs</span>
+                                    <span>₹2.5 Cr</span>
+                                    <span>₹5 Crore</span>
+                                </div>
+                            </div>
+
+                            <!-- Horizon Slider -->
+                            <div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <label class="text-xs font-mono text-slate-300 font-semibold">TIME HORIZON</label>
+                                    <span class="text-lg font-mono font-bold text-brand-emerald" id="horizonDisplay">3 Years</span>
+                                </div>
+                                <input type="range" id="horizonSlider" min="1" max="5" step="1" value="3" class="w-full h-2 bg-brand-card rounded-lg appearance-none cursor-pointer border border-brand-border">
+                                <div class="flex justify-between text-[10px] font-mono text-slate-500 mt-1">
+                                    <span>1 Year</span>
+                                    <span>3 Years</span>
+                                    <span>5 Years</span>
+                                </div>
+                            </div>
+
+                            <!-- Strategy Mode Selection -->
+                            <div>
+                                <label class="text-xs font-mono text-slate-300 font-semibold block mb-2">STRATEGY PROFILE</label>
+                                <div class="grid grid-cols-3 gap-2.5">
+                                    <button type="button" class="strategy-pick-btn active p-3 rounded-xl border border-brand-cyan bg-brand-cyan/10 text-left transition-all" data-cagr="28.4" data-name="Market Neutral (28.4%)">
+                                        <span class="block text-xs font-bold text-white">Stat-Arb</span>
+                                        <span class="block text-[10px] text-brand-cyan font-mono mt-0.5">28.4% CAGR</span>
+                                    </button>
+                                    <button type="button" class="strategy-pick-btn p-3 rounded-xl border border-brand-border bg-brand-card hover:bg-brand-cardHover text-left transition-all" data-cagr="34.8" data-name="Balanced Alpha (34.8%)">
+                                        <span class="block text-xs font-bold text-white">Balanced Alpha</span>
+                                        <span class="block text-[10px] text-slate-400 font-mono mt-0.5">34.8% CAGR</span>
+                                    </button>
+                                    <button type="button" class="strategy-pick-btn p-3 rounded-xl border border-brand-border bg-brand-card hover:bg-brand-cardHover text-left transition-all" data-cagr="42.5" data-name="High Yield HFT (42.5%)">
+                                        <span class="block text-xs font-bold text-white">HFT Aggressive</span>
+                                        <span class="block text-[10px] text-slate-400 font-mono mt-0.5">42.5% CAGR</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Right Output Card -->
+                        <div class="lg:col-span-5 bg-[#080e1c] rounded-2xl p-6 border border-brand-border/90 text-center space-y-5">
+                            <div>
+                                <span class="text-xs font-mono text-slate-400 uppercase tracking-wider block">Estimated Portfolio Value</span>
+                                <span class="text-3xl sm:text-4xl font-mono font-extrabold text-white mt-1 block" id="calcEstimatedValue">₹1,05,94,200</span>
+                                <span class="inline-block mt-2 px-3 py-1 rounded-full text-xs font-mono font-bold bg-emerald-500/10 text-brand-emerald border border-emerald-500/30" id="calcGainDisplay">+₹55,94,200 (+111.8%)</span>
+                            </div>
+
+                            <div class="space-y-2 pt-4 border-t border-brand-border/60 text-xs font-mono text-left">
+                                <div class="flex justify-between text-slate-400">
+                                    <span>Benchmark Index Estimate:</span>
+                                    <span class="text-slate-300 font-semibold" id="calcBenchmarkEstimate">₹74,48,500</span>
+                                </div>
+                                <div class="flex justify-between text-slate-400">
+                                    <span>Net Excess Alpha Generated:</span>
+                                    <span class="text-brand-cyan font-bold" id="calcExcessAlpha">+₹31,45,700</span>
+                                </div>
+                            </div>
+
+                            <a href="#contact" class="w-full py-3 text-xs font-bold text-black bg-gradient-to-r from-brand-cyan to-brand-emerald rounded-xl block hover:opacity-95 transition-all shadow-[0_0_20px_rgba(0,240,255,0.2)]">
+                                Inquire For Allocation
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- FAQ SECTION                                -->
+        <!-- ========================================== -->
+        <section id="faq" class="py-20 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <span class="text-xs font-mono font-bold tracking-widest text-brand-cyan uppercase px-3 py-1 rounded-full bg-brand-cyan/10 border border-brand-cyan/30">
+                    Transparency
+                </span>
+                <h2 class="text-3xl font-extrabold text-white mt-3">Frequently Asked Questions</h2>
+            </div>
+
+            <div class="space-y-4">
+                
+                <!-- FAQ Item 1 -->
+                <div class="glass-panel rounded-xl border border-brand-border overflow-hidden">
+                    <button class="faq-toggle w-full p-5 text-left flex items-center justify-between font-semibold text-white hover:text-brand-cyan transition-colors" data-target="faq1">
+                        <span>How does capital custody work? Do I transfer funds to QuantMeWealth?</span>
+                        <i class="fa-solid fa-chevron-down text-xs transition-transform duration-200" id="faqIcon1"></i>
+                    </button>
+                    <div id="faq1" class="hidden px-5 pb-5 text-xs sm:text-sm text-slate-400 leading-relaxed border-t border-brand-border/40 pt-3">
+                        No. QuantMeWealth operates on a strictly non-custodial model. Your capital resides exclusively in your own institutional or preferred brokerage account (e.g. Zerodha, Interactive Brokers, Motilal Oswal, Finvasia). Our algorithms execute trades via encrypted, zero-withdrawal API tokens.
+                    </div>
+                </div>
+
+                <!-- FAQ Item 2 -->
+                <div class="glass-panel rounded-xl border border-brand-border overflow-hidden">
+                    <button class="faq-toggle w-full p-5 text-left flex items-center justify-between font-semibold text-white hover:text-brand-cyan transition-colors" data-target="faq2">
+                        <span>What is the minimum capital requirement to deploy?</span>
+                        <i class="fa-solid fa-chevron-down text-xs transition-transform duration-200" id="faqIcon2"></i>
+                    </button>
+                    <div id="faq2" class="hidden px-5 pb-5 text-xs sm:text-sm text-slate-400 leading-relaxed border-t border-brand-border/40 pt-3">
+                        Due to exchange margin requirements and multi-leg risk parity sizing, our retail client pool starts at ₹25 Lakhs (~$30,000 USD). Institutional and HNW individual bespoke portfolios start at ₹1 Crore+ (~$120,000 USD).
+                    </div>
+                </div>
+
+                <!-- FAQ Item 3 -->
+                <div class="glass-panel rounded-xl border border-brand-border overflow-hidden">
+                    <button class="faq-toggle w-full p-5 text-left flex items-center justify-between font-semibold text-white hover:text-brand-cyan transition-colors" data-target="faq3">
+                        <span>How do your algorithms handle sudden market flash crashes?</span>
+                        <i class="fa-solid fa-chevron-down text-xs transition-transform duration-200" id="faqIcon3"></i>
+                    </button>
+                    <div id="faq3" class="hidden px-5 pb-5 text-xs sm:text-sm text-slate-400 leading-relaxed border-t border-brand-border/40 pt-3">
+                        All strategies are embedded with automated hardware and software circuit breakers. If market volatility or portfolio delta exceeds preset Value-at-Risk (VaR) bands, the engine instantly neutralizes open exposures or transitions into protective gamma-long tail hedges.
+                    </div>
+                </div>
+
+                <!-- FAQ Item 4 -->
+                <div class="glass-panel rounded-xl border border-brand-border overflow-hidden">
+                    <button class="faq-toggle w-full p-5 text-left flex items-center justify-between font-semibold text-white hover:text-brand-cyan transition-colors" data-target="faq4">
+                        <span>What is the fee structure for managed strategies?</span>
+                        <i class="fa-solid fa-chevron-down text-xs transition-transform duration-200" id="faqIcon4"></i>
+                    </button>
+                    <div id="faq4" class="hidden px-5 pb-5 text-xs sm:text-sm text-slate-400 leading-relaxed border-t border-brand-border/40 pt-3">
+                        We align directly with our partners through a standard quantitative model: 0% to 1.5% management fee and a 15-20% performance fee with a strict high-water mark. We only profit when your portfolio exceeds previous all-time peaks.
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- CONTACT & INSTITUTIONAL CONSULTATION       -->
+        <!-- ========================================== -->
+        <section id="contact" class="py-24 relative bg-[#050811] border-t border-brand-border">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                    
+                    <!-- Contact Information Details -->
+                    <div class="lg:col-span-5 space-y-8">
+                        <div>
+                            <span class="text-xs font-mono font-bold tracking-widest text-brand-cyan uppercase px-3 py-1 rounded-full bg-brand-cyan/10 border border-brand-cyan/30">
+                                Institutional Access
+                            </span>
+                            <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-4 tracking-tight">
+                                Connect With Our Quantitative Desk
+                            </h2>
+                            <p class="text-slate-400 text-sm sm:text-base mt-3 leading-relaxed">
+                                Schedule a confidential strategy session, request live audit sheets, or explore custom algorithmic integration for your family office or fund.
+                            </p>
+                        </div>
+
+                        <div class="space-y-4 text-sm font-mono">
+                            <div class="flex items-center gap-4 p-4 rounded-xl glass-panel border border-brand-border">
+                                <div class="w-10 h-10 rounded-lg bg-cyan-500/10 flex items-center justify-center text-brand-cyan">
+                                    <i class="fa-solid fa-envelope"></i>
+                                </div>
+                                <div>
+                                    <span class="text-xs text-slate-500 block">INSTITUTIONAL DESK</span>
+                                    <span class="text-slate-200 font-bold">desk@quantmewealth.com</span>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center gap-4 p-4 rounded-xl glass-panel border border-brand-border">
+                                <div class="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center text-brand-emerald">
+                                    <i class="fa-solid fa-location-dot"></i>
+                                </div>
+                                <div>
+                                    <span class="text-xs text-slate-500 block">GLOBAL HUBS</span>
+                                    <span class="text-slate-200 font-bold">BKC, Mumbai • Wall St, NY • Marina Bay, SG</span>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center gap-4 p-4 rounded-xl glass-panel border border-brand-border">
+                                <div class="w-10 h-10 rounded-lg bg-purple-500/10 flex items-center justify-center text-brand-purple">
+                                    <i class="fa-solid fa-shield-check"></i>
+                                </div>
+                                <div>
+                                    <span class="text-xs text-slate-500 block">SECURITY & AUDITING</span>
+                                    <span class="text-slate-200 font-bold">SOC2 Certified • 256-Bit SSL Encrypted</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contact Form Box -->
+                    <div class="lg:col-span-7">
+                        <div class="glass-panel p-8 sm:p-10 rounded-3xl border border-brand-border/90 shadow-2xl relative">
+                            
+                            <h3 class="text-xl font-bold text-white mb-2">Request Strategy Whitepaper & Consultation</h3>
+                            <p class="text-xs text-slate-400 mb-6">Fill in your information to receive our audited quarterly deck.</p>
+
+                            <form id="contactForm" onsubmit="handleContactSubmit(event)" class="space-y-4">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-xs font-mono text-slate-300 mb-1.5 font-medium">FULL NAME *</label>
+                                        <input type="text" required placeholder="e.g. Rajat Sharma" class="w-full px-4 py-3 rounded-xl bg-brand-dark/80 border border-brand-border focus:border-brand-cyan focus:outline-none text-sm text-white placeholder-slate-600 transition-colors">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-mono text-slate-300 mb-1.5 font-medium">EMAIL ADDRESS *</label>
+                                        <input type="email" required placeholder="rajat@familyoffice.com" class="w-full px-4 py-3 rounded-xl bg-brand-dark/80 border border-brand-border focus:border-brand-cyan focus:outline-none text-sm text-white placeholder-slate-600 transition-colors">
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-xs font-mono text-slate-300 mb-1.5 font-medium">INVESTOR CATEGORY *</label>
+                                        <select class="w-full px-4 py-3 rounded-xl bg-brand-dark/80 border border-brand-border focus:border-brand-cyan focus:outline-none text-sm text-slate-300 transition-colors">
+                                            <option>High Net-Worth Individual (HNW)</option>
+                                            <option>Single / Multi Family Office</option>
+                                            <option>Proprietary Trading Desk</option>
+                                            <option>Institutional Fund</option>
+                                            <option>Independent Qualified Investor</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-mono text-slate-300 mb-1.5 font-medium">PLANNED ALLOCATION *</label>
+                                        <select class="w-full px-4 py-3 rounded-xl bg-brand-dark/80 border border-brand-border focus:border-brand-cyan focus:outline-none text-sm text-slate-300 transition-colors">
+                                            <option>₹25 Lakhs – ₹1 Crore</option>
+                                            <option>₹1 Crore – ₹5 Crore</option>
+                                            <option>₹5 Crore – ₹25 Crore</option>
+                                            <option>₹25 Crore+ ($3M+ USD)</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-xs font-mono text-slate-300 mb-1.5 font-medium">STRATEGY OF INTEREST</label>
+                                    <select class="w-full px-4 py-3 rounded-xl bg-brand-dark/80 border border-brand-border focus:border-brand-cyan focus:outline-none text-sm text-slate-300 transition-colors">
+                                        <option>AlphaNexus Statistical Arbitrage</option>
+                                        <option>VolMatrix Options Volatility</option>
+                                        <option>DeepOrder Flow High-Frequency (HFT)</option>
+                                        <option>TrendPulse Macro Momentum</option>
+                                        <option>Custom Multi-Strategy Allocation</option>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label class="block text-xs font-mono text-slate-300 mb-1.5 font-medium">ADDITIONAL NOTES / SPECIFIC REQUIREMENTS</label>
+                                    <textarea rows="3" placeholder="Specify any custom mandate, broker preference, or API inquiry..." class="w-full px-4 py-3 rounded-xl bg-brand-dark/80 border border-brand-border focus:border-brand-cyan focus:outline-none text-sm text-white placeholder-slate-600 transition-colors"></textarea>
+                                </div>
+
+                                <button type="submit" id="submitBtn" class="w-full py-4 text-sm font-bold text-black bg-gradient-to-r from-brand-cyan to-brand-emerald hover:opacity-95 rounded-xl shadow-[0_0_25px_rgba(0,240,255,0.35)] transition-all duration-300 flex items-center justify-center gap-2">
+                                    <i class="fa-solid fa-paper-plane text-xs"></i>
+                                    <span>Submit Consultation Request</span>
+                                </button>
+                            </form>
+
+                            <!-- Success Toast Container -->
+                            <div id="formSuccessToast" class="hidden absolute inset-0 bg-[#070e1e]/95 backdrop-blur-md rounded-3xl p-8 flex flex-col items-center justify-center text-center space-y-4 border border-brand-emerald">
+                                <div class="w-16 h-16 rounded-full bg-emerald-500/20 text-brand-emerald flex items-center justify-center text-2xl border border-emerald-500/40">
+                                    <i class="fa-solid fa-check"></i>
+                                </div>
+                                <h4 class="text-xl font-bold text-white">Consultation Request Received</h4>
+                                <p class="text-xs text-slate-400 max-w-md">
+                                    Thank you. Our senior quantitative desk will review your mandate and deliver the audited quarterly factbook to your email within 4 business hours.
+                                </p>
+                                <button onclick="dismissToast()" class="px-6 py-2.5 text-xs font-bold font-mono bg-brand-emerald text-black rounded-lg hover:opacity-90">
+                                    Done
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ========================================== -->
+    <!-- STRATEGY FACTSHEET MODAL                   -->
+    <!-- ========================================== -->
+    <div id="strategyModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+        <div class="relative w-full max-w-2xl bg-[#091021] border border-brand-border rounded-2xl p-6 sm:p-8 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto">
+            
+            <div class="flex items-center justify-between pb-4 border-b border-brand-border">
+                <div>
+                    <span class="text-[10px] font-mono font-bold text-brand-cyan uppercase" id="modalSubtype">Model Type</span>
+                    <h3 class="text-2xl font-bold text-white" id="modalTitle">Strategy Name</h3>
+                </div>
+                <button onclick="closeStrategyModal()" class="text-slate-400 hover:text-white p-2 text-lg">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="grid grid-cols-3 gap-3 font-mono text-center">
+                <div class="bg-brand-card p-3 rounded-xl border border-brand-border/70">
+                    <span class="text-[10px] text-slate-400 block">TARGET CAGR</span>
+                    <span class="text-base font-bold text-brand-emerald" id="modalCagr">+0.0%</span>
+                </div>
+                <div class="bg-brand-card p-3 rounded-xl border border-brand-border/70">
+                    <span class="text-[10px] text-slate-400 block">SHARPE RATIO</span>
+                    <span class="text-base font-bold text-brand-cyan" id="modalSharpe">0.00</span>
+                </div>
+                <div class="bg-brand-card p-3 rounded-xl border border-brand-border/70">
+                    <span class="text-[10px] text-slate-400 block">HISTORICAL MAX DD</span>
+                    <span class="text-base font-bold text-brand-rose" id="modalMaxDd">-0.0%</span>
+                </div>
+            </div>
+
+            <div class="space-y-3 text-xs">
+                <div class="flex justify-between py-2 border-b border-brand-border/50">
+                    <span class="text-slate-400">Tradable Asset Universe:</span>
+                    <span class="text-slate-200 font-semibold font-mono" id="modalUniverse">-</span>
+                </div>
+                <div class="flex justify-between py-2 border-b border-brand-border/50">
+                    <span class="text-slate-400">Risk Profile:</span>
+                    <span class="text-slate-200 font-semibold font-mono" id="modalRisk">-</span>
+                </div>
+                <div class="flex justify-between py-2 border-b border-brand-border/50">
+                    <span class="text-slate-400">Minimum Account Size:</span>
+                    <span class="text-brand-cyan font-semibold font-mono" id="modalMinCapital">-</span>
+                </div>
+                <div class="py-2">
+                    <span class="text-slate-400 block mb-1">Algorithmic Formulation:</span>
+                    <p class="text-slate-300 leading-relaxed bg-[#050914] p-3 rounded-lg border border-brand-border/60" id="modalDescription">-</p>
+                </div>
+            </div>
+
+            <div class="pt-4 flex gap-3">
+                <a href="#contact" onclick="closeStrategyModal()" class="w-full py-3 text-center text-xs font-bold text-black bg-gradient-to-r from-brand-cyan to-brand-emerald rounded-xl hover:opacity-95 transition-all">
+                    Request Direct Allocation
+                </a>
+                <button onclick="closeStrategyModal()" class="px-6 py-3 text-xs font-semibold text-slate-300 glass-panel rounded-xl hover:bg-brand-cardHover">
+                    Close
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- FOOTER                                     -->
+    <!-- ========================================== -->
+    <footer class="bg-[#03050a] border-t border-brand-border/80 text-slate-400 text-xs py-14">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+            
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                
+                <!-- Brand Info -->
+                <div class="space-y-4 md:col-span-1">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-cyan/20 to-brand-emerald/20 border border-brand-cyan/40 flex items-center justify-center text-brand-cyan text-sm">
+                            <i class="fa-solid fa-chart-line"></i>
+                        </div>
+                        <span class="text-lg font-extrabold text-white">QuantMe<span class="text-brand-cyan">Wealth</span></span>
+                    </div>
+                    <p class="text-[11px] leading-relaxed text-slate-400">
+                        Next-generation algorithmic trading, statistical arbitrage, and execution technology designed for professional capital.
+                    </p>
+                    <div class="flex items-center gap-3 text-slate-400 pt-2">
+                        <a href="#" class="w-8 h-8 rounded-lg bg-brand-card flex items-center justify-center hover:text-brand-cyan hover:border hover:border-brand-cyan/40 transition-all"><i class="fa-brands fa-x-twitter"></i></a>
+                        <a href="#" class="w-8 h-8 rounded-lg bg-brand-card flex items-center justify-center hover:text-brand-cyan hover:border hover:border-brand-cyan/40 transition-all"><i class="fa-brands fa-linkedin-in"></i></a>
+                        <a href="#" class="w-8 h-8 rounded-lg bg-brand-card flex items-center justify-center hover:text-brand-cyan hover:border hover:border-brand-cyan/40 transition-all"><i class="fa-brands fa-github"></i></a>
+                        <a href="#" class="w-8 h-8 rounded-lg bg-brand-card flex items-center justify-center hover:text-brand-cyan hover:border hover:border-brand-cyan/40 transition-all"><i class="fa-brands fa-telegram"></i></a>
+                    </div>
+                </div>
+
+                <!-- Navigation Columns -->
+                <div class="space-y-3">
+                    <h4 class="font-mono text-white text-xs font-bold uppercase tracking-wider">STRATEGIES</h4>
+                    <ul class="space-y-2 text-[11px]">
+                        <li><a href="#strategies" class="hover:text-brand-cyan transition-colors">AlphaNexus Stat-Arb</a></li>
+                        <li><a href="#strategies" class="hover:text-brand-cyan transition-colors">VolMatrix Options Surface</a></li>
+                        <li><a href="#strategies" class="hover:text-brand-cyan transition-colors">DeepOrder Flow HFT</a></li>
+                        <li><a href="#strategies" class="hover:text-brand-cyan transition-colors">TrendPulse Macro</a></li>
+                        <li><a href="#strategies" class="hover:text-brand-cyan transition-colors">RegimeShift Asymmetric</a></li>
+                    </ul>
+                </div>
+
+                <div class="space-y-3">
+                    <h4 class="font-mono text-white text-xs font-bold uppercase tracking-wider">TECHNOLOGY</h4>
+                    <ul class="space-y-2 text-[11px]">
+                        <li><a href="#edge" class="hover:text-brand-cyan transition-colors">Colocated Hardware</a></li>
+                        <li><a href="#edge" class="hover:text-brand-cyan transition-colors">Rust Execution Kernels</a></li>
+                        <li><a href="#edge" class="hover:text-brand-cyan transition-colors">Bayesian Regime Models</a></li>
+                        <li><a href="#edge" class="hover:text-brand-cyan transition-colors">Non-Custodial API Gateway</a></li>
+                        <li><a href="#edge" class="hover:text-brand-cyan transition-colors">Hardware Kill Switches</a></li>
+                    </ul>
+                </div>
+
+                <div class="space-y-3">
+                    <h4 class="font-mono text-white text-xs font-bold uppercase tracking-wider">INSTITUTIONAL</h4>
+                    <ul class="space-y-2 text-[11px]">
+                        <li><a href="#contact" class="hover:text-brand-cyan transition-colors">Schedule Due Diligence</a></li>
+                        <li><a href="#performance" class="hover:text-brand-cyan transition-colors">Audited Tear Sheets</a></li>
+                        <li><a href="#faq" class="hover:text-brand-cyan transition-colors">Risk Management FAQ</a></li>
+                        <li><a href="#contact" class="hover:text-brand-cyan transition-colors">Client Portal Login</a></li>
+                        <li><a href="#contact" class="hover:text-brand-cyan transition-colors">Compliance & Disclosures</a></li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <!-- Risk Disclosure Warning -->
+            <div class="border-t border-brand-border/50 pt-6 text-[10px] text-slate-500 leading-relaxed space-y-2">
+                <p>
+                    <strong class="text-slate-400 font-semibold">Regulatory & Risk Disclaimer:</strong> Quantitative trading, statistical arbitrage, and derivative strategies involve substantial risk of capital loss. Past backtested and live historical performances are not indicative of future returns. QuantMeWealth provides computational analytics and automated trade execution software under non-custodial mandates. Investors must carefully evaluate their risk tolerance prior to capital deployment.
+                </p>
+                <div class="flex flex-col sm:flex-row items-center justify-between pt-4 text-slate-500 text-[11px]">
+                    <div>© 2026 QuantMeWealth Technologies Pvt Ltd. All rights reserved.</div>
+                    <div class="flex gap-4 mt-2 sm:mt-0">
+                        <a href="#" class="hover:underline">Privacy Policy</a>
+                        <a href="#" class="hover:underline">Terms of Service</a>
+                        <a href="#" class="hover:underline">Risk Disclosure</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </footer>
+
+    <!-- ========================================== -->
+    <!-- CLIENT JAVASCRIPT LOGIC                    -->
+    <!-- ========================================== -->
+    <script>
+        // 1. Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const menuIcon = document.getElementById('menuIcon');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            if (mobileMenu.classList.contains('hidden')) {
+                menuIcon.classList.remove('fa-xmark');
+                menuIcon.classList.add('fa-bars');
+            } else {
+                menuIcon.classList.remove('fa-bars');
+                menuIcon.classList.add('fa-xmark');
+            }
+        });
+
+        // Close mobile menu on anchor click
+        document.querySelectorAll('#mobileMenu a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                menuIcon.classList.remove('fa-xmark');
+                menuIcon.classList.add('fa-bars');
+            });
+        });
+
+        // 2. Simulated Live Ticker Micro-Fluctuations
+        const tickerSymbols = [
+            { id: 'NIFTY', base: 24862.40, prefix: '', decimals: 2, spread: 4.5 },
+            { id: 'BANKNIFTY', base: 53180.15, prefix: '', decimals: 2, spread: 8.0 },
+            { id: 'SP500', base: 5638.20, prefix: '', decimals: 2, spread: 1.2 },
+            { id: 'NASDAQ', base: 19890.75, prefix: '', decimals: 2, spread: 3.5 },
+            { id: 'BTC', base: 64420.00, prefix: '$', decimals: 2, spread: 15.0 },
+            { id: 'INDIAVIX', base: 12.35, prefix: '', decimals: 2, spread: 0.05, isDown: true },
+            { id: 'GOLD', base: 72480, prefix: '₹', decimals: 0, spread: 12 },
+            { id: 'CRUDE', base: 76.45, prefix: '$', decimals: 2, spread: 0.15, isDown: true }
+        ];
+
+        setInterval(() => {
+            const sym = tickerSymbols[Math.floor(Math.random() * tickerSymbols.length)];
+            const tickElem = document.getElementById(`tick-${sym.id}`);
+            const chgElem = document.getElementById(`chg-${sym.id}`);
+            if (!tickElem || !chgElem) return;
+
+            const delta = (Math.random() - 0.48) * sym.spread;
+            const newPrice = sym.base + delta;
+            
+            tickElem.textContent = `${sym.prefix}${newPrice.toLocaleString('en-US', { minimumFractionDigits: sym.decimals, maximumFractionDigits: sym.decimals })}`;
+            
+            // Flash color animation
+            tickElem.style.transition = 'color 0.2s ease';
+            if (delta >= 0) {
+                tickElem.style.color = '#10b981';
+            } else {
+                tickElem.style.color = '#f43f5e';
+            }
+            setTimeout(() => {
+                tickElem.style.color = '#ffffff';
+            }, 500);
+
+            // Update live clock
+            const now = new Date();
+            const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}.${String(Math.floor(Math.random() * 999)).padStart(3, '0')} IST`;
+            const clockElem = document.getElementById('liveClock');
+            if (clockElem) clockElem.textContent = timeStr;
+
+        }, 2200);
+
+        // 3. Mini Hero Sparkline Chart
+        const heroMiniCtx = document.getElementById('heroMiniChart').getContext('2d');
+        const heroMiniChart = new Chart(heroMiniCtx, {
+            type: 'line',
+            data: {
+                labels: ['09:15', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '15:30'],
+                datasets: [{
+                    data: [100, 102.4, 105.1, 104.8, 108.5, 112.1, 114.6, 118.2],
+                    borderColor: '#00f0ff',
+                    borderWidth: 2,
+                    pointRadius: 0,
+                    tension: 0.35,
+                    fill: true,
+                    backgroundColor: (context) => {
+                        const chart = context.chart;
+                        const {ctx, chartArea} = chart;
+                        if (!chartArea) return null;
+                        const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+                        gradient.addColorStop(0, 'rgba(0, 240, 255, 0.3)');
+                        gradient.addColorStop(1, 'rgba(0, 240, 255, 0.0)');
+                        return gradient;
+                    }
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false }, tooltip: { enabled: false } },
+                scales: {
+                    x: { display: false },
+                    y: { display: false }
+                }
+            }
+        });
+
+        // 4. Performance Main Chart with Timeframe Switching
+        const performanceData = {
+            '1M': {
+                labels: ['Day 1', 'Day 5', 'Day 10', 'Day 15', 'Day 20', 'Day 25', 'Day 30'],
+                alpha: [100, 101.8, 103.2, 102.7, 104.9, 106.1, 107.5],
+                nifty: [100, 100.4, 101.1, 99.8, 100.8, 101.5, 102.1],
+                sp: [100, 99.7, 100.3, 100.8, 101.2, 100.9, 101.4]
+            },
+            '6M': {
+                labels: ['M1', 'M2', 'M3', 'M4', 'M5', 'M6'],
+                alpha: [100, 106.5, 112.8, 115.4, 120.9, 128.2],
+                nifty: [100, 102.1, 104.8, 103.2, 106.4, 108.9],
+                sp: [100, 101.5, 103.8, 104.5, 105.8, 107.4]
+            },
+            '1Y': {
+                labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+                alpha: [100, 112.4, 126.8, 142.5],
+                nifty: [100, 104.5, 109.1, 114.8],
+                sp: [100, 103.8, 108.2, 112.5]
+            },
+            '3Y': {
+                labels: ['2023 Q1', '2023 Q3', '2024 Q1', '2024 Q3', '2025 Q1', '2025 Q3', '2026 Q1'],
+                alpha: [100, 124.5, 156.8, 189.2, 228.4, 276.1, 328.5],
+                nifty: [100, 109.2, 118.4, 131.2, 142.8, 154.5, 168.2],
+                sp: [100, 108.1, 116.5, 126.4, 138.1, 148.9, 159.4]
+            },
+            'ALL': {
+                labels: ['2021', '2022', '2023', '2024', '2025', '2026'],
+                alpha: [100, 138.2, 194.5, 272.8, 384.2, 518.6],
+                nifty: [100, 104.2, 124.8, 152.1, 178.6, 210.4],
+                sp: [100, 82.5, 104.2, 129.5, 158.4, 188.9]
+            }
+        };
+
+        const mainChartCtx = document.getElementById('performanceMainChart').getContext('2d');
+        const mainChart = new Chart(mainChartCtx, {
+            type: 'line',
+            data: {
+                labels: performanceData['3Y'].labels,
+                datasets: [
+                    {
+                        label: 'QuantMe Alpha Fund',
+                        data: performanceData['3Y'].alpha,
+                        borderColor: '#00f0ff',
+                        backgroundColor: (context) => {
+                            const {ctx, chartArea} = context.chart;
+                            if (!chartArea) return null;
+                            const grad = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+                            grad.addColorStop(0, 'rgba(0, 240, 255, 0.25)');
+                            grad.addColorStop(1, 'rgba(0, 240, 255, 0.0)');
+                            return grad;
+                        },
+                        borderWidth: 3,
+                        pointBackgroundColor: '#00f0ff',
+                        pointBorderColor: '#091021',
+                        pointBorderWidth: 2,
+                        pointRadius: 4,
+                        pointHoverRadius: 6,
+                        tension: 0.35,
+                        fill: true
+                    },
+                    {
+                        label: 'NIFTY 50 Benchmark',
+                        data: performanceData['3Y'].nifty,
+                        borderColor: '#10b981',
+                        borderWidth: 2,
+                        borderDash: [5, 5],
+                        pointRadius: 0,
+                        tension: 0.35,
+                        fill: false
+                    },
+                    {
+                        label: 'S&P 500 Index',
+                        data: performanceData['3Y'].sp,
+                        borderColor: '#64748b',
+                        borderWidth: 2,
+                        pointRadius: 0,
+                        tension: 0.35,
+                        fill: false
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    intersect: false,
+                    mode: 'index'
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#0a101f',
+                        borderColor: '#243763',
+                        borderWidth: 1,
+                        titleFont: { family: 'JetBrains Mono', size: 12 },
+                        bodyFont: { family: 'Plus Jakarta Sans', size: 12 },
+                        padding: 12,
+                        callbacks: {
+                            label: function(context) {
+                                return ` ${context.dataset.label}: ${context.parsed.y.toFixed(1)} pts (+${(context.parsed.y - 100).toFixed(1)}%)`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: { color: 'rgba(36, 55, 99, 0.3)' },
+                        ticks: { color: '#94a3b8', font: { family: 'JetBrains Mono', size: 11 } }
+                    },
+                    y: {
+                        grid: { color: 'rgba(36, 55, 99, 0.3)' },
+                        ticks: {
+                            color: '#94a3b8',
+                            font: { family: 'JetBrains Mono', size: 11 },
+                            callback: function(value) { return value + ' pts'; }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Timeframe selector click handlers
+        document.querySelectorAll('.tf-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.tf-btn').forEach(b => {
+                    b.classList.remove('active', 'bg-brand-cyan', 'text-black', 'font-bold', 'shadow-md');
+                    b.classList.add('text-slate-400');
+                });
+                btn.classList.add('active', 'bg-brand-cyan', 'text-black', 'font-bold', 'shadow-md');
+                btn.classList.remove('text-slate-400');
+
+                const tf = btn.getAttribute('data-tf');
+                const selectedData = performanceData[tf];
+                if (selectedData) {
+                    mainChart.data.labels = selectedData.labels;
+                    mainChart.data.datasets[0].data = selectedData.alpha;
+                    mainChart.data.datasets[1].data = selectedData.nifty;
+                    mainChart.data.datasets[2].data = selectedData.sp;
+                    mainChart.update();
+                }
+            });
+        });
+
+        // 5. Strategy Filters Filtering Logic
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => {
+                    b.classList.remove('active', 'bg-brand-cyan', 'text-black', 'shadow-[0_0_15px_rgba(0,240,255,0.3)]');
+                    b.classList.add('bg-brand-card', 'text-slate-300', 'border', 'border-brand-border');
+                });
+                btn.classList.add('active', 'bg-brand-cyan', 'text-black', 'shadow-[0_0_15px_rgba(0,240,255,0.3)]');
+                btn.classList.remove('bg-brand-card', 'text-slate-300', 'border', 'border-brand-border');
+
+                const filter = btn.getAttribute('data-filter');
+                const cards = document.querySelectorAll('.strategy-card');
+                cards.forEach(card => {
+                    if (filter === 'all' || card.getAttribute('data-category') === filter) {
+                        card.style.display = 'flex';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // 6. Interactive Compounding Calculator
+        const capitalSlider = document.getElementById('capitalSlider');
+        const horizonSlider = document.getElementById('horizonSlider');
+        const capitalDisplay = document.getElementById('capitalDisplay');
+        const horizonDisplay = document.getElementById('horizonDisplay');
+        const calcEstimatedValue = document.getElementById('calcEstimatedValue');
+        const calcGainDisplay = document.getElementById('calcGainDisplay');
+        const calcBenchmarkEstimate = document.getElementById('calcBenchmarkEstimate');
+        const calcExcessAlpha = document.getElementById('calcExcessAlpha');
+
+        let selectedCAGR = 28.4;
+
+        function formatINR(val) {
+            return '₹' + Math.round(val).toLocaleString('en-IN');
+        }
+
+        function updateCalculator() {
+            const capital = parseFloat(capitalSlider.value);
+            const years = parseFloat(horizonSlider.value);
+            
+            capitalDisplay.textContent = formatINR(capital);
+            horizonDisplay.textContent = `${years} Year${years > 1 ? 's' : ''}`;
+
+            // Compound growth calculation: A = P * (1 + r)^t
+            const finalVal = capital * Math.pow((1 + selectedCAGR / 100), years);
+            const benchmarkFinal = capital * Math.pow((1 + 0.142), years); // Benchmark at 14.2%
+            
+            const totalGain = finalVal - capital;
+            const percentageGain = ((finalVal - capital) / capital) * 100;
+            const excessAlpha = finalVal - benchmarkFinal;
+
+            calcEstimatedValue.textContent = formatINR(finalVal);
+            calcGainDisplay.textContent = `+${formatINR(totalGain)} (+${percentageGain.toFixed(1)}%)`;
+            calcBenchmarkEstimate.textContent = formatINR(benchmarkFinal);
+            calcExcessAlpha.textContent = `+${formatINR(excessAlpha)}`;
+        }
+
+        capitalSlider.addEventListener('input', updateCalculator);
+        horizonSlider.addEventListener('input', updateCalculator);
+
+        document.querySelectorAll('.strategy-pick-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.strategy-pick-btn').forEach(b => {
+                    b.classList.remove('active', 'border-brand-cyan', 'bg-brand-cyan/10');
+                    b.classList.add('border-brand-border', 'bg-brand-card');
+                });
+                btn.classList.add('active', 'border-brand-cyan', 'bg-brand-cyan/10');
+                btn.classList.remove('border-brand-border', 'bg-brand-card');
+
+                selectedCAGR = parseFloat(btn.getAttribute('data-cagr'));
+                updateCalculator();
+            });
+        });
+
+        updateCalculator();
+
+        // 7. Strategy Detail Modal Functions
+        function openStrategyModal(name, type, cagr, sharpe, maxdd, universe, risk, desc, minCap) {
+            document.getElementById('modalTitle').textContent = name;
+            document.getElementById('modalSubtype').textContent = type;
+            document.getElementById('modalCagr').textContent = cagr;
+            document.getElementById('modalSharpe').textContent = sharpe;
+            document.getElementById('modalMaxDd').textContent = maxdd;
+            document.getElementById('modalUniverse').textContent = universe;
+            document.getElementById('modalRisk').textContent = risk;
+            document.getElementById('modalMinCapital').textContent = minCap;
+            document.getElementById('modalDescription').textContent = desc;
+
+            document.getElementById('strategyModal').classList.remove('hidden');
+        }
+
+        function closeStrategyModal() {
+            document.getElementById('strategyModal').classList.add('hidden');
+        }
+
+        // Close modal when clicking backdrop
+        document.getElementById('strategyModal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('strategyModal')) {
+                closeStrategyModal();
+            }
+        });
+
+        // 8. FAQ Accordion Toggle
+        document.querySelectorAll('.faq-toggle').forEach(button => {
+            button.addEventListener('click', () => {
+                const targetId = button.getAttribute('data-target');
+                const content = document.getElementById(targetId);
+                const icon = button.querySelector('i');
+
+                const isHidden = content.classList.contains('hidden');
+                
+                // Close all FAQs first
+                document.querySelectorAll('#faq [id^="faq"]').forEach(c => {
+                    if (c.id.startsWith('faq') && !c.id.startsWith('faqIcon')) {
+                        c.classList.add('hidden');
+                    }
+                });
+                document.querySelectorAll('#faq .faq-toggle i').forEach(ic => {
+                    ic.classList.remove('rotate-180');
+                });
+
+                // Toggle current if it was hidden
+                if (isHidden) {
+                    content.classList.remove('hidden');
+                    icon.classList.add('rotate-180');
+                }
+            });
+        });
+
+        // 9. Contact Form Submit Handler
+        function handleContactSubmit(e) {
+            e.preventDefault();
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Submitting...';
+
+            setTimeout(() => {
+                document.getElementById('formSuccessToast').classList.remove('hidden');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane text-xs"></i> <span>Submit Consultation Request</span>';
+                document.getElementById('contactForm').reset();
+            }, 900);
+        }
+
+        function dismissToast() {
+            document.getElementById('formSuccessToast').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
