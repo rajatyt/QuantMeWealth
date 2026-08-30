@@ -1,0 +1,7 @@
+/* Home page custom styles */
+.home-ticker-wrap {
+  overflow: hidden;
+}
+.home-ticker-wrap:hover .home-ticker-track {
+  animation-play-state: paused;
+}
