@@ -1,5 +1,6 @@
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
+import WhatsAppButton from './components/common/WhatsAppButton';
 import Home from './pages/Home/Home';
 
 export default function App() {
@@ -18,6 +19,9 @@ export default function App() {
         <Home />
       </main>
       <Footer />
+
+      {/* Floating WhatsApp Action Button */}
+      <WhatsAppButton />
     </div>
   );
 }
