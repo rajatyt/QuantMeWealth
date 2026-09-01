@@ -39,18 +39,24 @@ export default function Home() {
 
 /* ═══════════════════ TICKER BAR ═══════════════════ */
 function TickerBar() {
-  const prices = useStocks();
+  const { prices, isLiveApi } = useStocks();
   const renderTrack = () => (
     <div className="flex items-center gap-8 px-4">
       {tickerSymbols.map((s) => {
         const p = prices[s.id];
         const color = p?.flash === 'up' ? '#10b981' : p?.flash === 'down' ? '#f43f5e' : '#fff';
+        const displayChange = p?.change ?? s.change;
+        const isUp = p?.up ?? s.up;
+
         return (
           <div key={s.id} className="flex items-center gap-2">
             <span className="text-slate-400 font-semibold">{s.label}</span>
-            <span className="text-white font-mono font-bold transition-colors" style={{ color }}>{formatPrice(p?.price ?? s.base, s.decimals)}</span>
-            <span className={`flex items-center gap-0.5 font-bold ${s.up ? 'text-emerald-400' : 'text-rose-400'}`}>
-              {s.up ? <FaArrowTrendUp className="text-[10px]" /> : <FaArrowTrendDown className="text-[10px]" />}{s.change}
+            <span className="text-white font-mono font-bold transition-colors duration-200" style={{ color }}>
+              {formatPrice(p?.price ?? s.base, s.decimals)}
+            </span>
+            <span className={`flex items-center gap-0.5 font-bold ${isUp ? 'text-emerald-400' : 'text-rose-400'}`}>
+              {isUp ? <FaArrowTrendUp className="text-[10px]" /> : <FaArrowTrendDown className="text-[10px]" />}
+              {displayChange}
             </span>
           </div>
         );
@@ -62,8 +68,13 @@ function TickerBar() {
     <div className="relative z-50 bg-[#04060d] border-b border-[#172545]/60 text-xs font-mono py-2 overflow-hidden ticker-wrap select-none">
       <div className="flex items-center">
         <div className="flex items-center px-4 shrink-0 bg-[#04060d] z-20 border-r border-[#172545]/80 text-cyan-400 gap-2">
-          <span className="relative flex h-2 w-2"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75" /><span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" /></span>
-          <span className="font-bold tracking-wider uppercase text-[11px]">LIVE MARKETS</span>
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75" />
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+          </span>
+          <span className="font-bold tracking-wider uppercase text-[11px]">
+            {isLiveApi ? 'LIVE FEED (RAPIDAPI)' : 'LIVE MARKETS'}
+          </span>
         </div>
         <div className="flex whitespace-nowrap animate-ticker ticker-move">{renderTrack()}{renderTrack()}</div>
       </div>

@@ -1,13 +1,13 @@
 // ========== TICKER SYMBOLS ==========
 export const tickerSymbols = [
-  { id: 'NIFTY', label: 'NIFTY 50', base: 24862.40, decimals: 2, spread: 4.5, change: '+0.74%', up: true },
-  { id: 'BANKNIFTY', label: 'BANK NIFTY', base: 53180.15, decimals: 2, spread: 8.0, change: '+1.18%', up: true },
-  { id: 'SP500', label: 'S&P 500', base: 5638.20, decimals: 2, spread: 1.2, change: '+0.52%', up: true },
-  { id: 'NASDAQ', label: 'NASDAQ 100', base: 19890.75, decimals: 2, spread: 3.5, change: '+0.89%', up: true },
-  { id: 'BTC', label: 'BTC/USD', base: 64420.00, decimals: 2, spread: 15.0, change: '+2.45%', up: true },
-  { id: 'INDIAVIX', label: 'INDIA VIX', base: 12.35, decimals: 2, spread: 0.05, change: '-3.85%', up: false },
-  { id: 'GOLD', label: 'GOLD (10g)', base: 72480, decimals: 0, spread: 12, change: '+0.41%', up: true },
-  { id: 'CRUDE', label: 'CRUDE OIL', base: 76.45, decimals: 2, spread: 0.15, change: '-0.65%', up: false },
+  { id: 'NIFTY', querySymbol: '^NSEI', label: 'NIFTY 50', base: 24862.40, decimals: 2, spread: 4.5, change: '+0.74%', up: true },
+  { id: 'BANKNIFTY', querySymbol: '^NSEBANK', label: 'BANK NIFTY', base: 53180.15, decimals: 2, spread: 8.0, change: '+1.18%', up: true },
+  { id: 'SP500', querySymbol: '^GSPC', label: 'S&P 500', base: 5638.20, decimals: 2, spread: 1.2, change: '+0.52%', up: true },
+  { id: 'NASDAQ', querySymbol: '^NDX', label: 'NASDAQ 100', base: 19890.75, decimals: 2, spread: 3.5, change: '+0.89%', up: true },
+  { id: 'BTC', querySymbol: 'BTC-USD', label: 'BTC/USD', base: 64420.00, decimals: 2, spread: 15.0, change: '+2.45%', up: true },
+  { id: 'INDIAVIX', querySymbol: '^INDIAVIX', label: 'INDIA VIX', base: 12.35, decimals: 2, spread: 0.05, change: '-3.85%', up: false },
+  { id: 'GOLD', querySymbol: 'GC=F', label: 'GOLD (10g)', base: 72480, decimals: 0, spread: 12, change: '+0.41%', up: true },
+  { id: 'CRUDE', querySymbol: 'CL=F', label: 'CRUDE OIL', base: 76.45, decimals: 2, spread: 0.15, change: '-0.65%', up: false },
 ];
 
 // ========== STRATEGIES ==========
