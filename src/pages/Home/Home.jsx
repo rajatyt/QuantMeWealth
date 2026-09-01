@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { FaBolt, FaChartColumn, FaArrowTrendUp, FaArrowTrendDown, FaMicrochip, FaChevronDown, FaPaperPlane, FaSpinner, FaCheck, FaBoltLightning, FaBrain, FaShieldHalved, FaCloudArrowUp, FaArrowUpRightFromSquare, FaXmark, FaEnvelope, FaLocationDot, FaShieldHeart } from 'react-icons/fa6';
+import { FaBolt, FaChartColumn, FaArrowTrendUp, FaArrowTrendDown, FaMicrochip, FaChevronDown, FaPaperPlane, FaSpinner, FaCheck, FaBoltLightning, FaBrain, FaShieldHalved, FaCloudArrowUp, FaArrowUpRightFromSquare, FaXmark, FaEnvelope, FaLocationDot, FaShieldHeart, FaTv, FaTriangleExclamation } from 'react-icons/fa6';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, LineElement, PointElement, LinearScale, CategoryScale, Filler, Tooltip } from 'chart.js';
 
@@ -12,7 +12,7 @@ import './Home.css';
 
 ChartJS.register(LineElement, PointElement, LinearScale, CategoryScale, Filler, Tooltip);
 
-const edgeIcons = { bolt: FaBoltLightning, brain: FaBrain, shield: FaShieldHalved, cloud: FaCloudArrowUp };
+const edgeIcons = { bolt: FaBoltLightning, brain: FaBrain, shield: FaShieldHalved, cloud: FaCloudArrowUp, envelope: FaEnvelope, tv: FaTv };
 const tagColors = {
   cyan: 'bg-cyan-500/10 text-cyan-400 border-cyan-500/30',
   purple: 'bg-purple-500/10 text-purple-400 border-purple-500/30',
@@ -33,8 +33,9 @@ export default function Home() {
       {/* <PerformanceSection /> */}
       <EdgeAndCalculatorSection />
       <SubscriptionSection />
-      <FaqSection />
+      <AboutSection />
       <ContactSection />
+      <FaqSection />
     </>
   );
 }
@@ -102,18 +103,13 @@ function HeroSection() {
               <span className="text-xs font-mono font-semibold text-emerald-400 tracking-wider uppercase">Live trading since 2021</span>
             </div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.12]">
-              Algorithmic Precision. <br /><span className="gradient-text-cyan">Uncorrelated Alpha</span> <br />For Institutional Capital.
+              Algorithmic Precision. <br /><span className="gradient-text-cyan">Trade Smart.</span> <br />Trade Precise.
             </h1>
             <p className="text-base sm:text-lg text-slate-400 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
-              QuantMeWealth designs mathematical models, low-latency execution pipelines, and risk-parity frameworks engineered to extract consistent yields across equity, derivative, and global macro markets.
+              QuantMeWealth delivers a next-gen trading experience with automated strategies, real-time analytics, and seamless execution—built for traders who want more.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
               <a href="#subscription" className="w-full sm:w-auto px-8 py-4 text-sm font-bold text-black bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400 rounded-xl shadow-[0_0_30px_rgba(0,240,255,0.4)] hover:shadow-[0_0_40px_rgba(0,240,255,0.6)] hover:scale-105 transition-all flex items-center justify-center gap-3"><span>View Subscriptions</span><FaBolt className="text-xs" /></a>
-            </div>
-            <div className="pt-6 border-t border-[#172545]/50 grid grid-cols-3 gap-4 text-left">
-              <div><div className="text-2xl sm:text-3xl font-bold font-mono text-white">₹1,850+ Cr</div><div className="text-[11px] text-slate-400">Assets Monitored</div></div>
-              <div><div className="text-2xl sm:text-3xl font-bold font-mono text-emerald-400">2.85</div><div className="text-[11px] text-slate-400">3-Yr Sharpe Ratio</div></div>
-              <div><div className="text-2xl sm:text-3xl font-bold font-mono text-cyan-400">&lt; 0.8ms</div><div className="text-[11px] text-slate-400">Colo Execution Latency</div></div>
             </div>
           </div>
           {/* Terminal widget */}
@@ -124,25 +120,44 @@ function HeroSection() {
                 <div className="flex items-center justify-between pb-4 mb-4 border-b border-[#172545]/80">
                   <div className="flex items-center gap-2">
                     <span className="w-3 h-3 rounded-full bg-rose-500/80" /><span className="w-3 h-3 rounded-full bg-amber-500/80" /><span className="w-3 h-3 rounded-full bg-emerald-500/80" />
-                    <span className="ml-2 text-xs font-mono text-slate-400">QuantCore_v4.8 :: NSE/BSE Colo</span>
+                    <span className="ml-2 text-xs font-mono text-slate-400">QuantMeWealth :: Verified Algo Trading Desk</span>
                   </div>
-                  <span className="px-2 py-0.5 rounded text-[10px] font-mono font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">ONLINE</span>
                 </div>
-                <div className="bg-[#050914] rounded-xl p-4 border border-[#172545] font-mono text-xs space-y-2.5">
-                  <div className="flex justify-between items-center text-slate-400 pb-2 border-b border-[#172545]/60">
-                    <span className="text-slate-300 font-bold flex items-center gap-1.5"><FaMicrochip className="text-cyan-400" /> ALPHA ENGINE ACTIVE</span>
-                    <span className="text-[10px] text-cyan-400">{clock}</span>
+                <div className="bg-[#050914] rounded-xl p-5 border border-[#172545] space-y-4">
+                  {/* Header */}
+                  <div className="flex items-center justify-between pb-3 border-b border-[#172545]/80">
+                    <div className="flex items-center gap-2.5">
+                      <FaShieldHeart className="text-emerald-400 text-base" />
+                      <h3 className="text-sm font-bold text-white tracking-wide uppercase font-mono">
+                        Trust with confidence
+                      </h3>
+                    </div>
+                    <span className="text-[10px] font-mono font-bold text-cyan-400 bg-cyan-400/10 border border-cyan-400/30 px-2 py-0.5 rounded-md">
+                      VERIFIED
+                    </span>
                   </div>
-                  <div className="grid grid-cols-2 gap-2 pt-1 text-[11px]">
-                    <div className="bg-[#0a101f]/80 p-2 rounded border border-[#172545]/50"><span className="text-slate-400 text-[10px] block">Active Positions</span><span className="text-white font-bold text-sm">48 Pairs</span></div>
-                    <div className="bg-[#0a101f]/80 p-2 rounded border border-[#172545]/50"><span className="text-slate-400 text-[10px] block">Net Market Delta</span><span className="text-emerald-400 font-bold text-sm">+0.002 (Neutral)</span></div>
-                  </div>
-                  <div className="pt-2">
-                    <div className="text-[10px] font-semibold text-slate-400 mb-1.5 uppercase tracking-wider flex items-center justify-between"><span>Live Execution Feed</span><span className="text-cyan-400 text-[9px] animate-pulse">● STREAMING</span></div>
-                    <div className="space-y-1.5 text-[11px]">
-                      <div className="flex items-center justify-between bg-[#0a101f]/90 px-2.5 py-1.5 rounded border-l-2 border-emerald-400"><span className="text-slate-300">ARB: NIFTY 24900 CE / PE Synthetic</span><span className="text-emerald-400 font-semibold">+₹14,200</span></div>
-                      <div className="flex items-center justify-between bg-[#0a101f]/90 px-2.5 py-1.5 rounded border-l-2 border-cyan-400"><span className="text-slate-300">MOM: RELIANCE Micro-structure Fill</span><span className="text-cyan-400 font-semibold">0.62ms</span></div>
-                      <div className="flex items-center justify-between bg-[#0a101f]/90 px-2.5 py-1.5 rounded border-l-2 border-emerald-400"><span className="text-slate-300">VOL: BANKNIFTY Straddle Skew Arb</span><span className="text-emerald-400 font-semibold">+₹28,650</span></div>
+
+                  {/* 3 Points */}
+                  <div className="space-y-3 text-xs text-slate-200 leading-relaxed">
+                    <div className="flex items-start gap-3 bg-[#0a101f]/90 p-3.5 rounded-xl border border-[#172545]/70 hover:border-emerald-500/40 transition-colors">
+                      <div className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-[10px] shrink-0 mt-0.5">
+                        <FaCheck />
+                      </div>
+                      <span className="font-medium">API integration with most trusted discount brokers.</span>
+                    </div>
+
+                    <div className="flex items-start gap-3 bg-[#0a101f]/90 p-3.5 rounded-xl border border-[#172545]/70 hover:border-cyan-500/40 transition-colors">
+                      <div className="w-5 h-5 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-[10px] shrink-0 mt-0.5">
+                        <FaCheck />
+                      </div>
+                      <span className="font-medium">VaR is less than 3500 per trade with 95% Confidence level.</span>
+                    </div>
+
+                    <div className="flex items-start gap-3 bg-[#0a101f]/90 p-3.5 rounded-xl border border-[#172545]/70 hover:border-purple-500/40 transition-colors">
+                      <div className="w-5 h-5 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-[10px] shrink-0 mt-0.5">
+                        <FaCheck />
+                      </div>
+                      <span className="font-medium">No spam or gimmicks- only Live market algo demonstration.</span>
                     </div>
                   </div>
                 </div>
@@ -258,6 +273,65 @@ function SubscriptionSection() {
   return (
     <section id="subscription" className="py-24 bg-[#060a15] border-t border-[#172545]/80 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* High-Focus Highlighted Minimum Capital Requirement Terms Card */}
+        <div className="max-w-4xl mx-auto mb-14">
+          <div className="relative p-[1.5px] rounded-3xl bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 shadow-[0_0_40px_rgba(245,158,11,0.25)]">
+            <div className="bg-[#090e1f] rounded-[23px] p-6 sm:p-8 relative overflow-hidden space-y-5">
+              {/* Top ambient warm glow */}
+              <div className="absolute top-0 left-1/4 w-80 h-32 bg-amber-500/15 blur-3xl pointer-events-none" />
+
+              {/* Header Bar */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-amber-500/30 relative z-10">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-500/50 flex items-center justify-center text-amber-400 text-lg shadow-[0_0_15px_rgba(245,158,11,0.3)] shrink-0">
+                    <FaTriangleExclamation />
+                  </div>
+                  <div>
+                    <span className="text-[10px] font-mono font-bold text-amber-400 tracking-widest uppercase block">
+                      MANDATORY PREREQUISITE
+                    </span>
+                    <h3 className="text-lg sm:text-xl font-extrabold text-white tracking-tight">
+                      Minimum Capital Requirement
+                    </h3>
+                  </div>
+                </div>
+
+                <div className="inline-flex items-center gap-2 self-start sm:self-auto px-3.5 py-1 rounded-full bg-amber-500/15 border border-amber-500/40 text-amber-300 text-xs font-mono font-bold shadow-sm">
+                  <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping" />
+                  <span>Terms & Conditions</span>
+                </div>
+              </div>
+
+              {/* Core Highlighted Points */}
+              <div className="space-y-4 text-xs sm:text-sm text-slate-200 relative z-10">
+                {/* Point 1: Capital Requirement */}
+                <div className="flex items-start gap-3.5 bg-amber-500/10 p-4 rounded-2xl border border-amber-500/30">
+                  <span className="w-2.5 h-2.5 rounded-full bg-amber-400 shrink-0 mt-1.5 shadow-[0_0_8px_rgba(245,158,11,0.8)]" />
+                  <div className="leading-relaxed">
+                    Traders need to have a minimum of{' '}
+                    <span className="inline-block px-2.5 py-0.5 rounded-md bg-amber-400/20 border border-amber-400/50 text-amber-300 font-mono font-bold text-sm">
+                      10,000/- to 15,000/-
+                    </span>{' '}
+                    for trading purposes for the segment of{' '}
+                    <strong className="text-white font-semibold">Equity-Cash</strong>,{' '}
+                    <strong className="text-white font-semibold">Future & Options</strong>, and{' '}
+                    <strong className="text-white font-semibold">Commodity</strong>.
+                  </div>
+                </div>
+
+                {/* Point 2: Risk Appetite */}
+                <div className="flex items-start gap-3.5 bg-[#060a14] p-4 rounded-2xl border border-amber-500/20">
+                  <span className="w-2.5 h-2.5 rounded-full bg-rose-400 shrink-0 mt-1.5 shadow-[0_0_8px_rgba(244,63,94,0.6)]" />
+                  <div className="leading-relaxed text-slate-300">
+                    <strong className="text-rose-400 font-bold uppercase font-mono tracking-wide">Risk Disclosure: </strong>
+                    One Needs to have high Risk Appetite to trade in Stock Market.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <SectionHeader
           badge="Access & Subscriptions"
           title="Algorithmic Trading Services"
@@ -406,6 +480,62 @@ function SubscriptionSection() {
               </a>
             </div>
           </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ═══════════════════ ABOUT OUR COMPANY ═══════════════════ */
+function AboutSection() {
+  return (
+    <section id="about" className="py-20 bg-[#050812] border-t border-[#172545]/80 relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <SectionHeader
+          badge="Company Profile"
+          title="About Our Company"
+          sub="Empowering traders with institutional-grade computational intelligence and execution precision."
+        />
+
+        <div className="max-w-4xl mx-auto mt-12">
+          <Card className="rounded-3xl p-8 sm:p-10 border border-[#172545] shadow-2xl relative bg-[#070d1e]/90 overflow-hidden">
+            {/* Ambient Background Glow */}
+            <div className="absolute top-0 right-0 w-72 h-72 bg-gradient-to-bl from-cyan-500/10 via-purple-500/5 to-transparent rounded-full blur-3xl pointer-events-none" />
+
+            <div className="flex items-center gap-3.5 pb-4 mb-6 border-b border-[#172545]/80">
+              <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-cyan-400/20 to-emerald-400/20 border border-cyan-400/40 flex items-center justify-center text-cyan-400 text-xl shadow-[0_0_15px_rgba(0,240,255,0.2)]">
+                <FaBrain />
+              </div>
+              <div>
+                <h3 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
+                  Algologic
+                </h3>
+                <span className="text-[11px] font-mono font-semibold text-cyan-400 uppercase tracking-wider block">
+                  AI-Driven Quantitative Advisory
+                </span>
+              </div>
+            </div>
+
+            <p className="text-sm sm:text-base text-slate-300 leading-relaxed font-normal">
+              Algologic is a fast, versatile, and AI-driven algorithmic advisory platform built for modern quantitative trading. We blend deep tech expertise with advanced trading strategies to deliver scalable, secure, and high-performance solutions. Our team of engineers, scientists, and traders work together to push the boundaries of innovation in financial technology.
+            </p>
+
+            {/* Highlights Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-8 mt-8 border-t border-[#172545]/60 font-mono">
+              <div className="bg-[#050914] p-4 rounded-2xl border border-[#172545]/70 text-center">
+                <span className="text-xs font-bold text-cyan-400 block uppercase">Deep Tech Stack</span>
+                <span className="text-[11px] text-slate-400 mt-1 block">Engineered Algorithms</span>
+              </div>
+              <div className="bg-[#050914] p-4 rounded-2xl border border-[#172545]/70 text-center">
+                <span className="text-xs font-bold text-emerald-400 block uppercase">AI-Driven Advisory</span>
+                <span className="text-[11px] text-slate-400 mt-1 block">Adaptive Intelligence</span>
+              </div>
+              <div className="bg-[#050914] p-4 rounded-2xl border border-[#172545]/70 text-center">
+                <span className="text-xs font-bold text-purple-400 block uppercase">Secure & Scalable</span>
+                <span className="text-[11px] text-slate-400 mt-1 block">High Performance</span>
+              </div>
+            </div>
+          </Card>
         </div>
       </div>
     </section>
@@ -741,11 +871,22 @@ function FaqSection() {
 function ContactSection() {
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
-  const handleSubmit = (e) => { e.preventDefault(); setSubmitting(true); setTimeout(() => { setSubmitting(false); setSuccess(true); e.target.reset(); }, 900); };
+  const [allocation, setAllocation] = useState(50000); // Seekbar from 10,000 to 1Cr
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setSubmitting(true);
+    setTimeout(() => {
+      setSubmitting(false);
+      setSuccess(true);
+      e.target.reset();
+      setAllocation(50000);
+    }, 900);
+  };
+
   const info = [
-    { Icon: FaEnvelope, bg: 'bg-cyan-500/10', color: 'text-cyan-400', label: 'INSTITUTIONAL DESK', val: 'desk@quantmewealth.com' },
-    { Icon: FaLocationDot, bg: 'bg-emerald-500/10', color: 'text-emerald-400', label: 'GLOBAL HUBS', val: 'BKC, Mumbai • Wall St, NY • Marina Bay, SG' },
-    { Icon: FaShieldHeart, bg: 'bg-purple-500/10', color: 'text-purple-400', label: 'SECURITY', val: 'SOC2 Certified • 256-Bit SSL' },
+    { Icon: FaEnvelope, bg: 'bg-cyan-500/10', color: 'text-cyan-400', label: 'OFFICIAL EMAIL', val: 'desk@quantmewealth.com' },
+    { Icon: FaLocationDot, bg: 'bg-emerald-500/10', color: 'text-emerald-400', label: 'LOCATION', val: 'Bangalore' },
   ];
 
   return (
@@ -759,16 +900,37 @@ function ContactSection() {
         </div>
         <div className="lg:col-span-7">
           <div className="glass-panel p-8 sm:p-10 rounded-3xl border border-[#172545]/90 shadow-2xl relative">
-            <h3 className="text-xl font-bold text-white mb-2">Request Strategy Whitepaper & Consultation</h3>
-            <p className="text-xs text-slate-400 mb-6">Fill in your information to receive our audited quarterly deck.</p>
+            <h3 className="text-xl font-bold text-white mb-2">Request Live Demo</h3>
+            <p className="text-xs text-slate-400 mb-6">Fill in your information to schedule your live market software Demo.</p>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div><label className="block text-xs font-mono text-slate-300 mb-1.5">FULL NAME *</label><input type="text" required placeholder="e.g. Rajat Sharma" className="w-full px-4 py-3 rounded-xl bg-[#050811]/80 border border-[#172545] focus:border-cyan-400 focus:outline-none text-sm text-white placeholder-slate-600" /></div>
                 <div><label className="block text-xs font-mono text-slate-300 mb-1.5">EMAIL *</label><input type="email" required placeholder="rajat@office.com" className="w-full px-4 py-3 rounded-xl bg-[#050811]/80 border border-[#172545] focus:border-cyan-400 focus:outline-none text-sm text-white placeholder-slate-600" /></div>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div><label className="block text-xs font-mono text-slate-300 mb-1.5">INVESTOR TYPE *</label><select className="w-full px-4 py-3 rounded-xl bg-[#050811]/80 border border-[#172545] focus:border-cyan-400 focus:outline-none text-sm text-slate-300"><option>High Net-Worth Individual</option><option>Family Office</option><option>Prop Trading Desk</option><option>Institutional Fund</option></select></div>
-                <div><label className="block text-xs font-mono text-slate-300 mb-1.5">ALLOCATION *</label><select className="w-full px-4 py-3 rounded-xl bg-[#050811]/80 border border-[#172545] focus:border-cyan-400 focus:outline-none text-sm text-slate-300"><option>₹25L – ₹1Cr</option><option>₹1Cr – ₹5Cr</option><option>₹5Cr – ₹25Cr</option><option>₹25Cr+ ($3M+)</option></select></div>
+                <div><label className="block text-xs font-mono text-slate-300 mb-1.5">INVESTOR TYPE *</label><select className="w-full px-4 py-3 rounded-xl bg-[#050811]/80 border border-[#172545] focus:border-cyan-400 focus:outline-none text-sm text-slate-300"><option>Retail / Individual Trader</option><option>High Net-Worth Individual</option><option>Family Office</option><option>Prop Trading Desk</option></select></div>
+                {/* Allocation Seekbar starting from ₹10,000 to ₹1Cr */}
+                <div>
+                  <div className="flex justify-between items-center mb-1.5">
+                    <label className="block text-xs font-mono text-slate-300">ALLOCATION *</label>
+                    <span className="text-xs font-mono font-bold text-cyan-400">{formatINR(allocation)}</span>
+                  </div>
+                  <input
+                    type="range"
+                    min={10000}
+                    max={10000000}
+                    step={10000}
+                    value={allocation}
+                    onChange={(e) => setAllocation(+e.target.value)}
+                    className="w-full h-2 bg-[#050811] rounded-lg cursor-pointer border border-[#172545] accent-cyan-400"
+                  />
+                  <div className="flex justify-between text-[9px] font-mono text-slate-500 mt-1">
+                    <span>₹10K</span>
+                    <span>₹25L</span>
+                    <span>₹50L</span>
+                    <span>₹1Cr</span>
+                  </div>
+                </div>
               </div>
               <div><label className="block text-xs font-mono text-slate-300 mb-1.5">NOTES</label><textarea rows={3} placeholder="Custom mandate, broker preference..." className="w-full px-4 py-3 rounded-xl bg-[#050811]/80 border border-[#172545] focus:border-cyan-400 focus:outline-none text-sm text-white placeholder-slate-600" /></div>
               <button type="submit" disabled={submitting} className="w-full py-4 text-sm font-bold text-black bg-gradient-to-r from-cyan-400 to-emerald-400 rounded-xl shadow-[0_0_25px_rgba(0,240,255,0.35)] transition-all flex items-center justify-center gap-2">{submitting ? <><FaSpinner className="animate-spin" /> Submitting...</> : <><FaPaperPlane className="text-xs" /> Submit Request</>}</button>

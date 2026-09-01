@@ -106,8 +106,8 @@ export const trustRibbonStats = [
 
 // ========== EDGE PILLARS ==========
 export const edgePillars = [
-  { icon: 'bolt', color: 'cyan', title: 'Sub-Millisecond Engine', desc: 'Custom C++20 and Rust kernels executing directly on FPGA network interface cards inside exchange co-location facilities.', metric: '< 0.8ms Tick-to-Trade' },
-  { icon: 'brain', color: 'emerald', title: 'Non-Linear ML Models', desc: 'Continuous training on over 3.2TB of daily order-book snapshots, options Greeks, dark liquidity, and cross-market flow signals.', metric: 'Bayesian Regime Detection' },
+  { icon: 'envelope', color: 'cyan', title: 'Get Details On Email', desc: 'Get all package & bank details on your email id from the official email id', metric: 'Official Email Dispatch' },
+  { icon: 'tv', color: 'emerald', title: 'Get Live Demo', desc: 'Join the services after watching the Live Demo of the software with live stock prices.', metric: 'Live Market Demo' },
   { icon: 'shield', color: 'purple', title: 'Real-Time Risk Parity', desc: 'Hardware kill-switches, dynamic VaR thresholds, automated gamma hedge re-balancing, and non-correlated cross-asset weighting.', metric: 'Automated Circuit Breakers' },
   { icon: 'cloud', color: 'amber', title: 'Non-Custodial APIs', desc: 'Capital remains securely in your institutional or broker account. Our execution engine connects via secure encrypted API keys.', metric: '100% Custodial Control' },
 ];

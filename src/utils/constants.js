@@ -2,7 +2,7 @@ export const BRAND = {
   name: 'QuantMeWealth',
   tagline: 'Systematic Alpha Labs',
   email: 'desk@quantmewealth.com',
-  locations: 'BKC, Mumbai • Wall St, NY • Marina Bay, SG',
+  locations: 'Bangalore',
   security: 'SOC2 Certified • 256-Bit SSL Encrypted',
 };
 
@@ -15,6 +15,7 @@ export const WHATSAPP_CONFIG = {
 export const NAV_LINKS = [
   { href: '#edge', label: 'Quantitative Edge' },
   { href: '#subscription', label: 'Subscription & Pricing' },
+  { href: '#about', label: 'About Our Company' },
   { href: '#calculator', label: 'Alpha Calculator' },
   { href: '#faq', label: 'FAQ' },
 ];
