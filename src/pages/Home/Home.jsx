@@ -27,10 +27,12 @@ export default function Home() {
       <TickerBar />
       <HeroSection />
       <TrustRibbon />
-      <StrategiesSection />
-      <PerformanceSection />
-      <EdgeSection />
-      <CalculatorSection />
+      {/* Systematic Portfolio Engines (Hidden as requested) */}
+      {/* <StrategiesSection /> */}
+      {/* Audited Alpha Record (Hidden as requested) */}
+      {/* <PerformanceSection /> */}
+      <EdgeAndCalculatorSection />
+      <SubscriptionSection />
       <FaqSection />
       <ContactSection />
     </>
@@ -73,7 +75,7 @@ function TickerBar() {
             <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
           </span>
           <span className="font-bold tracking-wider uppercase text-[11px]">
-            {isLiveApi ? 'LIVE FEED (RAPIDAPI)' : 'LIVE MARKETS'}
+            {isLiveApi ? 'LIVE MARKETS' : 'LIVE MARKETS'}
           </span>
         </div>
         <div className="flex whitespace-nowrap animate-ticker ticker-move">{renderTrack()}{renderTrack()}</div>
@@ -92,9 +94,12 @@ function HeroSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           <div className="lg:col-span-7 space-y-8 text-center lg:text-left">
-            <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full border border-cyan-500/30 bg-cyan-500/10 backdrop-blur-md">
-              <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
-              <span className="text-xs font-mono font-semibold text-cyan-400 tracking-wider uppercase">Statistical Arbitrage & HFT Systems 3.0</span>
+            <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 backdrop-blur-md">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
+              </span>
+              <span className="text-xs font-mono font-semibold text-emerald-400 tracking-wider uppercase">Live trading since 2021</span>
             </div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.12]">
               Algorithmic Precision. <br /><span className="gradient-text-cyan">Uncorrelated Alpha</span> <br />For Institutional Capital.
@@ -103,8 +108,7 @@ function HeroSection() {
               QuantMeWealth designs mathematical models, low-latency execution pipelines, and risk-parity frameworks engineered to extract consistent yields across equity, derivative, and global macro markets.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
-              <a href="#strategies" className="w-full sm:w-auto px-8 py-4 text-sm font-bold text-black bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400 rounded-xl shadow-[0_0_30px_rgba(0,240,255,0.4)] hover:shadow-[0_0_40px_rgba(0,240,255,0.6)] hover:scale-105 transition-all flex items-center justify-center gap-3"><span>Deploy Capital</span><FaBolt className="text-xs" /></a>
-              <a href="#performance" className="w-full sm:w-auto px-7 py-4 text-sm font-semibold text-slate-200 glass-panel hover:bg-[#0f172e] hover:text-white rounded-xl transition-all flex items-center justify-center gap-2.5"><FaChartColumn className="text-cyan-400" /><span>View Verified Track Record</span></a>
+              <a href="#subscription" className="w-full sm:w-auto px-8 py-4 text-sm font-bold text-black bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400 rounded-xl shadow-[0_0_30px_rgba(0,240,255,0.4)] hover:shadow-[0_0_40px_rgba(0,240,255,0.6)] hover:scale-105 transition-all flex items-center justify-center gap-3"><span>View Subscriptions</span><FaBolt className="text-xs" /></a>
             </div>
             <div className="pt-6 border-t border-[#172545]/50 grid grid-cols-3 gap-4 text-left">
               <div><div className="text-2xl sm:text-3xl font-bold font-mono text-white">₹1,850+ Cr</div><div className="text-[11px] text-slate-400">Assets Monitored</div></div>
@@ -249,7 +253,166 @@ function StrategyModal({ s, onClose }) {
   );
 }
 
-/* ═══════════════════ PERFORMANCE ═══════════════════ */
+/* ═══════════════════ SUBSCRIPTION & PRICING ═══════════════════ */
+function SubscriptionSection() {
+  return (
+    <section id="subscription" className="py-24 bg-[#060a15] border-t border-[#172545]/80 relative">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <SectionHeader
+          badge="Access & Subscriptions"
+          title="Algorithmic Trading Services"
+          sub="Deploy institutional-grade automated trading systems directly to your brokerage account with zero manual intervention."
+        />
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto items-stretch">
+          {/* Plan 1: Active Algo Trading Service (Early Bird ₹5,000) */}
+          <div className="relative rounded-3xl p-8 sm:p-10 glass-panel border-2 border-cyan-500/50 shadow-[0_0_35px_rgba(0,240,255,0.15)] flex flex-col justify-between overflow-hidden">
+            {/* Early bird tag */}
+            <div className="absolute top-0 right-0 bg-gradient-to-l from-emerald-400 to-cyan-400 text-black text-[11px] font-mono font-extrabold px-4 py-1.5 rounded-bl-2xl shadow-md uppercase tracking-wider">
+              🔥 50% OFF EARLY BIRD
+            </div>
+
+            <div>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-mono font-bold mb-4">
+                <span>ACTIVE SERVICE</span>
+              </div>
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-white">Automated Algo Trading Suite</h3>
+              <p className="text-xs text-slate-400 mt-2 leading-relaxed">
+                Complete access to our statistical arbitrage and options volatility execution systems with zero execution delay.
+              </p>
+
+              {/* Pricing Display */}
+              <div className="mt-6 p-4 rounded-2xl bg-[#050914] border border-[#172545]/80 font-mono">
+                <div className="flex items-baseline gap-2.5 flex-wrap">
+                  <span className="text-slate-500 line-through text-lg font-bold">₹10,000</span>
+                  <span className="text-4xl font-extrabold text-white">₹4,999</span>
+                  <span className="text-xs text-slate-400">+ taxes / service fee</span>
+                </div>
+              </div>
+
+              {/* Feature Checklist */}
+              <div className="space-y-3.5 mt-8 text-xs text-slate-300">
+                <div className="flex items-start gap-3">
+                  <div className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-[10px] shrink-0 mt-0.5"><FaCheck /></div>
+                  <span>Fully automated multi-leg Options & Statistical Arbitrage execution</span>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-[10px] shrink-0 mt-0.5"><FaCheck /></div>
+                  <span>Non-custodial Broker API integration (Zerodha, AngelOne, Fyers, Upstox)</span>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-[10px] shrink-0 mt-0.5"><FaCheck /></div>
+                  <span>Sub-second execution & latency-optimized order routing</span>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-[10px] shrink-0 mt-0.5"><FaCheck /></div>
+                  <span>Real-time trade fill notifications via WhatsApp & Telegram</span>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-[10px] shrink-0 mt-0.5"><FaCheck /></div>
+                  <span>Automated stop-loss & dynamic volatility circuit breakers</span>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-[10px] shrink-0 mt-0.5"><FaCheck /></div>
+                  <span>1-on-1 strategy onboarding & dedicated technical desk assistance</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-8 pt-6 border-t border-[#172545]/60">
+              <a
+                href="#contact"
+                className="w-full py-4 text-center text-sm font-bold text-black bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400 rounded-xl shadow-[0_0_25px_rgba(0,240,255,0.35)] hover:shadow-[0_0_35px_rgba(0,240,255,0.55)] hover:scale-[1.02] transition-all flex items-center justify-center gap-2"
+              >
+                <span>Claim Early Bird Access (₹4,999 + taxes)</span>
+                <FaBolt className="text-xs" />
+              </a>
+            </div>
+          </div>
+
+          {/* Plan 2: Upcoming Next-Gen Algo (Coming Soon ₹12,000 - Blurred with Sharp Pricing) */}
+          <div className="relative rounded-3xl p-8 sm:p-10 glass-panel border border-purple-500/40 shadow-[0_0_35px_rgba(139,92,246,0.15)] flex flex-col justify-between overflow-hidden">
+            {/* Coming Soon ribbon */}
+            <div className="absolute top-0 right-0 z-30 bg-gradient-to-l from-purple-500 to-indigo-500 text-white text-[11px] font-mono font-extrabold px-4 py-1.5 rounded-bl-2xl shadow-md uppercase tracking-wider">
+              🚀 COMING SOON
+            </div>
+
+            {/* 1. SHARP, UNBLURRED PRICING & SERVICE FEE */}
+            <div className="relative z-30 mb-6 p-5 rounded-2xl bg-[#080d1e]/95 border-2 border-purple-500/60 shadow-[0_0_30px_rgba(139,92,246,0.25)] backdrop-blur-xl font-mono">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <div>
+                  <span className="text-[10px] uppercase tracking-widest text-purple-400 font-bold block mb-1">
+                    NEW ALGO SERVICE FEE
+                  </span>
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-4xl sm:text-5xl font-extrabold text-white">₹12,000</span>
+                    <span className="text-xs text-slate-400">/ service fee</span>
+                  </div>
+                </div>
+                <span className="self-start sm:self-center px-3 py-1 rounded-full text-[10px] font-bold bg-amber-500/10 text-amber-400 border border-amber-500/30">
+                  Pre-Book Open
+                </span>
+              </div>
+              <p className="text-[11px] text-slate-400 mt-2">
+                🔒 Priority queue reservation • Locked-in early-bird pricing
+              </p>
+            </div>
+
+            {/* 2. BLURRED DETAILS & FEATURES */}
+            <div className="relative blur-[3.5px] select-none pointer-events-none opacity-45 transition-all space-y-4">
+              <div>
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/30 text-purple-400 text-xs font-mono font-bold mb-3">
+                  <span>NEXT-GEN ARCHITECTURE</span>
+                </div>
+                <h3 className="text-2xl sm:text-3xl font-extrabold text-white">DeepOrder Flow Neural HFT</h3>
+                <p className="text-xs text-slate-400 mt-2 leading-relaxed">
+                  Next-generation Level 3 order-book microstructure AI engine engineered for high-frequency tick imbalance capture.
+                </p>
+              </div>
+
+              {/* Feature Checklist (Blurred) */}
+              <div className="space-y-3 pt-2 text-xs text-slate-300">
+                <div className="flex items-start gap-3">
+                  <div className="w-5 h-5 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-[10px] shrink-0 mt-0.5"><FaCheck /></div>
+                  <span>Ultra-HFT Level 3 order-book microstructure queue prediction model</span>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-5 h-5 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-[10px] shrink-0 mt-0.5"><FaCheck /></div>
+                  <span>Deep Neural Network & Bayesian market regime-switching filters</span>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-5 h-5 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-[10px] shrink-0 mt-0.5"><FaCheck /></div>
+                  <span>Real-time implied vs realized cross-asset dispersion scanner</span>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-5 h-5 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-[10px] shrink-0 mt-0.5"><FaCheck /></div>
+                  <span>Priority co-location server slot & dedicated ultra-low latency routing</span>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-5 h-5 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-[10px] shrink-0 mt-0.5"><FaCheck /></div>
+                  <span>Locked-in legacy price guarantee upon public production release</span>
+                </div>
+              </div>
+            </div>
+
+            {/* 3. UNBLURRED ACTION BUTTON */}
+            <div className="relative z-30 mt-6 pt-4 border-t border-[#172545]/60">
+              <a
+                href="#contact"
+                className="w-full py-4 text-center text-sm font-bold text-white bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-700 rounded-xl shadow-[0_0_25px_rgba(139,92,246,0.35)] hover:shadow-[0_0_35px_rgba(139,92,246,0.55)] hover:scale-[1.02] transition-all flex items-center justify-center gap-2"
+              >
+                <span>Join Priority Waitlist (₹12,000 Tier)</span>
+                <FaBolt className="text-xs text-amber-400" />
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ═══════════════════ PERFORMANCE (HIDDEN) ═══════════════════ */
 function PerformanceSection() {
   const [tf, setTf] = useState('3Y');
   const d = performanceData[tf];
@@ -296,57 +459,260 @@ function PerformanceSection() {
 }
 
 /* ═══════════════════ EDGE ═══════════════════ */
-function EdgeSection() {
-  return (
-    <section id="edge" className="py-24">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <SectionHeader badge="Technological Moat" title="Built for Microsecond Alpha Extraction" sub="Our proprietary stack combines modern hardware acceleration, predictive ML models, and strict risk guardrails." />
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {edgePillars.map((p, i) => { const Icon = edgeIcons[p.icon]; const bg = tagColors[p.color]; return (
-            <Card key={i} hover className="p-6 rounded-2xl border border-[#172545]">
-              <div className={`w-12 h-12 rounded-xl border flex items-center justify-center text-xl mb-5 ${bg}`}><Icon /></div>
-              <h3 className="text-lg font-bold text-white mb-2">{p.title}</h3>
-              <p className="text-xs text-slate-400 leading-relaxed">{p.desc}</p>
-              <div className={`mt-4 pt-4 border-t border-[#172545]/60 text-[11px] font-mono ${p.color === 'amber' ? 'text-amber-400' : p.color === 'purple' ? 'text-purple-400' : p.color === 'emerald' ? 'text-emerald-400' : 'text-cyan-400'}`}>{p.metric}</div>
-            </Card>
-          ); })}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ═══════════════════ CALCULATOR ═══════════════════ */
-function CalculatorSection() {
-  const [capital, setCapital] = useState(5000000);
-  const [years, setYears] = useState(3);
+/* ═══════════════════ TECHNOLOGICAL MOAT & ALPHA COMPOUNDING ENGINE ═══════════════════ */
+function EdgeAndCalculatorSection() {
+  const [capital, setCapital] = useState(50000); // Default ₹50,000, starts from ₹10,000
+  const [timeUnit, setTimeUnit] = useState('months'); // 'months' | 'years'
+  const [duration, setDuration] = useState(6); // Default 6 months
   const [profile, setProfile] = useState(0);
+
   const cagr = calcProfiles[profile].cagr;
-  const finalVal = capital * Math.pow(1 + cagr / 100, years);
-  const benchFinal = capital * Math.pow(1 + BENCHMARK_CAGR, years);
+  // Effective time horizon in years
+  const timeInYears = timeUnit === 'months' ? duration / 12 : duration;
+  const finalVal = capital * Math.pow(1 + cagr / 100, timeInYears);
+  const benchFinal = capital * Math.pow(1 + BENCHMARK_CAGR, timeInYears);
   const gain = finalVal - capital;
   const pctGain = (gain / capital) * 100;
   const alpha = finalVal - benchFinal;
 
+  // Handle switching unit
+  const handleUnitSwitch = (unit) => {
+    setTimeUnit(unit);
+    if (unit === 'months') {
+      setDuration(6);
+    } else {
+      setDuration(3);
+    }
+  };
+
   return (
-    <section id="calculator" className="py-20 bg-[#060a14] border-y border-[#172545]/80">
+    <section id="edge" className="py-24 border-t border-[#172545]/70 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <SectionHeader badge="Simulated Compounding Engine" title="Calculate Potential Alpha Growth" sub="Simulate returns based on historical backtested and live out-of-sample data across market regimes." />
-        <div className="max-w-4xl mx-auto">
-          <Card className="rounded-3xl p-6 sm:p-10 border border-[#172545] shadow-2xl">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-              <div className="lg:col-span-7 space-y-6">
-                <div><div className="flex justify-between mb-2"><label className="text-xs font-mono text-slate-300 font-semibold">INVESTMENT ALLOCATION</label><span className="text-lg font-mono font-bold text-cyan-400">{formatINR(capital)}</span></div><input type="range" min={1000000} max={50000000} step={500000} value={capital} onChange={(e) => setCapital(+e.target.value)} className="w-full h-2 bg-[#0a101f] rounded-lg cursor-pointer border border-[#172545]" /><div className="flex justify-between text-[10px] font-mono text-slate-500 mt-1"><span>₹10L</span><span>₹2.5Cr</span><span>₹5Cr</span></div></div>
-                <div><div className="flex justify-between mb-2"><label className="text-xs font-mono text-slate-300 font-semibold">TIME HORIZON</label><span className="text-lg font-mono font-bold text-emerald-400">{years} Year{years > 1 ? 's' : ''}</span></div><input type="range" min={1} max={5} step={1} value={years} onChange={(e) => setYears(+e.target.value)} className="w-full h-2 bg-[#0a101f] rounded-lg cursor-pointer border border-[#172545]" /><div className="flex justify-between text-[10px] font-mono text-slate-500 mt-1"><span>1Y</span><span>3Y</span><span>5Y</span></div></div>
-                <div><label className="text-xs font-mono text-slate-300 font-semibold block mb-2">STRATEGY PROFILE</label><div className="grid grid-cols-3 gap-2.5">{calcProfiles.map((p, i) => <button key={p.id} onClick={() => setProfile(i)} className={`p-3 rounded-xl border text-left transition-all ${profile === i ? 'border-cyan-400 bg-cyan-400/10' : 'border-[#172545] bg-[#0a101f]'}`}><span className="block text-xs font-bold text-white">{p.label}</span><span className={`block text-[10px] font-mono mt-0.5 ${profile === i ? 'text-cyan-400' : 'text-slate-400'}`}>{p.sub}</span></button>)}</div></div>
+        <SectionHeader
+          badge="Technological Moat & Projections"
+          title="Engineered Execution & Alpha Compounding"
+          sub="Our proprietary microsecond stack paired with interactive quantitative alpha simulation."
+        />
+
+        {/* 50/50 Equal-Width Symmetrical Grid with Balanced Spacing */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-stretch mt-12">
+          {/* LEFT COLUMN: Technological Moat (2x2 Grid of 4 Pillars) */}
+          <div className="flex flex-col justify-between rounded-3xl p-6 sm:p-8 glass-panel border border-[#172545] shadow-2xl h-full space-y-6">
+            <div className="flex items-center justify-between pb-3 border-b border-[#172545]/80">
+              <div>
+                <span className="text-xs font-mono font-bold text-cyan-400 uppercase tracking-wider block">
+                  EXECUTION STACK
+                </span>
+                <h3 className="text-xl sm:text-2xl font-bold text-white mt-1">
+                  Technological Moat
+                </h3>
               </div>
-              <div className="lg:col-span-5 bg-[#080e1c] rounded-2xl p-6 border border-[#172545]/90 text-center space-y-5">
-                <div><span className="text-xs font-mono text-slate-400 uppercase block">Estimated Portfolio Value</span><span className="text-3xl sm:text-4xl font-mono font-extrabold text-white mt-1 block">{formatINR(finalVal)}</span><span className="inline-block mt-2 px-3 py-1 rounded-full text-xs font-mono font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">+{formatINR(gain)} (+{pctGain.toFixed(1)}%)</span></div>
-                <div className="space-y-2 pt-4 border-t border-[#172545]/60 text-xs font-mono text-left"><div className="flex justify-between text-slate-400"><span>Benchmark Estimate:</span><span className="text-slate-300 font-semibold">{formatINR(benchFinal)}</span></div><div className="flex justify-between text-slate-400"><span>Net Excess Alpha:</span><span className="text-cyan-400 font-bold">+{formatINR(alpha)}</span></div></div>
-                <a href="#contact" className="w-full py-3 text-xs font-bold text-black bg-gradient-to-r from-cyan-400 to-emerald-400 rounded-xl block hover:opacity-95">Inquire For Allocation</a>
+              <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-3 py-1 rounded-full shrink-0">
+                Colo FPGA Active
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 grow">
+              {edgePillars.map((p, i) => {
+                const Icon = edgeIcons[p.icon];
+                const bg = tagColors[p.color];
+                return (
+                  <Card key={i} hover className="p-4 sm:p-5 rounded-2xl border border-[#172545] flex flex-col justify-between bg-[#060a16]">
+                    <div>
+                      <div className={`w-10 h-10 rounded-xl border flex items-center justify-center text-lg mb-3 ${bg}`}>
+                        <Icon />
+                      </div>
+                      <h4 className="text-sm font-bold text-white mb-1.5">{p.title}</h4>
+                      <p className="text-[11px] text-slate-400 leading-relaxed">{p.desc}</p>
+                    </div>
+                    <div className={`mt-3 pt-3 border-t border-[#172545]/60 text-[10px] font-mono font-bold ${
+                      p.color === 'amber'
+                        ? 'text-amber-400'
+                        : p.color === 'purple'
+                        ? 'text-purple-400'
+                        : p.color === 'emerald'
+                        ? 'text-emerald-400'
+                        : 'text-cyan-400'
+                    }`}>
+                      {p.metric}
+                    </div>
+                  </Card>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* RIGHT COLUMN: Simulated Compounding Calculator */}
+          <div id="calculator" className="flex flex-col justify-between rounded-3xl p-6 sm:p-8 glass-panel border border-[#172545] shadow-2xl h-full space-y-6">
+            <div className="flex items-center justify-between pb-3 border-b border-[#172545]/80">
+              <div>
+                <span className="text-xs font-mono font-bold text-emerald-400 uppercase tracking-wider block">
+                  SIMULATOR
+                </span>
+                <h3 className="text-xl sm:text-2xl font-bold text-white mt-1">
+                  Alpha Growth Calculator
+                </h3>
+              </div>
+              <span className="text-[10px] font-mono text-slate-400 bg-[#0a101f] border border-[#172545] px-3 py-1 rounded-full shrink-0">
+                Regime Adaptive
+              </span>
+            </div>
+
+            {/* Sliders & Horizon Controls */}
+            <div className="space-y-4">
+              {/* 1. Investment Allocation Slider (Starting from ₹10,000) */}
+              <div>
+                <div className="flex justify-between mb-1.5">
+                  <label className="text-[11px] font-mono text-slate-300 font-semibold">INVESTMENT ALLOCATION</label>
+                  <span className="text-base font-mono font-bold text-cyan-400">{formatINR(capital)}</span>
+                </div>
+                <input
+                  type="range"
+                  min={10000}
+                  max={5000000}
+                  step={10000}
+                  value={capital}
+                  onChange={(e) => setCapital(+e.target.value)}
+                  className="w-full h-2 bg-[#0a101f] rounded-lg cursor-pointer border border-[#172545]"
+                />
+                <div className="flex justify-between text-[9px] font-mono text-slate-500 mt-1">
+                  <span>₹10K</span>
+                  <span>₹10L</span>
+                  <span>₹25L</span>
+                  <span>₹50L</span>
+                </div>
+              </div>
+
+              {/* 2. Time Horizon with Months vs Years Toggle */}
+              <div>
+                <div className="flex items-center justify-between mb-1.5">
+                  <div className="flex items-center gap-2">
+                    <label className="text-[11px] font-mono text-slate-300 font-semibold">TIME HORIZON</label>
+                    {/* Unit Switcher */}
+                    <div className="flex items-center bg-[#050914] p-0.5 rounded-lg border border-[#172545] text-[10px] font-mono">
+                      <button
+                        type="button"
+                        onClick={() => handleUnitSwitch('months')}
+                        className={`px-2 py-0.5 rounded-md transition-all ${
+                          timeUnit === 'months'
+                            ? 'bg-emerald-400 text-black font-bold shadow-sm'
+                            : 'text-slate-400 hover:text-white'
+                        }`}
+                      >
+                        Months (1-12)
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleUnitSwitch('years')}
+                        className={`px-2 py-0.5 rounded-md transition-all ${
+                          timeUnit === 'years'
+                            ? 'bg-emerald-400 text-black font-bold shadow-sm'
+                            : 'text-slate-400 hover:text-white'
+                        }`}
+                      >
+                        Years (1-5)
+                      </button>
+                    </div>
+                  </div>
+                  <span className="text-base font-mono font-bold text-emerald-400">
+                    {duration} {timeUnit === 'months' ? (duration === 1 ? 'Month' : 'Months') : (duration === 1 ? 'Year' : 'Years')}
+                  </span>
+                </div>
+
+                {timeUnit === 'months' ? (
+                  <>
+                    <input
+                      type="range"
+                      min={1}
+                      max={12}
+                      step={1}
+                      value={duration}
+                      onChange={(e) => setDuration(+e.target.value)}
+                      className="w-full h-2 bg-[#0a101f] rounded-lg cursor-pointer border border-[#172545]"
+                    />
+                    <div className="flex justify-between text-[9px] font-mono text-slate-500 mt-1">
+                      <span>1M</span>
+                      <span>3M</span>
+                      <span>6M</span>
+                      <span>9M</span>
+                      <span>12M</span>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <input
+                      type="range"
+                      min={1}
+                      max={5}
+                      step={1}
+                      value={duration}
+                      onChange={(e) => setDuration(+e.target.value)}
+                      className="w-full h-2 bg-[#0a101f] rounded-lg cursor-pointer border border-[#172545]"
+                    />
+                    <div className="flex justify-between text-[9px] font-mono text-slate-500 mt-1">
+                      <span>1Y</span>
+                      <span>2Y</span>
+                      <span>3Y</span>
+                      <span>4Y</span>
+                      <span>5Y</span>
+                    </div>
+                  </>
+                )}
+              </div>
+
+              {/* 3. Strategy Profile Selection */}
+              <div>
+                <label className="text-[11px] font-mono text-slate-300 font-semibold block mb-1.5">STRATEGY PROFILE</label>
+                <div className="grid grid-cols-3 gap-2">
+                  {calcProfiles.map((p, i) => (
+                    <button
+                      key={p.id}
+                      onClick={() => setProfile(i)}
+                      className={`p-2.5 rounded-xl border text-left transition-all ${
+                        profile === i ? 'border-cyan-400 bg-cyan-400/10' : 'border-[#172545] bg-[#0a101f]'
+                      }`}
+                    >
+                      <span className="block text-[11px] font-bold text-white">{p.label}</span>
+                      <span className={`block text-[9px] font-mono mt-0.5 ${profile === i ? 'text-cyan-400' : 'text-slate-400'}`}>
+                        {p.sub}
+                      </span>
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
-          </Card>
+
+            {/* Output Display */}
+            <div className="bg-[#080e1c] rounded-2xl p-5 border border-[#172545]/90 space-y-3.5 mt-auto">
+              <div className="text-center">
+                <span className="text-[10px] font-mono text-slate-400 uppercase block">Estimated Portfolio Value</span>
+                <span className="text-3xl font-mono font-extrabold text-white mt-1 block">
+                  {formatINR(finalVal)}
+                </span>
+                <span className="inline-block mt-1 px-3 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+                  +{formatINR(gain)} (+{pctGain.toFixed(1)}%)
+                </span>
+              </div>
+
+              <div className="space-y-1 pt-2.5 border-t border-[#172545]/60 text-[11px] font-mono">
+                <div className="flex justify-between text-slate-400">
+                  <span>Benchmark (14.2%):</span>
+                  <span className="text-slate-300 font-semibold">{formatINR(benchFinal)}</span>
+                </div>
+                <div className="flex justify-between text-slate-400">
+                  <span>Net Excess Alpha:</span>
+                  <span className="text-cyan-400 font-bold">+{formatINR(alpha)}</span>
+                </div>
+              </div>
+
+              <a
+                href="#contact"
+                className="w-full py-3 text-xs font-bold text-black bg-gradient-to-r from-cyan-400 to-emerald-400 rounded-xl block text-center hover:opacity-95 shadow-[0_0_20px_rgba(0,240,255,0.25)]"
+              >
+                Inquire For Allocation
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </section>

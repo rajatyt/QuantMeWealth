@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FaChartLine, FaLock, FaArrowRight, FaBars, FaXmark } from 'react-icons/fa6';
+import { FaChartLine, FaArrowRight, FaBars, FaXmark } from 'react-icons/fa6';
 import { NAV_LINKS } from '../../utils/constants';
 
 export default function Navbar() {
@@ -25,8 +25,7 @@ export default function Navbar() {
           </nav>
 
           <div className="hidden lg:flex items-center gap-4">
-            <a href="#contact" className="px-4 py-2 text-xs font-semibold text-slate-300 hover:text-white rounded-lg border border-[#172545] hover:border-[#243763] transition-all flex items-center gap-2"><FaLock className="text-cyan-400" /> Client Portal</a>
-            <a href="#contact" className="px-5 py-2.5 text-xs font-bold text-black bg-gradient-to-r from-cyan-400 to-emerald-400 rounded-lg shadow-[0_0_20px_rgba(0,240,255,0.3)] hover:scale-[1.02] transition-all flex items-center gap-2"><span>Get Strategy Access</span><FaArrowRight className="text-[11px]" /></a>
+            <a href="#contact" className="px-5 py-2.5 text-xs font-bold text-black bg-gradient-to-r from-cyan-400 to-emerald-400 rounded-lg shadow-[0_0_20px_rgba(0,240,255,0.3)] hover:scale-[1.02] transition-all flex items-center gap-2"><span>Contact Us</span><FaArrowRight className="text-[11px]" /></a>
           </div>
 
           <button onClick={() => setOpen(!open)} className="md:hidden text-slate-400 hover:text-white p-2" aria-label="Menu">
@@ -39,8 +38,7 @@ export default function Navbar() {
         <div className="md:hidden border-t border-[#172545]/60 bg-[#070b17]/95 backdrop-blur-xl px-4 pt-4 pb-6 space-y-3">
           {NAV_LINKS.map((l) => <a key={l.href} href={l.href} onClick={() => setOpen(false)} className="block px-3 py-2 rounded-md text-base font-medium text-slate-200 hover:bg-[#0a101f] hover:text-cyan-400">{l.label}</a>)}
           <div className="pt-4 border-t border-[#172545]/60 flex flex-col gap-3">
-            <a href="#contact" className="w-full text-center py-2.5 text-xs font-semibold text-slate-300 rounded-lg border border-[#172545]">Client Portal</a>
-            <a href="#contact" className="w-full text-center py-3 text-xs font-bold text-black bg-gradient-to-r from-cyan-400 to-emerald-400 rounded-lg">Get Strategy Access</a>
+            <a href="#contact" className="w-full text-center py-3 text-xs font-bold text-black bg-gradient-to-r from-cyan-400 to-emerald-400 rounded-lg">Contact Us</a>
           </div>
         </div>
       )}
