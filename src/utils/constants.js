@@ -18,6 +18,7 @@ export const NAV_LINKS = [
   { href: '#about', label: 'About Our Company' },
   { href: '#calculator', label: 'Alpha Calculator' },
   { href: '#faq', label: 'FAQ' },
+  { href: '#testimonials', label: 'Testimonials' },
 ];
 
 export const BENCHMARK_CAGR = 0.142;

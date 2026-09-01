@@ -1,10 +1,10 @@
 import { useState, useEffect, useMemo } from 'react';
-import { FaBolt, FaChartColumn, FaArrowTrendUp, FaArrowTrendDown, FaMicrochip, FaChevronDown, FaPaperPlane, FaSpinner, FaCheck, FaBoltLightning, FaBrain, FaShieldHalved, FaCloudArrowUp, FaArrowUpRightFromSquare, FaXmark, FaEnvelope, FaLocationDot, FaShieldHeart, FaTv, FaTriangleExclamation } from 'react-icons/fa6';
+import { FaBolt, FaChartColumn, FaArrowTrendUp, FaArrowTrendDown, FaMicrochip, FaChevronDown, FaPaperPlane, FaSpinner, FaCheck, FaBoltLightning, FaBrain, FaShieldHalved, FaCloudArrowUp, FaArrowUpRightFromSquare, FaXmark, FaEnvelope, FaLocationDot, FaShieldHeart, FaTv, FaTriangleExclamation, FaStar, FaStarHalfStroke, FaCircleCheck } from 'react-icons/fa6';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, LineElement, PointElement, LinearScale, CategoryScale, Filler, Tooltip } from 'chart.js';
 
 import { useStocks } from '../../hooks/useStocks';
-import { tickerSymbols, strategies, strategyFilters, performanceData, timeframes, metricsData, trustRibbonStats, edgePillars, faqData, calcProfiles } from '../../data/mockData';
+import { tickerSymbols, strategies, strategyFilters, performanceData, timeframes, metricsData, trustRibbonStats, edgePillars, faqData, calcProfiles, testimonialsData } from '../../data/mockData';
 import { formatINR, formatPrice, getLiveClock } from '../../utils/helpers';
 import { BENCHMARK_CAGR } from '../../utils/constants';
 import Card from '../../components/common/Card';
@@ -36,6 +36,7 @@ export default function Home() {
       <AboutSection />
       <ContactSection />
       <FaqSection />
+      <TestimonialsSection />
     </>
   );
 }
@@ -945,6 +946,97 @@ function ContactSection() {
             )}
           </div>
         </div>
+      </div>
+    </section>
+  );
+}
+
+/* ═══════════════════ CLIENT TESTIMONIALS ═══════════════════ */
+function TestimonialsSection() {
+  const row1 = testimonialsData.slice(0, 5);
+  const row2 = testimonialsData.slice(5, 10);
+
+  const renderCard = (t, idx) => (
+    <div
+      key={idx}
+      className="w-[330px] sm:w-[380px] shrink-0 p-6 rounded-3xl bg-[#070d1e]/90 border border-[#172545] shadow-xl hover:border-cyan-500/50 hover:shadow-[0_0_30px_rgba(0,240,255,0.12)] transition-all flex flex-col justify-between select-none"
+    >
+      <div>
+        {/* Top bar: Stars with fractional support and Tag */}
+        <div className="flex items-center justify-between mb-3.5">
+          <div className="flex items-center gap-1 text-amber-400 text-xs">
+            {[...Array(Math.floor(t.rating))].map((_, i) => (
+              <FaStar key={`full-${i}`} />
+            ))}
+            {t.rating % 1 !== 0 && <FaStarHalfStroke key="half" />}
+            <span className="ml-1 text-[11px] font-mono font-bold text-amber-300">
+              {t.rating.toFixed(1)}
+            </span>
+          </div>
+          <span className="text-[10px] font-mono font-bold text-cyan-400 bg-cyan-400/10 border border-cyan-400/30 px-2.5 py-0.5 rounded-full">
+            {t.tag}
+          </span>
+        </div>
+
+        {/* Quote text */}
+        <p className="text-xs sm:text-sm text-slate-300 leading-relaxed italic mb-5">
+          "{t.content}"
+        </p>
+      </div>
+
+      {/* Client Profile footer */}
+      <div className="pt-4 border-t border-[#172545]/70 flex items-center justify-between">
+        <div>
+          <div className="flex items-center gap-1.5">
+            <h4 className="text-xs font-bold text-white">{t.name}</h4>
+            <FaCircleCheck className="text-emerald-400 text-[11px]" title="Verified Client" />
+          </div>
+          <p className="text-[10px] text-slate-400">{t.role} • {t.city}</p>
+        </div>
+        <div className="text-right">
+          <span className="text-[10px] font-mono text-emerald-400 font-bold block">{t.capital}</span>
+          <span className="text-[9px] font-mono text-slate-500 block">{t.broker}</span>
+        </div>
+      </div>
+    </div>
+  );
+
+  return (
+    <section id="testimonials" className="py-24 bg-[#04060f] border-t border-[#172545]/80 relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+        <SectionHeader
+          badge="Verified Client Experiences"
+          title="Client Testimonials"
+          sub="Real experiences from retail traders, full-time professionals, and investors running Algologic automated execution across Indian markets."
+        />
+      </div>
+
+      {/* Side Fade Gradient Masks */}
+      <div className="relative w-full overflow-hidden">
+        <div className="pointer-events-none absolute inset-y-0 left-0 w-16 sm:w-32 bg-gradient-to-r from-[#04060f] to-transparent z-20" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 w-16 sm:w-32 bg-gradient-to-l from-[#04060f] to-transparent z-20" />
+
+        {/* Row 1: Scrolling Left */}
+        <div className="flex overflow-hidden py-3">
+          <div className="animate-marquee-left flex gap-6">
+            {row1.map((t, i) => renderCard(t, `r1-a-${i}`))}
+            {row1.map((t, i) => renderCard(t, `r1-b-${i}`))}
+          </div>
+        </div>
+
+        {/* Row 2: Scrolling Right */}
+        <div className="flex overflow-hidden py-3 mt-2">
+          <div className="animate-marquee-right flex gap-6">
+            {row2.map((t, i) => renderCard(t, `r2-a-${i}`))}
+            {row2.map((t, i) => renderCard(t, `r2-b-${i}`))}
+          </div>
+        </div>
+      </div>
+
+      <div className="text-center mt-10">
+        <span className="text-xs font-mono text-slate-500">
+          * Non-custodial API execution feedback verified via real broker trade records.
+        </span>
       </div>
     </section>
   );
