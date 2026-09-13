@@ -869,7 +869,7 @@ function FaqSection() {
         {faqData.map((f, i) => (
           <Card key={i} className="rounded-xl border border-[#172545] overflow-hidden">
             <button onClick={() => setOpenIdx(openIdx === i ? -1 : i)} className="w-full p-5 text-left flex items-center justify-between font-semibold text-white hover:text-cyan-400 transition-colors"><span>{f.q}</span><FaChevronDown className={`text-xs transition-transform ${openIdx === i ? 'rotate-180' : ''}`} /></button>
-            {openIdx === i && <div className="px-5 pb-5 text-xs sm:text-sm text-slate-400 leading-relaxed border-t border-[#172545]/40 pt-3">{f.a}</div>}
+            {openIdx === i && <div className="px-5 pb-5 text-xs sm:text-sm text-slate-400 leading-relaxed border-t border-[#172545]/40 pt-3 whitespace-pre-line">{f.a}</div>}
           </Card>
         ))}
       </div>
