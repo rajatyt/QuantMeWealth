@@ -902,27 +902,31 @@ function ContactSection() {
     const formattedAmount = formatINR(allocation);
 
     try {
-      // Direct FormData dispatch to official@quantmewealth.in
-      const formData = new FormData();
-      formData.append('Client Name', form.name);
-      formData.append('Phone Number', form.phone);
-      formData.append('Client Email', form.email);
-      formData.append('Investor Type', form.investorType);
-      formData.append('Capital Allocation', formattedAmount);
-      formData.append('Custom Notes', form.notes || 'None');
-      formData.append('_subject', `⚡ New Live Demo Request: ${form.name} (${formattedAmount})`);
-      formData.append('_captcha', 'false');
-      formData.append('_template', 'table');
-
-      await fetch('https://formsubmit.co/official@quantmewealth.in', {
+      // Direct JSON dispatch to FormSubmit AJAX endpoint for official@quantmewealth.in
+      const res = await fetch('https://formsubmit.co/ajax/official@quantmewealth.in', {
         method: 'POST',
-        body: formData,
         headers: {
+          'Content-Type': 'application/json',
           Accept: 'application/json',
         },
+        body: JSON.stringify({
+          'Client Name': form.name,
+          'Phone Number': form.phone,
+          'Client Email': form.email,
+          'Investor Type': form.investorType,
+          'Capital Allocation': formattedAmount,
+          'Custom Notes': form.notes || 'None',
+          _subject: `⚡ New Live Demo Request: ${form.name} (${formattedAmount})`,
+          _replyto: form.email,
+          _captcha: 'false',
+          _template: 'table',
+        }),
       });
+
+      const data = await res.json();
+      console.log('Form submission status:', data);
     } catch (err) {
-      console.error('Email dispatch note:', err);
+      console.error('Email dispatch error:', err);
     }
 
     setSubmitting(false);
