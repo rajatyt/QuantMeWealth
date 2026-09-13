@@ -197,9 +197,17 @@ function MiniChart() {
 function TrustRibbon() {
   return (
     <section className="border-y border-[#172545]/70 bg-[#070c1a]/90 py-10">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 gap-8 text-center divide-y sm:divide-y-0 sm:divide-x divide-[#172545]/60">
         {trustRibbonStats.map((s, i) => (
-          <div key={i}><div className="text-3xl sm:text-4xl font-extrabold font-mono text-white flex items-center justify-center gap-1"><span>{s.value}</span><span className={`text-xl ${s.color}`}>{s.suffix}</span></div><p className="text-xs text-slate-400 uppercase font-semibold tracking-wider">{s.label}</p></div>
+          <div key={i} className={i > 0 ? 'pt-6 sm:pt-0' : ''}>
+            <div className="text-3xl sm:text-4xl font-extrabold font-mono text-white flex items-center justify-center gap-1">
+              <span>{s.value}</span>
+              <span className={`text-xl ${s.color}`}>{s.suffix}</span>
+            </div>
+            <p className="text-xs text-slate-400 uppercase font-semibold tracking-wider mt-1">
+              {s.label}
+            </p>
+          </div>
         ))}
       </div>
     </section>
@@ -311,7 +319,7 @@ function SubscriptionSection() {
                   <div className="leading-relaxed">
                     Traders need to have a minimum of{' '}
                     <span className="inline-block px-2.5 py-0.5 rounded-md bg-amber-400/20 border border-amber-400/50 text-amber-300 font-mono font-bold text-sm">
-                      10,000/- to 15,000/-
+                      15,000/- to 20,000/-
                     </span>{' '}
                     for trading purposes for the segment of{' '}
                     <strong className="text-white font-semibold">Equity-Cash</strong>,{' '}
@@ -597,10 +605,11 @@ function EdgeAndCalculatorSection() {
   const [duration, setDuration] = useState(6); // Default 6 months
   const [profile, setProfile] = useState(0);
 
-  const cagr = calcProfiles[profile].cagr;
-  // Effective time horizon in years
-  const timeInYears = timeUnit === 'months' ? duration / 12 : duration;
-  const finalVal = capital * Math.pow(1 + cagr / 100, timeInYears);
+  const monthlyRate = calcProfiles[profile].monthlyRate ?? calcProfiles[profile].cagr;
+  // Total duration converted to months
+  const totalMonths = timeUnit === 'months' ? duration : duration * 12;
+  const timeInYears = totalMonths / 12;
+  const finalVal = capital * Math.pow(1 + monthlyRate / 100, totalMonths);
   const benchFinal = capital * Math.pow(1 + BENCHMARK_CAGR, timeInYears);
   const gain = finalVal - capital;
   const pctGain = (gain / capital) * 100;
@@ -794,17 +803,17 @@ function EdgeAndCalculatorSection() {
               {/* 3. Strategy Profile Selection */}
               <div>
                 <label className="text-[11px] font-mono text-slate-300 font-semibold block mb-1.5">STRATEGY PROFILE</label>
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-2 gap-3">
                   {calcProfiles.map((p, i) => (
                     <button
                       key={p.id}
                       onClick={() => setProfile(i)}
-                      className={`p-2.5 rounded-xl border text-left transition-all ${
-                        profile === i ? 'border-cyan-400 bg-cyan-400/10' : 'border-[#172545] bg-[#0a101f]'
+                      className={`p-3 rounded-xl border text-left transition-all ${
+                        profile === i ? 'border-cyan-400 bg-cyan-400/10 shadow-[0_0_15px_rgba(0,240,255,0.15)]' : 'border-[#172545] bg-[#0a101f] hover:border-cyan-500/40'
                       }`}
                     >
-                      <span className="block text-[11px] font-bold text-white">{p.label}</span>
-                      <span className={`block text-[9px] font-mono mt-0.5 ${profile === i ? 'text-cyan-400' : 'text-slate-400'}`}>
+                      <span className="block text-xs font-bold text-white">{p.label}</span>
+                      <span className={`block text-[10px] font-mono mt-0.5 ${profile === i ? 'text-cyan-400 font-bold' : 'text-slate-400'}`}>
                         {p.sub}
                       </span>
                     </button>
@@ -872,21 +881,64 @@ function FaqSection() {
 function ContactSection() {
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [allocation, setAllocation] = useState(50000); // Seekbar from 10,000 to 1Cr
+  const [allocation, setAllocation] = useState(25000); // Seekbar from 15,000 to 15 Lakhs
+  const [form, setForm] = useState({
+    name: '',
+    phone: '',
+    email: '',
+    investorType: 'Retail / Individual Trader',
+    notes: '',
+  });
 
-  const handleSubmit = (e) => {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitting(true);
-    setTimeout(() => {
-      setSubmitting(false);
-      setSuccess(true);
-      e.target.reset();
-      setAllocation(50000);
-    }, 900);
+
+    const formattedAmount = formatINR(allocation);
+
+    try {
+      // Direct FormData dispatch to official@quantmewealth.in
+      const formData = new FormData();
+      formData.append('Client Name', form.name);
+      formData.append('Phone Number', form.phone);
+      formData.append('Client Email', form.email);
+      formData.append('Investor Type', form.investorType);
+      formData.append('Capital Allocation', formattedAmount);
+      formData.append('Custom Notes', form.notes || 'None');
+      formData.append('_subject', `⚡ New Live Demo Request: ${form.name} (${formattedAmount})`);
+      formData.append('_captcha', 'false');
+      formData.append('_template', 'table');
+
+      await fetch('https://formsubmit.co/official@quantmewealth.in', {
+        method: 'POST',
+        body: formData,
+        headers: {
+          Accept: 'application/json',
+        },
+      });
+    } catch (err) {
+      console.error('Email dispatch note:', err);
+    }
+
+    setSubmitting(false);
+    setSuccess(true);
+    setForm({
+      name: '',
+      phone: '',
+      email: '',
+      investorType: 'Retail / Individual Trader',
+      notes: '',
+    });
+    setAllocation(25000);
   };
 
   const info = [
-    { Icon: FaEnvelope, bg: 'bg-cyan-500/10', color: 'text-cyan-400', label: 'OFFICIAL EMAIL', val: 'desk@quantmewealth.com' },
+    { Icon: FaEnvelope, bg: 'bg-cyan-500/10', color: 'text-cyan-400', label: 'OFFICIAL EMAIL', val: 'official@quantmewealth.in' },
     { Icon: FaLocationDot, bg: 'bg-emerald-500/10', color: 'text-emerald-400', label: 'LOCATION', val: 'Bangalore' },
   ];
 
@@ -905,43 +957,119 @@ function ContactSection() {
             <p className="text-xs text-slate-400 mb-6">Fill in your information to schedule your live market software Demo.</p>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div><label className="block text-xs font-mono text-slate-300 mb-1.5">FULL NAME *</label><input type="text" required placeholder="e.g. Rajat Sharma" className="w-full px-4 py-3 rounded-xl bg-[#050811]/80 border border-[#172545] focus:border-cyan-400 focus:outline-none text-sm text-white placeholder-slate-600" /></div>
-                <div><label className="block text-xs font-mono text-slate-300 mb-1.5">EMAIL *</label><input type="email" required placeholder="rajat@office.com" className="w-full px-4 py-3 rounded-xl bg-[#050811]/80 border border-[#172545] focus:border-cyan-400 focus:outline-none text-sm text-white placeholder-slate-600" /></div>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div><label className="block text-xs font-mono text-slate-300 mb-1.5">INVESTOR TYPE *</label><select className="w-full px-4 py-3 rounded-xl bg-[#050811]/80 border border-[#172545] focus:border-cyan-400 focus:outline-none text-sm text-slate-300"><option>Retail / Individual Trader</option><option>High Net-Worth Individual</option><option>Family Office</option><option>Prop Trading Desk</option></select></div>
-                {/* Allocation Seekbar starting from ₹10,000 to ₹1Cr */}
                 <div>
-                  <div className="flex justify-between items-center mb-1.5">
-                    <label className="block text-xs font-mono text-slate-300">ALLOCATION *</label>
-                    <span className="text-xs font-mono font-bold text-cyan-400">{formatINR(allocation)}</span>
-                  </div>
+                  <label className="block text-xs font-mono text-slate-300 mb-1.5">FULL NAME *</label>
                   <input
-                    type="range"
-                    min={10000}
-                    max={10000000}
-                    step={10000}
-                    value={allocation}
-                    onChange={(e) => setAllocation(+e.target.value)}
-                    className="w-full h-2 bg-[#050811] rounded-lg cursor-pointer border border-[#172545] accent-cyan-400"
+                    type="text"
+                    name="name"
+                    value={form.name}
+                    onChange={handleChange}
+                    required
+                    placeholder="e.g. Rajat Sharma"
+                    className="w-full px-4 py-3 rounded-xl bg-[#050811]/80 border border-[#172545] focus:border-cyan-400 focus:outline-none text-sm text-white placeholder-slate-600"
                   />
-                  <div className="flex justify-between text-[9px] font-mono text-slate-500 mt-1">
-                    <span>₹10K</span>
-                    <span>₹25L</span>
-                    <span>₹50L</span>
-                    <span>₹1Cr</span>
-                  </div>
+                </div>
+                <div>
+                  <label className="block text-xs font-mono text-slate-300 mb-1.5">PHONE NUMBER *</label>
+                  <input
+                    type="tel"
+                    name="phone"
+                    value={form.phone}
+                    onChange={handleChange}
+                    required
+                    placeholder="+91 98765 43210"
+                    className="w-full px-4 py-3 rounded-xl bg-[#050811]/80 border border-[#172545] focus:border-cyan-400 focus:outline-none text-sm text-white placeholder-slate-600"
+                  />
                 </div>
               </div>
-              <div><label className="block text-xs font-mono text-slate-300 mb-1.5">NOTES</label><textarea rows={3} placeholder="Custom mandate, broker preference..." className="w-full px-4 py-3 rounded-xl bg-[#050811]/80 border border-[#172545] focus:border-cyan-400 focus:outline-none text-sm text-white placeholder-slate-600" /></div>
-              <button type="submit" disabled={submitting} className="w-full py-4 text-sm font-bold text-black bg-gradient-to-r from-cyan-400 to-emerald-400 rounded-xl shadow-[0_0_25px_rgba(0,240,255,0.35)] transition-all flex items-center justify-center gap-2">{submitting ? <><FaSpinner className="animate-spin" /> Submitting...</> : <><FaPaperPlane className="text-xs" /> Submit Request</>}</button>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-mono text-slate-300 mb-1.5">EMAIL *</label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={form.email}
+                    onChange={handleChange}
+                    required
+                    placeholder="rajat@office.com"
+                    className="w-full px-4 py-3 rounded-xl bg-[#050811]/80 border border-[#172545] focus:border-cyan-400 focus:outline-none text-sm text-white placeholder-slate-600"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-mono text-slate-300 mb-1.5">INVESTOR TYPE *</label>
+                  <select
+                    name="investorType"
+                    value={form.investorType}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 rounded-xl bg-[#050811]/80 border border-[#172545] focus:border-cyan-400 focus:outline-none text-sm text-slate-300"
+                  >
+                    <option>Retail / Individual Trader</option>
+                    <option>High Net-Worth Individual</option>
+                    <option>Family Office</option>
+                    <option>Prop Trading Desk</option>
+                  </select>
+                </div>
+              </div>
+              {/* Allocation Seekbar starting from ₹15,000 to ₹15 Lakhs */}
+              <div>
+                <div className="flex justify-between items-center mb-1.5">
+                  <label className="block text-xs font-mono text-slate-300">ALLOCATION *</label>
+                  <span className="text-xs font-mono font-bold text-cyan-400">{formatINR(allocation)}</span>
+                </div>
+                <input
+                  type="range"
+                  min={15000}
+                  max={1500000}
+                  step={5000}
+                  value={allocation}
+                  onChange={(e) => setAllocation(+e.target.value)}
+                  className="w-full h-2 bg-[#050811] rounded-lg cursor-pointer border border-[#172545] accent-cyan-400"
+                />
+                <div className="flex justify-between text-[9px] font-mono text-slate-500 mt-1">
+                  <span>₹15K</span>
+                  <span>₹5L</span>
+                  <span>₹10L</span>
+                  <span>₹15L</span>
+                </div>
+              </div>
+              <div>
+                <label className="block text-xs font-mono text-slate-300 mb-1.5">NOTES</label>
+                <textarea
+                  rows={3}
+                  name="notes"
+                  value={form.notes}
+                  onChange={handleChange}
+                  placeholder="Custom mandate, broker preference..."
+                  className="w-full px-4 py-3 rounded-xl bg-[#050811]/80 border border-[#172545] focus:border-cyan-400 focus:outline-none text-sm text-white placeholder-slate-600"
+                />
+              </div>
+              <button
+                type="submit"
+                disabled={submitting}
+                className="w-full py-4 text-sm font-bold text-black bg-gradient-to-r from-cyan-400 to-emerald-400 rounded-xl shadow-[0_0_25px_rgba(0,240,255,0.35)] transition-all flex items-center justify-center gap-2"
+              >
+                {submitting ? (
+                  <><FaSpinner className="animate-spin" /> Sending Request...</>
+                ) : (
+                  <><FaPaperPlane className="text-xs" /> Send Request</>
+                )}
+              </button>
             </form>
             {success && (
-              <div className="absolute inset-0 bg-[#070e1e]/95 backdrop-blur-md rounded-3xl p-8 flex flex-col items-center justify-center text-center space-y-4 border border-emerald-400">
-                <div className="w-16 h-16 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-2xl border border-emerald-500/40"><FaCheck /></div>
-                <h4 className="text-xl font-bold text-white">Request Received</h4>
-                <p className="text-xs text-slate-400 max-w-md">Our senior desk will deliver the audited factbook to your email within 4 business hours.</p>
-                <button onClick={() => setSuccess(false)} className="px-6 py-2.5 text-xs font-bold font-mono bg-emerald-400 text-black rounded-lg">Done</button>
+              <div className="absolute inset-0 bg-[#070e1e]/95 backdrop-blur-md rounded-3xl p-8 flex flex-col items-center justify-center text-center space-y-4 border border-emerald-400 z-30">
+                <div className="w-16 h-16 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-2xl border border-emerald-500/40">
+                  <FaCheck />
+                </div>
+                <h4 className="text-xl font-bold text-white">Request Sent Successfully!</h4>
+                <p className="text-xs text-slate-300 max-w-md leading-relaxed">
+                  Your details have been forwarded to our desk at <strong className="text-cyan-400 font-mono">official@quantmewealth.in</strong>. Our team will review your mandate and deliver the audited demo kit within 4 business hours.
+                </p>
+                <button
+                  onClick={() => setSuccess(false)}
+                  className="px-6 py-2.5 text-xs font-bold font-mono bg-emerald-400 text-black rounded-lg hover:opacity-90"
+                >
+                  Done
+                </button>
               </div>
             )}
           </div>

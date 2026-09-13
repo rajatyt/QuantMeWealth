@@ -19,8 +19,6 @@ export default function App() {
         <Home />
       </main>
       <Footer />
-
-      {/* Floating WhatsApp Action Button */}
       <WhatsAppButton />
     </div>
   );

@@ -1,15 +1,14 @@
 export const BRAND = {
   name: 'QuantMeWealth',
   tagline: 'Systematic Alpha Labs',
-  email: 'desk@quantmewealth.com',
+  email: 'official@quantmewealth.in',
   locations: 'Bangalore',
   security: 'SOC2 Certified • 256-Bit SSL Encrypted',
 };
 
 export const WHATSAPP_CONFIG = {
-  // Replace with your WhatsApp Business phone number (with country code, no '+' or spaces)
-  phoneNumber: '919876543210',
-  defaultMessage: 'Hello! I am interested in exploring QuantMeWealth quantitative strategies and subscription access.',
+  phoneNumber: '918660445134',
+  defaultMessage: 'Hello! I have a query regarding QuantMeWealth algorithmic trading services and strategy subscriptions.',
 };
 
 export const NAV_LINKS = [

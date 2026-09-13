@@ -98,10 +98,8 @@ export const metricsData = [
 ];
 
 export const trustRibbonStats = [
-  { value: '\u20b95,200+', suffix: 'Cr', color: 'text-cyan-400', label: 'Annual Traded Volume' },
   { value: '74.8', suffix: '%', color: 'text-emerald-400', label: 'Historical Win Ratio' },
-  { value: '4.8', suffix: '%', color: 'text-cyan-400', label: 'Historical Max Drawdown' },
-  { value: '99.99', suffix: '%', color: 'text-purple-400', label: 'Execution Uptime SLA' },
+  { value: '14.8', suffix: '%', color: 'text-cyan-400', label: 'Historical Max Drawdown' },
 ];
 
 // ========== EDGE PILLARS ==========
@@ -122,9 +120,8 @@ export const faqData = [
 
 // ========== CALCULATOR PROFILES ==========
 export const calcProfiles = [
-  { id: 'stat-arb', label: 'Stat-Arb', cagr: 28.4, sub: '28.4% CAGR' },
-  { id: 'balanced', label: 'Balanced Alpha', cagr: 34.8, sub: '34.8% CAGR' },
-  { id: 'hft', label: 'HFT Aggressive', cagr: 42.5, sub: '42.5% CAGR' },
+  { id: 'balanced', label: 'Balanced Alpha', monthlyRate: 34.8, cagr: 34.8, sub: '34.8% Monthly' },
+  { id: 'hft', label: 'HFT Aggressive', monthlyRate: 42.5, cagr: 42.5, sub: '42.5% Monthly' },
 ];
 
 // ========== CLIENT TESTIMONIALS ==========
