@@ -20,7 +20,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="space-y-4">
             <div className="flex items-center gap-2.5">
-              <img src="/brand-logo.png?v=3" alt="QuantMeWealth Logo" className="h-8 w-auto object-contain" />
+              <img src="/brand-logo.png?v=4" alt="QuantMeWealth Logo" className="h-8 w-auto object-contain" />
               <span className="text-lg font-extrabold text-white">QuantMe<span className="text-cyan-400">Wealth</span></span>
             </div>
             <p className="text-[11px] leading-relaxed">Next-generation algorithmic trading, statistical arbitrage, and execution technology designed for professional capital.</p>

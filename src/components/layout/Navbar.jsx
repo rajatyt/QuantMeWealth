@@ -11,7 +11,7 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-20">
           <a href="#" className="flex items-center gap-3 group">
             <img
-              src="/brand-logo.png?v=3"
+              src="/brand-logo.png?v=4"
               alt="QuantMeWealth Logo"
               className="h-11 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
             />
