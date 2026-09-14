@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FaChartLine, FaArrowRight, FaBars, FaXmark } from 'react-icons/fa6';
+import { FaArrowRight, FaBars, FaXmark } from 'react-icons/fa6';
 import { NAV_LINKS } from '../../utils/constants';
 
 export default function Navbar() {
@@ -10,13 +10,14 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           <a href="#" className="flex items-center gap-3 group">
-            <div className="relative flex items-center justify-center w-11 h-11 rounded-xl bg-gradient-to-br from-cyan-500/20 to-emerald-500/20 border border-cyan-500/40 group-hover:border-cyan-400 transition-all shadow-[0_0_15px_rgba(0,240,255,0.2)]">
-              <FaChartLine className="text-cyan-400 text-xl group-hover:scale-110 transition-transform" />
-              <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-emerald-500 rounded-full" />
-            </div>
-            <div>
-              <div className="flex"><span className="text-xl font-extrabold text-white">QuantMe</span><span className="text-xl font-extrabold text-cyan-400">Wealth</span></div>
-              <span className="block text-[10px] font-mono tracking-widest text-slate-400 uppercase">Systematic Alpha Labs</span>
+            <img
+              src="/favicon.png"
+              alt="QuantMeWealth Logo"
+              className="h-11 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+            />
+            <div className="flex items-center">
+              <span className="text-2xl font-extrabold text-white tracking-tight">QuantMe</span>
+              <span className="text-2xl font-extrabold text-cyan-400 tracking-tight">Wealth</span>
             </div>
           </a>
 

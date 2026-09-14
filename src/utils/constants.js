@@ -1,6 +1,5 @@
 export const BRAND = {
   name: 'QuantMeWealth',
-  tagline: 'Systematic Alpha Labs',
   email: 'official@quantmewealth.in',
   locations: 'Bangalore',
   security: 'SOC2 Certified • 256-Bit SSL Encrypted',
