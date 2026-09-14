@@ -359,7 +359,7 @@ function SubscriptionSection() {
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-mono font-bold mb-4">
                 <span>ACTIVE SERVICE</span>
               </div>
-              <h3 className="text-2xl sm:text-3xl font-extrabold text-white">Automated Algo Trading Suite</h3>
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-white">Pro Trader Plan</h3>
               <p className="text-xs text-slate-400 mt-2 leading-relaxed">
                 Complete access to our statistical arbitrage and options volatility execution systems with zero execution delay.
               </p>
@@ -377,19 +377,23 @@ function SubscriptionSection() {
               <div className="space-y-3.5 mt-8 text-xs text-slate-300">
                 <div className="flex items-start gap-3">
                   <div className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-[10px] shrink-0 mt-0.5"><FaCheck /></div>
-                  <span>Fully automated multi-leg Options & Statistical Arbitrage execution</span>
+                  <span>Fully automated and swift execution in index options</span>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-[10px] shrink-0 mt-0.5"><FaCheck /></div>
+                  <span>Executes 1-2 high probability trades in a day</span>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-[10px] shrink-0 mt-0.5"><FaCheck /></div>
+                  <span>Well defined Risk reward on every trade</span>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-[10px] shrink-0 mt-0.5"><FaCheck /></div>
+                  <span>Built-in entry and exit logic</span>
                 </div>
                 <div className="flex items-start gap-3">
                   <div className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-[10px] shrink-0 mt-0.5"><FaCheck /></div>
                   <span>Non-custodial Broker API integration (Zerodha, AngelOne, Fyers, Upstox)</span>
-                </div>
-                <div className="flex items-start gap-3">
-                  <div className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-[10px] shrink-0 mt-0.5"><FaCheck /></div>
-                  <span>Sub-second execution & latency-optimized order routing</span>
-                </div>
-                <div className="flex items-start gap-3">
-                  <div className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-[10px] shrink-0 mt-0.5"><FaCheck /></div>
-                  <span>Real-time trade fill notifications via WhatsApp & Telegram</span>
                 </div>
                 <div className="flex items-start gap-3">
                   <div className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-[10px] shrink-0 mt-0.5"><FaCheck /></div>
@@ -425,7 +429,7 @@ function SubscriptionSection() {
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                 <div>
                   <span className="text-[10px] uppercase tracking-widest text-purple-400 font-bold block mb-1">
-                    NEW ALGO SERVICE FEE
+                    SCALP TRADER PLAN
                   </span>
                   <div className="flex items-baseline gap-2">
                     <span className="text-4xl sm:text-5xl font-extrabold text-white">₹12,000</span>
@@ -447,7 +451,7 @@ function SubscriptionSection() {
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/30 text-purple-400 text-xs font-mono font-bold mb-3">
                   <span>NEXT-GEN ARCHITECTURE</span>
                 </div>
-                <h3 className="text-2xl sm:text-3xl font-extrabold text-white">DeepOrder Flow Neural HFT</h3>
+                <h3 className="text-2xl sm:text-3xl font-extrabold text-white">Scalp Trader Plan</h3>
                 <p className="text-xs text-slate-400 mt-2 leading-relaxed">
                   Next-generation Level 3 order-book microstructure AI engine engineered for high-frequency tick imbalance capture.
                 </p>
