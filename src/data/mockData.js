@@ -120,8 +120,8 @@ export const faqData = [
 
 // ========== CALCULATOR PROFILES ==========
 export const calcProfiles = [
-  { id: 'balanced', label: 'Balanced Alpha', monthlyRate: 42.5, cagr: 42.5, sub: '42.5% Monthly' },
-  { id: 'hft', label: 'HFT Aggressive', monthlyRate: 34.8, cagr: 34.8, sub: '34.8% Monthly' },
+  { id: 'pro', label: 'Pro Trader Plan', monthlyRate: 42.5, cagr: 42.5, sub: '42.5% Monthly' },
+  { id: 'scalp', label: 'Scalp Trader Plan', monthlyRate: 34.8, cagr: 34.8, sub: '34.8% Monthly' },
 ];
 
 // ========== CLIENT TESTIMONIALS ==========

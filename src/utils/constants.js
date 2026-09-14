@@ -7,7 +7,7 @@ export const BRAND = {
 
 export const WHATSAPP_CONFIG = {
   phoneNumber: '918660445134',
-  defaultMessage: 'Hello! I have a query regarding QuantMeWealth algorithmic trading services and strategy subscriptions.',
+  defaultMessage: 'Hello! I have a query regarding QuantMeWealth algorithmic trading services.',
 };
 
 export const NAV_LINKS = [

@@ -381,7 +381,7 @@ function SubscriptionSection() {
                 </div>
                 <div className="flex items-start gap-3">
                   <div className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-[10px] shrink-0 mt-0.5"><FaCheck /></div>
-                  <span>Executes 1-2 high probability trades in a day</span>
+                  <span>Trades only 1–2 high-probability setups within major market structure zones.</span>
                 </div>
                 <div className="flex items-start gap-3">
                   <div className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-[10px] shrink-0 mt-0.5"><FaCheck /></div>
