@@ -375,20 +375,20 @@ function SubscriptionSection() {
                 Complete access to our statistical arbitrage and options volatility execution systems with zero execution delay.
               </p>
 
-              {/* Duration Toggle Buttons */}
-              <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+              {/* Segmented Pill Toggle Bar */}
+              <div className="mt-7 p-1 sm:p-1.5 rounded-full bg-[#050914] border-2 border-cyan-400/50 shadow-[0_0_25px_rgba(0,240,255,0.18)] grid grid-cols-4 items-center">
                 {plans.map((p, i) => (
                   <button
                     key={p.label}
                     onClick={() => setSelectedPlan(i)}
-                    className={`relative py-3 px-2 rounded-xl border-2 text-center transition-all duration-300 cursor-pointer ${
+                    className={`relative py-2 sm:py-2.5 px-1 text-center rounded-full text-[11px] sm:text-xs md:text-sm font-bold transition-all duration-300 cursor-pointer select-none whitespace-nowrap ${
                       selectedPlan === i
-                        ? 'border-cyan-400 bg-cyan-400/10 shadow-[0_0_20px_rgba(0,240,255,0.2)] text-white font-extrabold scale-[1.02]'
-                        : 'border-[#172545] bg-[#0a101f]/80 text-slate-400 hover:border-cyan-500/40 hover:text-white font-medium hover:bg-[#0c1325]'
+                        ? 'bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400 text-slate-950 shadow-[0_0_15px_rgba(0,240,255,0.4)] font-extrabold'
+                        : 'text-slate-400 hover:text-white hover:bg-white/5 font-semibold'
                     }`}
                   >
                     {p.tag && (
-                      <span className={`absolute -top-2.5 left-1/2 -translate-x-1/2 px-2 py-0.5 text-[9px] font-mono font-extrabold uppercase tracking-wider rounded-full whitespace-nowrap ${
+                      <span className={`absolute -top-3 left-1/2 -translate-x-1/2 px-1.5 py-0.2 text-[7.5px] sm:text-[8.5px] font-mono font-extrabold uppercase tracking-wider rounded-full shadow-sm whitespace-nowrap ${
                         p.tag === 'BEST VALUE'
                           ? 'bg-gradient-to-r from-amber-400 to-yellow-300 text-black'
                           : 'bg-gradient-to-r from-cyan-400 to-emerald-400 text-black'
@@ -396,9 +396,7 @@ function SubscriptionSection() {
                         {p.tag}
                       </span>
                     )}
-                    <span className={`block text-xs sm:text-sm ${selectedPlan === i ? 'text-cyan-400 font-bold' : ''}`}>
-                      {p.label}
-                    </span>
+                    {p.label}
                   </button>
                 ))}
               </div>
