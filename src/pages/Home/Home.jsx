@@ -381,10 +381,10 @@ function SubscriptionSection() {
                   <button
                     key={p.label}
                     onClick={() => setSelectedPlan(i)}
-                    className={`relative p-3 rounded-xl border-2 text-center transition-all duration-300 cursor-pointer ${
+                    className={`relative py-3 px-2 rounded-xl border-2 text-center transition-all duration-300 cursor-pointer ${
                       selectedPlan === i
-                        ? 'border-cyan-400 bg-cyan-400/10 shadow-[0_0_20px_rgba(0,240,255,0.2)] scale-[1.03]'
-                        : 'border-[#172545] bg-[#0a101f]/80 hover:border-cyan-500/40 hover:bg-[#0c1325]'
+                        ? 'border-cyan-400 bg-cyan-400/10 shadow-[0_0_20px_rgba(0,240,255,0.2)] text-white font-extrabold scale-[1.02]'
+                        : 'border-[#172545] bg-[#0a101f]/80 text-slate-400 hover:border-cyan-500/40 hover:text-white font-medium hover:bg-[#0c1325]'
                     }`}
                   >
                     {p.tag && (
@@ -396,11 +396,9 @@ function SubscriptionSection() {
                         {p.tag}
                       </span>
                     )}
-                    <span className={`block text-xs font-bold mt-1 ${selectedPlan === i ? 'text-cyan-400' : 'text-slate-300'}`}>{p.label}</span>
-                    <span className={`block text-lg font-extrabold font-mono mt-1 ${selectedPlan === i ? 'text-white' : 'text-slate-400'}`}>₹{p.price}</span>
-                    {p.save && (
-                      <span className="block text-[10px] font-mono font-bold text-emerald-400 mt-0.5">Save {p.save}</span>
-                    )}
+                    <span className={`block text-xs sm:text-sm ${selectedPlan === i ? 'text-cyan-400 font-bold' : ''}`}>
+                      {p.label}
+                    </span>
                   </button>
                 ))}
               </div>
@@ -410,6 +408,11 @@ function SubscriptionSection() {
                 <div className="flex items-baseline gap-2.5 flex-wrap">
                   <span className="text-4xl font-extrabold text-white">₹{plan.price}</span>
                   <span className="text-xs text-slate-400">/ {plan.label.toLowerCase()}</span>
+                  {plan.save && (
+                    <span className="px-2 py-0.5 text-[11px] font-bold font-mono rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400">
+                      Save {plan.save}
+                    </span>
+                  )}
                 </div>
                 <div className="flex items-center gap-3 mt-2">
                   <span className="text-xs text-slate-400">That's just <span className="text-cyan-400 font-bold">₹{plan.perMonth}/mo</span></span>
