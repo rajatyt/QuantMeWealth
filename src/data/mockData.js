@@ -115,7 +115,7 @@ export const faqData = [
   { q: 'How does capital custody work? Do I transfer funds to QuantMeWealth?', a: 'No. QuantMeWealth operates on a strictly non-custodial model. Your capital resides exclusively in your own institutional or preferred brokerage account (e.g. Zerodha, Interactive Brokers, Motilal Oswal, Finvasia). Our algorithms execute trades via encrypted, zero-withdrawal API tokens.' },
   { q: 'What is the minimum capital requirement to deploy?', a: 'Traders need to have a minimum of 15,000/- to 20,000/- for trading purposes for the segment of Equity-Cash, Future & Options, and Commodity.' },
   { q: 'How do your algorithms handle sudden market flash crashes?', a: 'All strategies are embedded with automated hardware and software circuit breakers. If market volatility or portfolio delta exceeds preset Value-at-Risk (VaR) bands, the engine instantly neutralizes open exposures or transitions into protective gamma-long tail hedges.' },
-  { q: 'What is the fee structure for managed strategies?', a: 'Pro Trader Plan\nComplete access to our statistical arbitrage and options volatility execution systems with zero execution delay.\n\n₹4,999\n+ taxes / service fee' },
+  { q: 'What is the fee structure for managed strategies?', a: 'Pro Trader Plan\nFlexible duration-based pricing:\n3 Months — ₹13,999\n6 Months — ₹25,999\n1 Year — ₹49,999\n+ applicable taxes' },
 ];
 
 // ========== CALCULATOR PROFILES ==========

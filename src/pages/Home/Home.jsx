@@ -279,6 +279,16 @@ function StrategyModal({ s, onClose }) {
 
 /* ═══════════════════ SUBSCRIPTION & PRICING ═══════════════════ */
 function SubscriptionSection() {
+  const [selectedPlan, setSelectedPlan] = useState(1); // 0=3mo, 1=6mo, 2=1yr
+
+  const plans = [
+    { label: '3 Months', price: '13,999', perMonth: '4,666', save: null, tag: null },
+    { label: '6 Months', price: '25,999', perMonth: '4,333', save: '15%', tag: 'POPULAR' },
+    { label: '1 Year', price: '49,999', perMonth: '4,166', save: '30%', tag: 'BEST VALUE' },
+  ];
+
+  const plan = plans[selectedPlan];
+
   return (
     <section id="subscription" className="py-24 bg-[#060a15] border-t border-[#172545]/80 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -348,11 +358,11 @@ function SubscriptionSection() {
         />
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto items-stretch">
-          {/* Plan 1: Active Algo Trading Service (Early Bird ₹5,000) */}
+          {/* Plan 1: Pro Trader Plan */}
           <div className="relative rounded-3xl p-8 sm:p-10 glass-panel border-2 border-cyan-500/50 shadow-[0_0_35px_rgba(0,240,255,0.15)] flex flex-col justify-between overflow-hidden">
-            {/* Early bird tag */}
+            {/* Flexible plans tag */}
             <div className="absolute top-0 right-0 bg-gradient-to-l from-emerald-400 to-cyan-400 text-black text-[11px] font-mono font-extrabold px-4 py-1.5 rounded-bl-2xl shadow-md uppercase tracking-wider">
-              🔥 50% OFF EARLY BIRD
+              ⚡ CHOOSE YOUR PLAN
             </div>
 
             <div>
@@ -364,12 +374,45 @@ function SubscriptionSection() {
                 Complete access to our statistical arbitrage and options volatility execution systems with zero execution delay.
               </p>
 
-              {/* Pricing Display */}
-              <div className="mt-6 p-4 rounded-2xl bg-[#050914] border border-[#172545]/80 font-mono">
+              {/* Duration Toggle Buttons */}
+              <div className="mt-6 grid grid-cols-3 gap-2.5">
+                {plans.map((p, i) => (
+                  <button
+                    key={p.label}
+                    onClick={() => setSelectedPlan(i)}
+                    className={`relative p-3 rounded-xl border-2 text-center transition-all duration-300 cursor-pointer ${
+                      selectedPlan === i
+                        ? 'border-cyan-400 bg-cyan-400/10 shadow-[0_0_20px_rgba(0,240,255,0.2)] scale-[1.03]'
+                        : 'border-[#172545] bg-[#0a101f]/80 hover:border-cyan-500/40 hover:bg-[#0c1325]'
+                    }`}
+                  >
+                    {p.tag && (
+                      <span className={`absolute -top-2.5 left-1/2 -translate-x-1/2 px-2 py-0.5 text-[9px] font-mono font-extrabold uppercase tracking-wider rounded-full whitespace-nowrap ${
+                        p.tag === 'BEST VALUE'
+                          ? 'bg-gradient-to-r from-amber-400 to-yellow-300 text-black'
+                          : 'bg-gradient-to-r from-cyan-400 to-emerald-400 text-black'
+                      }`}>
+                        {p.tag}
+                      </span>
+                    )}
+                    <span className={`block text-xs font-bold mt-1 ${selectedPlan === i ? 'text-cyan-400' : 'text-slate-300'}`}>{p.label}</span>
+                    <span className={`block text-lg font-extrabold font-mono mt-1 ${selectedPlan === i ? 'text-white' : 'text-slate-400'}`}>₹{p.price}</span>
+                    {p.save && (
+                      <span className="block text-[10px] font-mono font-bold text-emerald-400 mt-0.5">Save {p.save}</span>
+                    )}
+                  </button>
+                ))}
+              </div>
+
+              {/* Dynamic Pricing Display */}
+              <div className="mt-4 p-4 rounded-2xl bg-[#050914] border border-[#172545]/80 font-mono">
                 <div className="flex items-baseline gap-2.5 flex-wrap">
-                  <span className="text-slate-500 line-through text-lg font-bold">₹10,000</span>
-                  <span className="text-4xl font-extrabold text-white">₹4,999</span>
-                  <span className="text-xs text-slate-400">+ taxes / service fee</span>
+                  <span className="text-4xl font-extrabold text-white">₹{plan.price}</span>
+                  <span className="text-xs text-slate-400">/ {plan.label.toLowerCase()}</span>
+                </div>
+                <div className="flex items-center gap-3 mt-2">
+                  <span className="text-xs text-slate-400">That's just <span className="text-cyan-400 font-bold">₹{plan.perMonth}/mo</span></span>
+                  <span className="text-[10px] text-slate-500">+ taxes</span>
                 </div>
               </div>
 
@@ -411,7 +454,7 @@ function SubscriptionSection() {
                 href="#contact"
                 className="w-full py-4 text-center text-sm font-bold text-black bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400 rounded-xl shadow-[0_0_25px_rgba(0,240,255,0.35)] hover:shadow-[0_0_35px_rgba(0,240,255,0.55)] hover:scale-[1.02] transition-all flex items-center justify-center gap-2"
               >
-                <span>Claim Early Bird Access (₹4,999 + taxes)</span>
+                <span>Get Started — ₹{plan.price} / {plan.label}</span>
                 <FaBolt className="text-xs" />
               </a>
             </div>
