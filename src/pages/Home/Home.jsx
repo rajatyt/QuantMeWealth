@@ -279,10 +279,11 @@ function StrategyModal({ s, onClose }) {
 
 /* ═══════════════════ SUBSCRIPTION & PRICING ═══════════════════ */
 function SubscriptionSection() {
-  const [selectedPlan, setSelectedPlan] = useState(1); // 0=3mo, 1=6mo, 2=1yr
+  const [selectedPlan, setSelectedPlan] = useState(0); // 0=monthly, 1=3mo, 2=6mo, 3=1yr
 
   const plans = [
-    { label: '3 Months', price: '13,999', perMonth: '4,666', save: null, tag: null },
+    { label: 'Monthly', price: '4,999', perMonth: '4,999', save: null, tag: null },
+    { label: '3 Months', price: '13,999', perMonth: '4,666', save: '7%', tag: null },
     { label: '6 Months', price: '25,999', perMonth: '4,333', save: '15%', tag: 'POPULAR' },
     { label: '1 Year', price: '49,999', perMonth: '4,166', save: '30%', tag: 'BEST VALUE' },
   ];
@@ -375,7 +376,7 @@ function SubscriptionSection() {
               </p>
 
               {/* Duration Toggle Buttons */}
-              <div className="mt-6 grid grid-cols-3 gap-2.5">
+              <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-2.5">
                 {plans.map((p, i) => (
                   <button
                     key={p.label}
