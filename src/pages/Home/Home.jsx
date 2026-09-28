@@ -280,7 +280,7 @@ function StrategyModal({ s, onClose }) {
 /* ═══════════════════ SUBSCRIPTION & PRICING ═══════════════════ */
 function SubscriptionSection() {
   const [selectedProPlan, setSelectedProPlan] = useState(0); // 0=monthly, 1=3mo, 2=6mo, 3=1yr
-  const [selectedScalpPlan, setSelectedScalpPlan] = useState(0); // 0=1mo, 1=3mo, 2=6mo, 3=1yr
+  const [selectedMomentumPlan, setSelectedMomentumPlan] = useState(0); // 0=1mo, 1=3mo, 2=6mo, 3=1yr
 
   const proPlans = [
     { label: 'Monthly', price: '4,999', perMonth: '4,999', save: null, tag: null },
@@ -289,7 +289,7 @@ function SubscriptionSection() {
     { label: '1 Year', price: '49,999', perMonth: '4,166', save: '30%', tag: 'BEST VALUE' },
   ];
 
-  const scalpPlans = [
+  const momentumPlans = [
     { label: '1 Month', price: '7,999', perMonth: '7,999', save: null, tag: null },
     { label: '3 Months', price: '21,999', perMonth: '7,333', save: '8%', tag: null },
     { label: '6 Months', price: '39,999', perMonth: '6,666', save: '17%', tag: 'POPULAR' },
@@ -297,7 +297,7 @@ function SubscriptionSection() {
   ];
 
   const proPlan = proPlans[selectedProPlan];
-  const scalpPlan = scalpPlans[selectedScalpPlan];
+  const momentumPlan = momentumPlans[selectedMomentumPlan];
 
   return (
     <section id="subscription" className="py-24 bg-[#060a15] border-t border-[#172545]/80 relative">
@@ -471,7 +471,7 @@ function SubscriptionSection() {
             </div>
           </div>
 
-          {/* Plan 2: Scalp Trader Plan */}
+          {/* Plan 2: Momentum Trader Plan */}
           <div className="relative rounded-3xl p-8 sm:p-10 glass-panel border-2 border-purple-500/50 shadow-[0_0_35px_rgba(168,85,247,0.18)] flex flex-col justify-between overflow-hidden">
             {/* Flexible plans tag */}
             <div className="absolute top-0 right-0 bg-gradient-to-l from-purple-500 to-indigo-500 text-white text-[11px] font-mono font-extrabold px-4 py-1.5 rounded-bl-2xl shadow-md uppercase tracking-wider">
@@ -482,19 +482,19 @@ function SubscriptionSection() {
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/30 text-purple-400 text-xs font-mono font-bold mb-4">
                 <span>ACTIVE SERVICE</span>
               </div>
-              <h3 className="text-2xl sm:text-3xl font-extrabold text-white">Scalp Trader Plan</h3>
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-white">Momentum Trader Plan</h3>
               <p className="text-xs text-slate-400 mt-2 leading-relaxed">
                 This algorithmic strategy is designed to actively trade and capture momentum during large, directional market moves
               </p>
 
               {/* Segmented Pill Toggle Bar */}
               <div className="mt-7 p-1 sm:p-1.5 rounded-full bg-[#050914] border-2 border-purple-400/50 shadow-[0_0_25px_rgba(168,85,247,0.18)] grid grid-cols-4 items-center">
-                {scalpPlans.map((p, i) => (
+                {momentumPlans.map((p, i) => (
                   <button
                     key={p.label}
-                    onClick={() => setSelectedScalpPlan(i)}
+                    onClick={() => setSelectedMomentumPlan(i)}
                     className={`relative py-2 sm:py-2.5 px-1 text-center rounded-full text-[11px] sm:text-xs md:text-sm font-bold transition-all duration-300 cursor-pointer select-none whitespace-nowrap ${
-                      selectedScalpPlan === i
+                      selectedMomentumPlan === i
                         ? 'bg-gradient-to-r from-purple-500 via-indigo-500 to-purple-600 text-white shadow-[0_0_15px_rgba(168,85,247,0.45)] font-extrabold'
                         : 'text-slate-400 hover:text-white hover:bg-white/5 font-semibold'
                     }`}
@@ -516,16 +516,16 @@ function SubscriptionSection() {
               {/* Dynamic Pricing Display */}
               <div className="mt-4 p-4 rounded-2xl bg-[#050914] border border-[#172545]/80 font-mono">
                 <div className="flex items-baseline gap-2.5 flex-wrap">
-                  <span className="text-4xl font-extrabold text-white">₹{scalpPlan.price}</span>
-                  <span className="text-xs text-slate-400">/ {scalpPlan.label.toLowerCase()}</span>
-                  {scalpPlan.save && (
+                  <span className="text-4xl font-extrabold text-white">₹{momentumPlan.price}</span>
+                  <span className="text-xs text-slate-400">/ {momentumPlan.label.toLowerCase()}</span>
+                  {momentumPlan.save && (
                     <span className="px-2 py-0.5 text-[11px] font-bold font-mono rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400">
-                      Save {scalpPlan.save}
+                      Save {momentumPlan.save}
                     </span>
                   )}
                 </div>
                 <div className="flex items-center gap-3 mt-2">
-                  <span className="text-xs text-slate-400">That's just <span className="text-purple-400 font-bold">₹{scalpPlan.perMonth}/mo</span></span>
+                  <span className="text-xs text-slate-400">That's just <span className="text-purple-400 font-bold">₹{momentumPlan.perMonth}/mo</span></span>
                   <span className="text-[10px] text-slate-500">+ taxes</span>
                 </div>
               </div>
@@ -564,7 +564,7 @@ function SubscriptionSection() {
                 href="#contact"
                 className="w-full py-4 text-center text-sm font-bold text-white bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-700 rounded-xl shadow-[0_0_25px_rgba(139,92,246,0.35)] hover:shadow-[0_0_35px_rgba(139,92,246,0.55)] hover:scale-[1.02] transition-all flex items-center justify-center gap-2"
               >
-                <span>Get Started — ₹{scalpPlan.price} / {scalpPlan.label}</span>
+                <span>Get Started — ₹{momentumPlan.price} / {momentumPlan.label}</span>
                 <FaBolt className="text-xs text-amber-400" />
               </a>
             </div>
