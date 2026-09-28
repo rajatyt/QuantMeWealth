@@ -279,16 +279,25 @@ function StrategyModal({ s, onClose }) {
 
 /* ═══════════════════ SUBSCRIPTION & PRICING ═══════════════════ */
 function SubscriptionSection() {
-  const [selectedPlan, setSelectedPlan] = useState(0); // 0=monthly, 1=3mo, 2=6mo, 3=1yr
+  const [selectedProPlan, setSelectedProPlan] = useState(0); // 0=monthly, 1=3mo, 2=6mo, 3=1yr
+  const [selectedScalpPlan, setSelectedScalpPlan] = useState(0); // 0=1mo, 1=3mo, 2=6mo, 3=1yr
 
-  const plans = [
+  const proPlans = [
     { label: 'Monthly', price: '4,999', perMonth: '4,999', save: null, tag: null },
     { label: '3 Months', price: '13,999', perMonth: '4,666', save: '7%', tag: null },
     { label: '6 Months', price: '25,999', perMonth: '4,333', save: '15%', tag: 'POPULAR' },
     { label: '1 Year', price: '49,999', perMonth: '4,166', save: '30%', tag: 'BEST VALUE' },
   ];
 
-  const plan = plans[selectedPlan];
+  const scalpPlans = [
+    { label: '1 Month', price: '7,999', perMonth: '7,999', save: null, tag: null },
+    { label: '3 Months', price: '21,999', perMonth: '7,333', save: '8%', tag: null },
+    { label: '6 Months', price: '39,999', perMonth: '6,666', save: '17%', tag: 'POPULAR' },
+    { label: '1 Year', price: '74,999', perMonth: '6,249', save: '22%', tag: 'BEST VALUE' },
+  ];
+
+  const proPlan = proPlans[selectedProPlan];
+  const scalpPlan = scalpPlans[selectedScalpPlan];
 
   return (
     <section id="subscription" className="py-24 bg-[#060a15] border-t border-[#172545]/80 relative">
@@ -377,12 +386,12 @@ function SubscriptionSection() {
 
               {/* Segmented Pill Toggle Bar */}
               <div className="mt-7 p-1 sm:p-1.5 rounded-full bg-[#050914] border-2 border-cyan-400/50 shadow-[0_0_25px_rgba(0,240,255,0.18)] grid grid-cols-4 items-center">
-                {plans.map((p, i) => (
+                {proPlans.map((p, i) => (
                   <button
                     key={p.label}
-                    onClick={() => setSelectedPlan(i)}
+                    onClick={() => setSelectedProPlan(i)}
                     className={`relative py-2 sm:py-2.5 px-1 text-center rounded-full text-[11px] sm:text-xs md:text-sm font-bold transition-all duration-300 cursor-pointer select-none whitespace-nowrap ${
-                      selectedPlan === i
+                      selectedProPlan === i
                         ? 'bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400 text-slate-950 shadow-[0_0_15px_rgba(0,240,255,0.4)] font-extrabold'
                         : 'text-slate-400 hover:text-white hover:bg-white/5 font-semibold'
                     }`}
@@ -404,16 +413,16 @@ function SubscriptionSection() {
               {/* Dynamic Pricing Display */}
               <div className="mt-4 p-4 rounded-2xl bg-[#050914] border border-[#172545]/80 font-mono">
                 <div className="flex items-baseline gap-2.5 flex-wrap">
-                  <span className="text-4xl font-extrabold text-white">₹{plan.price}</span>
-                  <span className="text-xs text-slate-400">/ {plan.label.toLowerCase()}</span>
-                  {plan.save && (
+                  <span className="text-4xl font-extrabold text-white">₹{proPlan.price}</span>
+                  <span className="text-xs text-slate-400">/ {proPlan.label.toLowerCase()}</span>
+                  {proPlan.save && (
                     <span className="px-2 py-0.5 text-[11px] font-bold font-mono rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400">
-                      Save {plan.save}
+                      Save {proPlan.save}
                     </span>
                   )}
                 </div>
                 <div className="flex items-center gap-3 mt-2">
-                  <span className="text-xs text-slate-400">That's just <span className="text-cyan-400 font-bold">₹{plan.perMonth}/mo</span></span>
+                  <span className="text-xs text-slate-400">That's just <span className="text-cyan-400 font-bold">₹{proPlan.perMonth}/mo</span></span>
                   <span className="text-[10px] text-slate-500">+ taxes</span>
                 </div>
               </div>
@@ -456,84 +465,106 @@ function SubscriptionSection() {
                 href="#contact"
                 className="w-full py-4 text-center text-sm font-bold text-black bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400 rounded-xl shadow-[0_0_25px_rgba(0,240,255,0.35)] hover:shadow-[0_0_35px_rgba(0,240,255,0.55)] hover:scale-[1.02] transition-all flex items-center justify-center gap-2"
               >
-                <span>Get Started — ₹{plan.price} / {plan.label}</span>
+                <span>Get Started — ₹{proPlan.price} / {proPlan.label}</span>
                 <FaBolt className="text-xs" />
               </a>
             </div>
           </div>
 
-          {/* Plan 2: Upcoming Next-Gen Algo (Coming Soon ₹12,000 - Blurred with Sharp Pricing) */}
-          <div className="relative rounded-3xl p-8 sm:p-10 glass-panel border border-purple-500/40 shadow-[0_0_35px_rgba(139,92,246,0.15)] flex flex-col justify-between overflow-hidden">
-            {/* Coming Soon ribbon */}
-            <div className="absolute top-0 right-0 z-30 bg-gradient-to-l from-purple-500 to-indigo-500 text-white text-[11px] font-mono font-extrabold px-4 py-1.5 rounded-bl-2xl shadow-md uppercase tracking-wider">
-              🚀 COMING SOON
+          {/* Plan 2: Scalp Trader Plan */}
+          <div className="relative rounded-3xl p-8 sm:p-10 glass-panel border-2 border-purple-500/50 shadow-[0_0_35px_rgba(168,85,247,0.18)] flex flex-col justify-between overflow-hidden">
+            {/* Flexible plans tag */}
+            <div className="absolute top-0 right-0 bg-gradient-to-l from-purple-500 to-indigo-500 text-white text-[11px] font-mono font-extrabold px-4 py-1.5 rounded-bl-2xl shadow-md uppercase tracking-wider">
+              ⚡ CHOOSE YOUR PLAN
             </div>
 
-            {/* 1. SHARP, UNBLURRED PRICING & SERVICE FEE */}
-            <div className="relative z-30 mb-6 p-5 rounded-2xl bg-[#080d1e]/95 border-2 border-purple-500/60 shadow-[0_0_30px_rgba(139,92,246,0.25)] backdrop-blur-xl font-mono">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                <div>
-                  <span className="text-[10px] uppercase tracking-widest text-purple-400 font-bold block mb-1">
-                    SCALP TRADER PLAN
-                  </span>
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-4xl sm:text-5xl font-extrabold text-white">₹12,000</span>
-                    <span className="text-xs text-slate-400">/ service fee</span>
-                  </div>
-                </div>
-                <span className="self-start sm:self-center px-3 py-1 rounded-full text-[10px] font-bold bg-amber-500/10 text-amber-400 border border-amber-500/30">
-                  Pre-Book Open
-                </span>
+            <div>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/30 text-purple-400 text-xs font-mono font-bold mb-4">
+                <span>ACTIVE SERVICE</span>
               </div>
-              <p className="text-[11px] text-slate-400 mt-2">
-                🔒 Priority queue reservation • Locked-in early-bird pricing
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-white">Scalp Trader Plan</h3>
+              <p className="text-xs text-slate-400 mt-2 leading-relaxed">
+                This algorithmic strategy is designed to actively trade and capture momentum during large, directional market moves
               </p>
-            </div>
 
-            {/* 2. BLURRED DETAILS & FEATURES */}
-            <div className="relative blur-[3.5px] select-none pointer-events-none opacity-45 transition-all space-y-4">
-              <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/30 text-purple-400 text-xs font-mono font-bold mb-3">
-                  <span>NEXT-GEN ARCHITECTURE</span>
-                </div>
-                <h3 className="text-2xl sm:text-3xl font-extrabold text-white">Scalp Trader Plan</h3>
-                <p className="text-xs text-slate-400 mt-2 leading-relaxed">
-                  Next-generation Level 3 order-book microstructure AI engine engineered for high-frequency tick imbalance capture.
-                </p>
+              {/* Segmented Pill Toggle Bar */}
+              <div className="mt-7 p-1 sm:p-1.5 rounded-full bg-[#050914] border-2 border-purple-400/50 shadow-[0_0_25px_rgba(168,85,247,0.18)] grid grid-cols-4 items-center">
+                {scalpPlans.map((p, i) => (
+                  <button
+                    key={p.label}
+                    onClick={() => setSelectedScalpPlan(i)}
+                    className={`relative py-2 sm:py-2.5 px-1 text-center rounded-full text-[11px] sm:text-xs md:text-sm font-bold transition-all duration-300 cursor-pointer select-none whitespace-nowrap ${
+                      selectedScalpPlan === i
+                        ? 'bg-gradient-to-r from-purple-500 via-indigo-500 to-purple-600 text-white shadow-[0_0_15px_rgba(168,85,247,0.45)] font-extrabold'
+                        : 'text-slate-400 hover:text-white hover:bg-white/5 font-semibold'
+                    }`}
+                  >
+                    {p.tag && (
+                      <span className={`absolute -top-3 left-1/2 -translate-x-1/2 px-1.5 py-0.2 text-[7.5px] sm:text-[8.5px] font-mono font-extrabold uppercase tracking-wider rounded-full shadow-sm whitespace-nowrap ${
+                        p.tag === 'BEST VALUE'
+                          ? 'bg-gradient-to-r from-amber-400 to-yellow-300 text-black'
+                          : 'bg-gradient-to-r from-purple-400 to-indigo-400 text-black'
+                      }`}>
+                        {p.tag}
+                      </span>
+                    )}
+                    {p.label}
+                  </button>
+                ))}
               </div>
 
-              {/* Feature Checklist (Blurred) */}
-              <div className="space-y-3 pt-2 text-xs text-slate-300">
+              {/* Dynamic Pricing Display */}
+              <div className="mt-4 p-4 rounded-2xl bg-[#050914] border border-[#172545]/80 font-mono">
+                <div className="flex items-baseline gap-2.5 flex-wrap">
+                  <span className="text-4xl font-extrabold text-white">₹{scalpPlan.price}</span>
+                  <span className="text-xs text-slate-400">/ {scalpPlan.label.toLowerCase()}</span>
+                  {scalpPlan.save && (
+                    <span className="px-2 py-0.5 text-[11px] font-bold font-mono rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400">
+                      Save {scalpPlan.save}
+                    </span>
+                  )}
+                </div>
+                <div className="flex items-center gap-3 mt-2">
+                  <span className="text-xs text-slate-400">That's just <span className="text-purple-400 font-bold">₹{scalpPlan.perMonth}/mo</span></span>
+                  <span className="text-[10px] text-slate-500">+ taxes</span>
+                </div>
+              </div>
+
+              {/* Feature Checklist */}
+              <div className="space-y-3.5 mt-8 text-xs text-slate-300">
                 <div className="flex items-start gap-3">
                   <div className="w-5 h-5 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-[10px] shrink-0 mt-0.5"><FaCheck /></div>
-                  <span>Ultra-HFT Level 3 order-book microstructure queue prediction model</span>
+                  <span>Fully automated and swift execution in index options</span>
                 </div>
                 <div className="flex items-start gap-3">
                   <div className="w-5 h-5 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-[10px] shrink-0 mt-0.5"><FaCheck /></div>
-                  <span>Deep Neural Network & Bayesian market regime-switching filters</span>
+                  <span>Well defined Risk reward on every trade</span>
                 </div>
                 <div className="flex items-start gap-3">
                   <div className="w-5 h-5 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-[10px] shrink-0 mt-0.5"><FaCheck /></div>
-                  <span>Real-time implied vs realized cross-asset dispersion scanner</span>
+                  <span>Built-in entry and exit logic</span>
                 </div>
                 <div className="flex items-start gap-3">
                   <div className="w-5 h-5 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-[10px] shrink-0 mt-0.5"><FaCheck /></div>
-                  <span>Priority co-location server slot & dedicated ultra-low latency routing</span>
+                  <span>Non-custodial Broker API integration (Zerodha, AngelOne, Fyers, Upstox)</span>
                 </div>
                 <div className="flex items-start gap-3">
                   <div className="w-5 h-5 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-[10px] shrink-0 mt-0.5"><FaCheck /></div>
-                  <span>Locked-in legacy price guarantee upon public production release</span>
+                  <span>Automated stop-loss & dynamic volatility circuit breakers</span>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-5 h-5 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-[10px] shrink-0 mt-0.5"><FaCheck /></div>
+                  <span>1-on-1 strategy onboarding & dedicated technical desk assistance</span>
                 </div>
               </div>
             </div>
 
-            {/* 3. UNBLURRED ACTION BUTTON */}
-            <div className="relative z-30 mt-6 pt-4 border-t border-[#172545]/60">
+            <div className="mt-8 pt-6 border-t border-[#172545]/60">
               <a
                 href="#contact"
                 className="w-full py-4 text-center text-sm font-bold text-white bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-700 rounded-xl shadow-[0_0_25px_rgba(139,92,246,0.35)] hover:shadow-[0_0_35px_rgba(139,92,246,0.55)] hover:scale-[1.02] transition-all flex items-center justify-center gap-2"
               >
-                <span>Join Priority Waitlist (₹12,000 Tier)</span>
+                <span>Get Started — ₹{scalpPlan.price} / {scalpPlan.label}</span>
                 <FaBolt className="text-xs text-amber-400" />
               </a>
             </div>
