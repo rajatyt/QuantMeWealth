@@ -44,20 +44,48 @@ export async function fetchLiveMarketQuotes() {
     console.debug('Live BTC fetch notice:', e.message);
   }
 
-  // 2. Live Indices & Commodities: Fetch via Vite Proxy or Direct Yahoo API
+  // 2. Live Indices & Commodities: Fetch via Vite/Nginx Proxy or Direct Yahoo API
   const symbolsToFetch = tickerSymbols.filter((s) => s.id !== 'BTC');
+
+  const isJsonResponse = (res) => {
+    if (!res || !res.ok) return false;
+    const ct = res.headers.get('content-type') || '';
+    return ct.includes('application/json');
+  };
 
   const fetchPromises = symbolsToFetch.map(async (sym) => {
     try {
-      // Try Vite server proxy first (avoids browser CORS)
-      let response = await fetch(`/api/market/v8/finance/chart/${encodeURIComponent(sym.querySymbol)}?interval=1m`);
+      let response = null;
 
-      if (!response.ok) {
-        // Direct fallback
-        response = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(sym.querySymbol)}?interval=1m`);
+      // 2a. Try local Vite / Nginx reverse proxy
+      try {
+        const proxyRes = await fetch(`/api/market/v8/finance/chart/${encodeURIComponent(sym.querySymbol)}?interval=1d`);
+        if (isJsonResponse(proxyRes)) {
+          response = proxyRes;
+        }
+      } catch (_) {}
+
+      // 2b. Fallback to query2.finance.yahoo.com
+      if (!response) {
+        try {
+          const q2Res = await fetch(`https://query2.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(sym.querySymbol)}?interval=1d`);
+          if (isJsonResponse(q2Res)) {
+            response = q2Res;
+          }
+        } catch (_) {}
       }
 
-      if (response.ok) {
+      // 2c. Fallback to query1.finance.yahoo.com
+      if (!response) {
+        try {
+          const q1Res = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(sym.querySymbol)}?interval=1d`);
+          if (isJsonResponse(q1Res)) {
+            response = q1Res;
+          }
+        } catch (_) {}
+      }
+
+      if (response && isJsonResponse(response)) {
         const json = await response.json();
         const meta = json?.chart?.result?.[0]?.meta;
 

@@ -1,13 +1,13 @@
 // ========== TICKER SYMBOLS ==========
 export const tickerSymbols = [
-  { id: 'NIFTY', querySymbol: '^NSEI', label: 'NIFTY 50', base: 24080.40, decimals: 2, spread: 4.5, change: '-0.39%', up: false },
-  { id: 'BANKNIFTY', querySymbol: '^NSEBANK', label: 'BANK NIFTY', base: 58024.95, decimals: 2, spread: 8.0, change: '+0.92%', up: true },
-  { id: 'SP500', querySymbol: '^GSPC', label: 'S&P 500', base: 7686.14, decimals: 2, spread: 1.2, change: '-0.33%', up: false },
-  { id: 'NASDAQ', querySymbol: '^NDX', label: 'NASDAQ 100', base: 29456.97, decimals: 2, spread: 3.5, change: '+0.08%', up: true },
-  { id: 'BTC', querySymbol: 'BTC-USD', label: 'BTC/USD', base: 78450.00, decimals: 2, spread: 15.0, change: '+1.18%', up: true },
-  { id: 'INDIAVIX', querySymbol: '^INDIAVIX', label: 'INDIA VIX', base: 11.19, decimals: 2, spread: 0.05, change: '+4.78%', up: true },
-  { id: 'GOLD', querySymbol: 'GC=F', label: 'GOLD', base: 4487.10, decimals: 2, spread: 1.5, change: '+0.12%', up: true },
-  { id: 'CRUDE', querySymbol: 'CL=F', label: 'CRUDE OIL', base: 86.76, decimals: 2, spread: 0.15, change: '+1.17%', up: true },
+  { id: 'NIFTY', querySymbol: '^NSEI', label: 'NIFTY 50', base: 22780.25, decimals: 2, spread: 3.5, change: '-1.56%', up: false },
+  { id: 'BANKNIFTY', querySymbol: '^NSEBANK', label: 'BANK NIFTY', base: 54471.65, decimals: 2, spread: 6.0, change: '-1.99%', up: false },
+  { id: 'SP500', querySymbol: '^GSPC', label: 'S&P 500', base: 7701.91, decimals: 2, spread: 1.2, change: '-0.54%', up: false },
+  { id: 'NASDAQ', querySymbol: '^NDX', label: 'NASDAQ 100', base: 30348.22, decimals: 2, spread: 3.5, change: '-0.85%', up: false },
+  { id: 'BTC', querySymbol: 'BTC-USD', label: 'BTC/USD', base: 83926.54, decimals: 2, spread: 12.0, change: '-0.77%', up: false },
+  { id: 'INDIAVIX', querySymbol: '^INDIAVIX', label: 'INDIA VIX', base: 13.64, decimals: 2, spread: 0.05, change: '+12.15%', up: true },
+  { id: 'GOLD', querySymbol: 'GC=F', label: 'GOLD', base: 4168.00, decimals: 2, spread: 1.5, change: '-3.55%', up: false },
+  { id: 'CRUDE', querySymbol: 'CL=F', label: 'CRUDE OIL', base: 92.77, decimals: 2, spread: 0.15, change: '+0.39%', up: true },
 ];
 
 // ========== STRATEGIES ==========

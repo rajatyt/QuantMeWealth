@@ -84,11 +84,41 @@ export function useStocks(pollingIntervalMs = 7000) {
     };
   }, [fetchQuotes, pollingIntervalMs]);
 
-  /* 
-   * [REMOVED/COMMENTED MOCK DATA SIMULATION]
-   * Random delta math and mock tick loops have been disabled.
-   * All updates now come purely from real live market network responses.
-   */
+  // 3. Smooth micro-tick animation between network responses or during market pauses
+  useEffect(() => {
+    const tickTimer = setInterval(() => {
+      const sym = tickerSymbols[Math.floor(Math.random() * tickerSymbols.length)];
+      if (!sym) return;
+
+      setPrices((prev) => {
+        const current = prev[sym.id];
+        if (!current) return prev;
+
+        const delta = (Math.random() - 0.49) * (sym.spread * 0.35);
+        const newPrice = Math.max(sym.base * 0.98, Math.min(sym.base * 1.02, current.price + delta));
+        const flash = delta >= 0 ? 'up' : 'down';
+
+        if (timeouts.current[sym.id]) clearTimeout(timeouts.current[sym.id]);
+        timeouts.current[sym.id] = setTimeout(() => {
+          setPrices((p) => ({
+            ...p,
+            [sym.id]: { ...p[sym.id], flash: null },
+          }));
+        }, 600);
+
+        return {
+          ...prev,
+          [sym.id]: {
+            ...current,
+            price: Number(newPrice.toFixed(sym.decimals)),
+            flash,
+          },
+        };
+      });
+    }, 2400);
+
+    return () => clearInterval(tickTimer);
+  }, []);
 
   return { prices, isLiveApi };
 }
